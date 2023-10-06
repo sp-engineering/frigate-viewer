@@ -1,6 +1,6 @@
 import {Formik, FormikProps} from 'formik';
 import React, {useCallback, useEffect, useRef} from 'react';
-import {Keyboard, StyleSheet, View} from 'react-native';
+import {Keyboard, ScrollView, StyleSheet} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import * as yup from 'yup';
 import {Dropdown} from '../../components/forms/Dropdown';
@@ -13,7 +13,7 @@ import {useAppDispatch, useAppSelector} from '../../store/store';
 
 const styles = StyleSheet.create({
   wrapper: {
-    paddingVertical: 20,
+    marginVertical: 20,
     paddingHorizontal: 16,
     width: '100%',
     height: '100%',
@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
 });
 
 const requiredError = 'This field is required.';
+const minError = ({min}: {min: number}) => `Minimum value is ${min}.`;
 
 const settingsValidationSchema = yup.object().shape({
   server: yup.object().shape({
@@ -32,6 +33,13 @@ const settingsValidationSchema = yup.object().shape({
   locale: yup.object().shape({
     region: yup.string().required(requiredError),
     datesDisplay: yup.string().required(requiredError),
+  }),
+  cameras: yup.object().shape({
+    refreshFrequency: yup.number().required(requiredError).min(1, minError),
+    previewHeight: yup.number().required(requiredError).min(50, minError),
+  }),
+  events: yup.object().shape({
+    snapshotHeight: yup.number().required(requiredError).min(50, minError),
   }),
 });
 
@@ -72,7 +80,7 @@ const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
       onSubmit={save}
       innerRef={formRef}>
       {({values, handleBlur, handleChange, setFieldValue, errors, touched}) => (
-        <View style={styles.wrapper}>
+        <ScrollView style={styles.wrapper}>
           <Section header="Server">
             <Label
               text="Protocol"
@@ -138,7 +146,59 @@ const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
               />
             </Label>
           </Section>
-        </View>
+          <Section header="Cameras">
+            <Label
+              text="Image refresh frequency (seconds)"
+              touched={touched.cameras?.refreshFrequency}
+              error={errors.cameras?.refreshFrequency}>
+              <Input
+                value={`${values.cameras.refreshFrequency || ''}`}
+                onBlur={handleBlur('refreshFrequency')}
+                onChangeText={value =>
+                  setFieldValue(
+                    'cameras.refreshFrequency',
+                    parseFloat(value) || null,
+                  )
+                }
+                keyboardType="numeric"
+              />
+            </Label>
+            <Label
+              text="Preview height"
+              touched={touched.cameras?.previewHeight}
+              error={errors.cameras?.previewHeight}>
+              <Input
+                value={`${values.cameras.previewHeight || ''}`}
+                onBlur={handleBlur('previewHeight')}
+                onChangeText={value =>
+                  setFieldValue(
+                    'cameras.previewHeight',
+                    parseFloat(value) || null,
+                  )
+                }
+                keyboardType="numeric"
+              />
+            </Label>
+          </Section>
+          <Section header="Events">
+            <Label
+              text="Snapshot height"
+              touched={touched.events?.snapshotHeight}
+              error={errors.events?.snapshotHeight}>
+              <Input
+                value={`${values.events.snapshotHeight || ''}`}
+                onBlur={handleBlur('snapshotHeight')}
+                onChangeText={value =>
+                  setFieldValue(
+                    'events.snapshotHeight',
+                    parseFloat(value) || null,
+                  )
+                }
+                keyboardType="numeric"
+              />
+            </Label>
+          </Section>
+        </ScrollView>
       )}
     </Formik>
   );

@@ -9,7 +9,11 @@ import {
 } from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import {formatVideoTime, useDateLocale} from '../../helpers/locale';
-import {selectApiUrl, selectDatesDisplay} from '../../store/settings';
+import {
+  selectServerApiUrl,
+  selectLocaleDatesDisplay,
+  selectEventsSnapshotHeight,
+} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
 
 export interface ICameraEvent {
@@ -42,7 +46,6 @@ const styles = StyleSheet.create({
     paddingVertical: 1,
     paddingHorizontal: 2,
     width: '100%',
-    height: 222,
   },
   cameraEventTitle: {
     position: 'absolute',
@@ -99,9 +102,10 @@ export const CameraEvent: FC<ICameraEventProps> = ({
   top_score,
 }) => {
   const [snapshot, setSnapshot] = useState<string>();
-  const apiUrl = useAppSelector(selectApiUrl);
+  const apiUrl = useAppSelector(selectServerApiUrl);
   const dateLocale = useDateLocale();
-  const datesDisplay = useAppSelector(selectDatesDisplay);
+  const datesDisplay = useAppSelector(selectLocaleDatesDisplay);
+  const snapshotHeight = useAppSelector(selectEventsSnapshotHeight);
 
   useEffect(() => {
     const url = has_snapshot
@@ -157,7 +161,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
 
   return (
     <TouchableWithoutFeedback onPress={showEventClip}>
-      <View style={styles.cameraEvent}>
+      <View style={[styles.cameraEvent, {height: snapshotHeight}]}>
         {snapshot && (
           <Image
             source={{uri: snapshot}}

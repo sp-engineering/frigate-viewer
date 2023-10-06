@@ -4,7 +4,7 @@ import {NavigationFunctionComponent} from 'react-native-navigation';
 import {catchError} from 'rxjs/operators';
 import {componentWithRedux} from '../../helpers/redux';
 import {get} from '../../helpers/rest';
-import {selectApiUrl} from '../../store/settings';
+import {selectServerApiUrl} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
 import {CameraEvent, ICameraEvent} from './CameraEvent';
 
@@ -17,7 +17,7 @@ const CameraEventsComponent: NavigationFunctionComponent<
 > = ({cameraName, componentId}) => {
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState<ICameraEvent[]>([]);
-  const apiUrl = useAppSelector(selectApiUrl);
+  const apiUrl = useAppSelector(selectServerApiUrl);
 
   const refresh = useCallback(() => {
     setLoading(true);

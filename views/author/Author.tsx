@@ -4,6 +4,7 @@ import {
   Image,
   Linking,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -87,7 +88,7 @@ export const Author: NavigationFunctionComponent = ({componentId}) => {
   );
 
   return (
-    <View style={styles.wrapper}>
+    <ScrollView style={styles.wrapper}>
       <View style={styles.authorInfo}>
         <Image
           source={require('./sp-engineering-logo.png')}
@@ -125,7 +126,7 @@ export const Author: NavigationFunctionComponent = ({componentId}) => {
           </Pressable>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

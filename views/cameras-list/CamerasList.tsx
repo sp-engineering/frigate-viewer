@@ -4,8 +4,11 @@ import {NavigationFunctionComponent} from 'react-native-navigation';
 import {catchError, map} from 'rxjs/operators';
 import {componentWithRedux} from '../../helpers/redux';
 import {get} from '../../helpers/rest';
-import {selectApiUrl} from '../../store/settings';
-import {useAppSelector} from '../../store/store';
+import {
+  fillGapsWithInitialData,
+  selectServerApiUrl,
+} from '../../store/settings';
+import {useAppDispatch, useAppSelector} from '../../store/store';
 import {navigateToMenuItem, settingsMenuItem} from '../menu/Menu';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {CameraTile} from './CameraTile';
@@ -14,7 +17,12 @@ const CamerasListComponent: NavigationFunctionComponent = ({componentId}) => {
   useMenu(componentId, 'camerasList');
   const [loading, setLoading] = useState(true);
   const [cameras, setCameras] = useState<string[]>([]);
-  const apiUrl = useAppSelector(selectApiUrl);
+  const apiUrl = useAppSelector(selectServerApiUrl);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fillGapsWithInitialData());
+  }, [dispatch]);
 
   const refresh = useCallback(() => {
     setLoading(true);

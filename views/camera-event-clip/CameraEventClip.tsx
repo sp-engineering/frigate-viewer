@@ -5,7 +5,7 @@ import {NavigationFunctionComponent} from 'react-native-navigation';
 import {ProgressInfo, VLCPlayer} from 'react-native-vlc-media-player';
 import {formatVideoTime} from '../../helpers/locale';
 import {componentWithRedux} from '../../helpers/redux';
-import {selectApiUrl} from '../../store/settings';
+import {selectServerApiUrl} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
 
 interface ICameraEventClipProps {
@@ -108,7 +108,7 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
 const CameraEventClipComponent: NavigationFunctionComponent<
   ICameraEventClipProps
 > = ({eventId}) => {
-  const apiUrl = useAppSelector(selectApiUrl);
+  const apiUrl = useAppSelector(selectServerApiUrl);
   const clipUrl = useMemo(
     () => `${apiUrl}/events/${eventId}/clip.mp4`,
     [eventId, apiUrl],

@@ -1,9 +1,9 @@
 import {enGB, enUS, pl} from 'date-fns/locale';
-import {Region, selectRegion} from '../store/settings';
+import {Region, selectLocaleRegion} from '../store/settings';
 import {useAppSelector} from '../store/store';
 
 export const useDateLocale = () => {
-  const region = useAppSelector(selectRegion);
+  const region = useAppSelector(selectLocaleRegion);
   const regionLocaleMap: Record<Region, Locale> = {
     enGB,
     enUS,

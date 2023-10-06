@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   Image,
@@ -9,7 +9,11 @@ import {
 } from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import {useAppSelector} from '../../store/store';
-import {selectApiUrl} from '../../store/settings';
+import {
+  selectCamerasPreviewHeight,
+  selectCamerasRefreshFrequency,
+  selectServerApiUrl,
+} from '../../store/settings';
 
 type CameraTileProps = PropsWithChildren<{
   componentId: string;
@@ -21,7 +25,6 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     paddingHorizontal: 1,
     width: '100%',
-    height: 222,
   },
   cameraTileTitle: {
     position: 'absolute',
@@ -44,19 +47,28 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   const [lastImageSrc, setLastImageSrc] = useState<string | undefined>(
     undefined,
   );
-  const apiUrl = useAppSelector(selectApiUrl);
+  const apiUrl = useAppSelector(selectServerApiUrl);
+  const refreshFrequency = useAppSelector(selectCamerasRefreshFrequency);
+  const previewHeight = useAppSelector(selectCamerasPreviewHeight);
+  let interval = useRef<number>();
 
   useEffect(() => {
     const getUrl = () =>
       `${apiUrl}/${cameraName}/latest.jpg?bbox=1&ts=${new Date().toISOString()}`;
     setLastImageSrc(getUrl());
-    const interval = setInterval(async () => {
+    const removeRefreshing = () => {
+      if (interval.current) {
+        clearInterval(interval.current);
+      }
+    };
+    removeRefreshing();
+    interval.current = setInterval(async () => {
       const url = getUrl();
       await Image.prefetch(url);
       setLastImageSrc(url);
-    }, 10000);
-    return () => clearInterval(interval);
-  }, [cameraName, setLastImageSrc, apiUrl]);
+    }, refreshFrequency * 1000);
+    return removeRefreshing;
+  }, [cameraName, setLastImageSrc, apiUrl, refreshFrequency]);
 
   const showCameraEvents = useCallback(() => {
     Navigation.push(componentId, {
@@ -71,7 +83,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
 
   return (
     <TouchableWithoutFeedback onPress={showCameraEvents}>
-      <View style={styles.cameraTile}>
+      <View style={[styles.cameraTile, {height: previewHeight}]}>
         {lastImageSrc && (
           <Image
             source={{uri: lastImageSrc}}
