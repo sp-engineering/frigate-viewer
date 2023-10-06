@@ -1,7 +1,7 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {FlatList, View} from 'react-native';
 import {NavigationFunctionComponent} from 'react-native-navigation';
-import {catchError, tap} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 import {componentWithRedux} from '../../helpers/redux';
 import {get} from '../../helpers/rest';
 import {
@@ -27,6 +27,7 @@ const CameraEventsComponent: NavigationFunctionComponent<
 > = ({cameraNames, componentId}) => {
   useMenu(componentId, 'cameraEvents');
   useEventsFilters(componentId, cameraNames);
+  const listRef = useRef<FlatList<ICameraEvent>>(null);
   const [refreshing, setRefreshing] = useState(true);
   const [events, setEvents] = useState<ICameraEvent[]>([]);
   const [endReached, setEndReached] = useState<boolean>(false);
@@ -36,8 +37,8 @@ const CameraEventsComponent: NavigationFunctionComponent<
   const filtersLabels = useAppSelector(selectFiltersLabels);
   const filtersZones = useAppSelector(selectFiltersZones);
 
-  const loadMore$ = useMemo(() => {
-    return get<ICameraEvent[]>(`${apiUrl}/events`, {
+  const eventsQueryParams = useMemo(
+    () => ({
       ...(cameraNames
         ? {cameras: cameraNames.join(',')}
         : filtersCameras.length > 0
@@ -45,44 +46,55 @@ const CameraEventsComponent: NavigationFunctionComponent<
         : {}),
       ...(filtersLabels.length > 0 ? {labels: filtersLabels.join(',')} : {}),
       ...(filtersZones.length > 0 ? {zones: filtersZones.join(',')} : {}),
-      ...(events.length > 0
+      ...(!refreshing && events.length > 0
         ? {before: `${events[events.length - 1].start_time}`}
         : {}),
       limit: '100',
       include_thumbnails: '0',
-    }).pipe(
-      tap(data => {
-        if (data.length === 0) {
-          setEndReached(true);
-        }
-      }),
-      catchError(() => []),
-    );
-  }, [
-    apiUrl,
-    cameraNames,
-    events,
-    filtersCameras,
-    filtersLabels,
-    filtersZones,
-  ]);
+    }),
+    [
+      cameraNames,
+      events,
+      filtersCameras,
+      filtersLabels,
+      filtersZones,
+      refreshing,
+    ],
+  );
+
+  const watchEndReached = useCallback((data: ICameraEvent[]) => {
+    if (data.length === 0) {
+      setEndReached(true);
+    }
+  }, []);
 
   const refresh = useCallback(() => {
-    setRefreshing(true);
     setEndReached(false);
-    loadMore$.subscribe(data => {
-      setEvents(data);
-      setRefreshing(false);
-    });
-  }, [loadMore$]);
+    setRefreshing(true);
+  }, []);
+
+  useEffect(() => {
+    if (refreshing) {
+      get<ICameraEvent[]>(`${apiUrl}/events`, eventsQueryParams)
+        .pipe(tap(watchEndReached))
+        .subscribe(data => {
+          setEvents(data);
+          setRefreshing(false);
+          listRef.current?.scrollToIndex({index: 0});
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refreshing]);
 
   const loadMore = useCallback(() => {
-    loadMore$.subscribe(data => {
-      if (!endReached) {
-        setEvents([...events, ...data]);
-      }
-    });
-  }, [endReached, events, loadMore$]);
+    if (!endReached) {
+      get<ICameraEvent[]>(`${apiUrl}/events`, eventsQueryParams)
+        .pipe(tap(watchEndReached))
+        .subscribe(data => {
+          setEvents([...events, ...data]);
+        });
+    }
+  }, [apiUrl, endReached, events, eventsQueryParams, watchEndReached]);
 
   useEffect(() => {
     refresh();
@@ -92,6 +104,7 @@ const CameraEventsComponent: NavigationFunctionComponent<
   return (
     <View>
       <FlatList
+        ref={listRef}
         data={events}
         renderItem={({item}) => (
           <CameraEvent {...item} componentId={componentId} />
