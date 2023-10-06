@@ -39,6 +39,7 @@ Navigation.events().registerAppLaunchedListener(() => {
         },
         right: {
           component: {
+            id: 'EventsFilters',
             name: 'EventsFilters',
           },
         },

@@ -1,7 +1,16 @@
 import {useEffect} from 'react';
 import {Navigation, OptionsTopBarButton} from 'react-native-navigation';
 
-export const useEventsFilters = (componentId: string) => {
+export const useEventsFilters = (
+  componentId: string,
+  cameraNames?: string[],
+) => {
+  useEffect(() => {
+    Navigation.updateProps('EventsFilters', {
+      viewedCameraNames: cameraNames,
+    });
+  }, [cameraNames]);
+
   useEffect(() => {
     Navigation.mergeOptions(componentId, {
       sideMenu: {

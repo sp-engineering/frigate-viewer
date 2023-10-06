@@ -4,6 +4,11 @@ import {NavigationFunctionComponent} from 'react-native-navigation';
 import {catchError, tap} from 'rxjs/operators';
 import {componentWithRedux} from '../../helpers/redux';
 import {get} from '../../helpers/rest';
+import {
+  selectFiltersCameras,
+  selectFiltersLabels,
+  selectFiltersZones,
+} from '../../store/events';
 import {selectEventsNumColumns, selectServerApiUrl} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
 import {
@@ -21,16 +26,25 @@ const CameraEventsComponent: NavigationFunctionComponent<
   ICameraEventsProps
 > = ({cameraNames, componentId}) => {
   useMenu(componentId, 'cameraEvents');
-  useEventsFilters(componentId);
+  useEventsFilters(componentId, cameraNames);
   const [refreshing, setRefreshing] = useState(true);
   const [events, setEvents] = useState<ICameraEvent[]>([]);
   const [endReached, setEndReached] = useState<boolean>(false);
   const apiUrl = useAppSelector(selectServerApiUrl);
   const numColumns = useAppSelector(selectEventsNumColumns);
+  const filtersCameras = useAppSelector(selectFiltersCameras);
+  const filtersLabels = useAppSelector(selectFiltersLabels);
+  const filtersZones = useAppSelector(selectFiltersZones);
 
   const loadMore$ = useMemo(() => {
     return get<ICameraEvent[]>(`${apiUrl}/events`, {
-      ...(cameraNames ? {cameras: cameraNames.join(',')} : {}),
+      ...(cameraNames
+        ? {cameras: cameraNames.join(',')}
+        : filtersCameras.length > 0
+        ? {cameras: filtersCameras.join(',')}
+        : {}),
+      ...(filtersLabels.length > 0 ? {labels: filtersLabels.join(',')} : {}),
+      ...(filtersZones.length > 0 ? {zones: filtersZones.join(',')} : {}),
       ...(events.length > 0
         ? {before: `${events[events.length - 1].start_time}`}
         : {}),
@@ -44,7 +58,14 @@ const CameraEventsComponent: NavigationFunctionComponent<
       }),
       catchError(() => []),
     );
-  }, [apiUrl, cameraNames, events]);
+  }, [
+    apiUrl,
+    cameraNames,
+    events,
+    filtersCameras,
+    filtersLabels,
+    filtersZones,
+  ]);
 
   const refresh = useCallback(() => {
     setRefreshing(true);
@@ -66,7 +87,7 @@ const CameraEventsComponent: NavigationFunctionComponent<
   useEffect(() => {
     refresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [filtersCameras, filtersLabels, filtersZones]);
 
   return (
     <View>

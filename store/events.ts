@@ -49,13 +49,13 @@ export const eventsStore = createSlice({
       state.available.zones = action.payload;
     },
     setFiltersCameras: (state, action: PayloadAction<string[]>) => {
-      state.available.cameras = action.payload;
+      state.filters.cameras = action.payload;
     },
     setFiltersLabels: (state, action: PayloadAction<string[]>) => {
-      state.available.labels = action.payload;
+      state.filters.labels = action.payload;
     },
     setFiltersZones: (state, action: PayloadAction<string[]>) => {
-      state.available.zones = action.payload;
+      state.filters.zones = action.payload;
     },
   },
 });
