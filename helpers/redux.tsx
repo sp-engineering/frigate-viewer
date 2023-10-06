@@ -3,8 +3,9 @@ import {
   NavigationFunctionComponent,
   NavigationProps,
 } from 'react-native-navigation';
+import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
-import {store} from '../store/store';
+import {persistor, store} from '../store/store';
 
 export const componentWithRedux =
   <P,>(
@@ -13,6 +14,8 @@ export const componentWithRedux =
   (props: P & NavigationProps) =>
     (
       <Provider store={store}>
-        <Component {...props} />
+        <PersistGate persistor={persistor}>
+          <Component {...props} />
+        </PersistGate>
       </Provider>
     );
