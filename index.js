@@ -1,10 +1,9 @@
 import {Navigation} from 'react-native-navigation';
-import CamerasList from './views/cameras-list/CamerasList';
+import {CameraEvents} from './views/camera-events/CameraEvents';
+import {CamerasList} from './views/cameras-list/CamerasList';
 
-Navigation.registerComponent(
-  'com.frigateViewer.CamerasList',
-  () => CamerasList,
-);
+Navigation.registerComponent('CamerasList', () => CamerasList);
+Navigation.registerComponent('CameraEvents', () => CameraEvents);
 
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setRoot({
@@ -13,11 +12,28 @@ Navigation.events().registerAppLaunchedListener(() => {
         children: [
           {
             component: {
-              name: 'com.frigateViewer.CamerasList',
+              name: 'CamerasList',
             },
           },
         ],
       },
     },
   });
+});
+
+Navigation.setDefaultOptions({
+  statusBar: {
+    backgroundColor: 'black',
+  },
+  topBar: {
+    title: {
+      color: 'white',
+    },
+    backButton: {
+      color: 'white',
+    },
+    background: {
+      color: 'black',
+    },
+  },
 });

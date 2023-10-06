@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList} from 'react-native';
+import {NavigationFunctionComponent} from 'react-native-navigation';
 import {catchError, map} from 'rxjs/operators';
-import {Screen} from '../../components/Screen';
 import {get} from '../../helpers/rest';
 import {CameraTile} from './CameraTile';
 
-export const CamerasList = (): JSX.Element => {
+export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
   const [loading, setLoading] = useState(true);
   const [cameras, setCameras] = useState<string[]>([]);
 
@@ -27,16 +27,22 @@ export const CamerasList = (): JSX.Element => {
   }, [refresh]);
 
   return (
-    <Screen>
-      <FlatList
-        data={cameras}
-        renderItem={({item}) => <CameraTile cameraName={item} />}
-        keyExtractor={cameraName => cameraName}
-        refreshing={loading}
-        onRefresh={refresh}
-      />
-    </Screen>
+    <FlatList
+      data={cameras}
+      renderItem={({item}) => (
+        <CameraTile cameraName={item} componentId={componentId} />
+      )}
+      keyExtractor={cameraName => cameraName}
+      refreshing={loading}
+      onRefresh={refresh}
+    />
   );
 };
 
-export default CamerasList;
+CamerasList.options = {
+  topBar: {
+    title: {
+      text: 'List of cameras',
+    },
+  },
+};

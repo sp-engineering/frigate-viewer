@@ -1,25 +1,33 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, View} from 'react-native';
-import {catchError, map} from 'rxjs/operators';
+import {NavigationFunctionComponent} from 'react-native-navigation';
+import {catchError} from 'rxjs/operators';
 import {get} from '../../helpers/rest';
-import {CameraEvent} from './CameraEvent';
+import {CameraEvent, ICameraEvent} from './CameraEvent';
 
-export const CamerasList = (): JSX.Element => {
+interface ICameraEventsProps {
+  cameraName: string;
+}
+
+export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
+  cameraName,
+}) => {
   const [loading, setLoading] = useState(true);
-  const [cameras, setCameras] = useState<string[]>([]);
+  const [events, setEvents] = useState<ICameraEvent[]>([]);
 
   const refresh = useCallback(() => {
     setLoading(true);
-    get<{cameras: Array<unknown>}>('/config')
-      .pipe(
-        map(data => Object.keys(data.cameras)),
-        catchError(() => []),
-      )
+    get<ICameraEvent[]>('/events', {
+      cameras: cameraName,
+      limit: '300',
+      include_thumbnails: '0',
+    })
+      .pipe(catchError(() => []))
       .subscribe(data => {
-        setCameras(data);
+        setEvents(data);
         setLoading(false);
       });
-  }, []);
+  }, [cameraName]);
 
   useEffect(() => {
     refresh();
@@ -28,9 +36,9 @@ export const CamerasList = (): JSX.Element => {
   return (
     <View>
       <FlatList
-        data={cameras}
-        renderItem={({item}) => <CameraEvent cameraName={item} />}
-        keyExtractor={cameraName => cameraName}
+        data={events}
+        renderItem={({item}) => <CameraEvent {...item} />}
+        keyExtractor={data => data.id}
         refreshing={loading}
         onRefresh={refresh}
       />
@@ -38,4 +46,10 @@ export const CamerasList = (): JSX.Element => {
   );
 };
 
-export default CamerasList;
+CameraEvents.options = ({cameraName}) => ({
+  topBar: {
+    title: {
+      text: `Events of ${cameraName}`,
+    },
+  },
+});

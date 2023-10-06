@@ -1,39 +1,49 @@
-import React, {useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import type {PropsWithChildren} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {apiUrl} from '../../config';
+import {Navigation} from 'react-native-navigation';
 
 type CameraTileProps = PropsWithChildren<{
+  componentId: string;
   cameraName: string;
 }>;
 
 const styles = StyleSheet.create({
   cameraTile: {
-    paddingVertical: '1%',
-    paddingHorizontal: '2%',
+    paddingVertical: 2,
+    paddingHorizontal: 1,
     width: '100%',
-    height: 220,
+    height: 222,
   },
   cameraTileTitle: {
     position: 'absolute',
-    left: '2%',
-    top: '1%',
+    left: 2,
+    top: 1,
     width: '100%',
-    padding: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 14,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '300',
     color: 'white',
-    backgroundColor: '#00000070',
+    backgroundColor: '#00000040',
   },
   cameraTileImage: {
     flex: 1,
   },
 });
 
-export const CameraTile = ({cameraName}: CameraTileProps): JSX.Element => {
+export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   const [lastImageSrc, setLastImageSrc] = useState<string | undefined>(
     undefined,
   );
+
   useEffect(() => {
     const getUrl = () =>
       `${apiUrl}/${cameraName}/latest.jpg?bbox=1&ts=${new Date().toISOString()}`;
@@ -46,18 +56,31 @@ export const CameraTile = ({cameraName}: CameraTileProps): JSX.Element => {
     return () => clearInterval(interval);
   }, [cameraName, setLastImageSrc]);
 
+  const showCameraEvents = useCallback(() => {
+    Navigation.push(componentId, {
+      component: {
+        name: 'CameraEvents',
+        passProps: {
+          cameraName,
+        },
+      },
+    });
+  }, [cameraName, componentId]);
+
   return (
-    <View style={styles.cameraTile}>
-      {lastImageSrc && (
-        <Image
-          source={{uri: lastImageSrc}}
-          style={styles.cameraTileImage}
-          fadeDuration={0}
-          resizeMode="contain"
-          resizeMethod="scale"
-        />
-      )}
-      <Text style={[styles.cameraTileTitle]}>{cameraName}</Text>
-    </View>
+    <TouchableWithoutFeedback onPress={showCameraEvents}>
+      <View style={styles.cameraTile}>
+        {lastImageSrc && (
+          <Image
+            source={{uri: lastImageSrc}}
+            style={styles.cameraTileImage}
+            fadeDuration={0}
+            resizeMode="contain"
+            resizeMethod="scale"
+          />
+        )}
+        <Text style={[styles.cameraTileTitle]}>{cameraName}</Text>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
