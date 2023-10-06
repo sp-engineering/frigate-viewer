@@ -29,12 +29,6 @@ export const ZoomableImage: FC<IZoomableImageProps> = ({
   const nativeGesture = Gesture.Native();
 
   const zoomGesture = Gesture.Pinch()
-    .manualActivation(true)
-    .onTouchesDown((event, manager) => {
-      if (event.numberOfTouches > 1) {
-        manager.activate();
-      }
-    })
     .onUpdate(event => {
       scale.value = event.scale;
     })
@@ -44,19 +38,12 @@ export const ZoomableImage: FC<IZoomableImageProps> = ({
 
   const dragGesture = Gesture.Pan()
     .averageTouches(true)
-    .manualActivation(true)
-    .onTouchesDown((event, manager) => {
-      if (event.numberOfTouches > 1) {
-        manager.activate();
-      }
-    })
+    .minPointers(2)
     .onUpdate(event => {
-      if (event.numberOfPointers > 1) {
-        offset.value = {
-          x: event.translationX,
-          y: event.translationY,
-        };
-      }
+      offset.value = {
+        x: event.translationX,
+        y: event.translationY,
+      };
     })
     .onEnd(() => {
       offset.value = {x: 0, y: 0};
