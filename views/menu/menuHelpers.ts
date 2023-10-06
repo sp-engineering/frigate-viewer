@@ -8,14 +8,28 @@ export type MenuId =
   | 'settings'
   | 'author';
 
-export const useMenu = (componentId: string, current?: MenuId) => {
+export const useSelectedMenuItem = (current?: MenuId) => {
   useEffect(() => {
+    Navigation.updateProps('Menu', {
+      current,
+    });
+  }, [current]);
+};
+
+export const useMenu = (componentId: string, current?: MenuId) => {
+  useSelectedMenuItem(current);
+
+  useEffect(() => {
+    Navigation.mergeOptions(componentId, {
+      sideMenu: {
+        left: {
+          enabled: true,
+        },
+      },
+    });
     const sub = Navigation.events().registerNavigationButtonPressedListener(
       event => {
         if (event.buttonId === 'menu') {
-          Navigation.updateProps('Menu', {
-            current,
-          });
           Navigation.mergeOptions(componentId, {
             sideMenu: {
               left: {
@@ -27,6 +41,13 @@ export const useMenu = (componentId: string, current?: MenuId) => {
       },
     );
     return () => {
+      Navigation.mergeOptions(componentId, {
+        sideMenu: {
+          left: {
+            enabled: false,
+          },
+        },
+      });
       sub.remove();
     };
   }, [componentId, current]);

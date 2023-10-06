@@ -35,6 +35,13 @@ Navigation.events().registerAppLaunchedListener(() => {
             name: 'Menu',
           },
         },
+        options: {
+          sideMenu: {
+            left: {
+              enabled: false,
+            },
+          },
+        },
       },
     },
   });
