@@ -1,6 +1,6 @@
 import {Formik, FormikProps} from 'formik';
 import React, {useCallback, useEffect, useRef} from 'react';
-import {Keyboard, ScrollView, StyleSheet} from 'react-native';
+import {Keyboard, Pressable, ScrollView, StyleSheet, Text} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import * as yup from 'yup';
 import {Dropdown} from '../../components/forms/Dropdown';
@@ -11,7 +11,7 @@ import {componentWithRedux} from '../../helpers/redux';
 import {ISettings, saveSettings, selectSettings} from '../../store/settings';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {camerasListMenuItem, navigateToMenuItem} from '../menu/Menu';
-import {menuButton, useMenu} from '../menu/menuHelpers';
+import {useMenu} from '../menu/menuHelpers';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -20,6 +20,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'white',
+  },
+  demoServerButton: {
+    color: 'blue',
   },
 });
 
@@ -68,6 +71,9 @@ const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
             formRef.current.handleSubmit();
           }
         }
+        if (event.buttonId === 'cancel') {
+          navigateToMenuItem(camerasListMenuItem)();
+        }
       },
     );
     return () => {
@@ -84,6 +90,14 @@ const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
     [dispatch],
   );
 
+  const fillDemoServer = useCallback(() => {
+    if (formRef.current) {
+      formRef.current.setFieldValue('server.protocol', 'https');
+      formRef.current.setFieldValue('server.host', 'demo.frigate.video');
+      formRef.current.setFieldValue('server.port', 443);
+    }
+  }, []);
+
   return (
     <Formik
       initialValues={currentSettings}
@@ -96,7 +110,8 @@ const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
             <Label
               text="Protocol"
               touched={touched.server?.protocol}
-              error={errors.server?.protocol}>
+              error={errors.server?.protocol}
+              required={true}>
               <Dropdown
                 value={values.server.protocol}
                 options={[{value: 'http'}, {value: 'https'}]}
@@ -106,7 +121,8 @@ const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
             <Label
               text="Host"
               touched={touched.server?.host}
-              error={errors.server?.host}>
+              error={errors.server?.host}
+              required={true}>
               <Input
                 value={values.server.host}
                 onBlur={handleBlur('host')}
@@ -117,7 +133,8 @@ const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
             <Label
               text="Port"
               touched={touched.server?.port}
-              error={errors.server?.port}>
+              error={errors.server?.port}
+              required={true}>
               <Input
                 value={`${values.server.port || ''}`}
                 onBlur={handleBlur('port')}
@@ -127,6 +144,9 @@ const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
                 keyboardType="numeric"
               />
             </Label>
+            <Pressable onPress={fillDemoServer}>
+              <Text style={styles.demoServerButton}>Use demo server</Text>
+            </Pressable>
           </Section>
           <Section header="Locale">
             <Label
@@ -216,7 +236,11 @@ Settings.options = () => ({
         text: 'Save',
         color: 'white',
       },
-      menuButton,
+      {
+        id: 'cancel',
+        text: 'Cancel',
+        color: 'white',
+      },
     ],
   },
 });

@@ -11,17 +11,30 @@ const styles = StyleSheet.create({
   error: {
     color: 'red',
   },
+  required: {
+    color: 'red',
+  },
 });
 
 export interface ILabelProps extends TextInputProps {
   text: string;
   touched?: boolean;
   error?: string;
+  required?: boolean;
 }
 
-export const Label: FC<ILabelProps> = ({text, touched, error, children}) => (
+export const Label: FC<ILabelProps> = ({
+  text,
+  touched,
+  error,
+  required,
+  children,
+}) => (
   <View style={styles.wrapper}>
-    <Text style={styles.text}>{text}</Text>
+    <Text style={styles.text}>
+      <Text>{text}</Text>
+      {required && <Text style={styles.required}>*</Text>}
+    </Text>
     {children}
     {touched && error && <Text style={styles.error}>{error}</Text>}
   </View>

@@ -7,12 +7,13 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 18,
+    fontWeight: '600',
     color: 'black',
   },
 });
 
 export interface ISectionProps extends TextInputProps {
-  header: string;
+  header: string | JSX.Element;
 }
 
 export const Section: FC<ISectionProps> = ({header, children}) => (
