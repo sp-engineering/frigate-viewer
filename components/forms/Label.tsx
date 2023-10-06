@@ -8,15 +8,21 @@ const styles = StyleSheet.create({
   text: {
     color: 'black',
   },
+  error: {
+    color: 'red',
+  },
 });
 
-interface ILabelProps extends TextInputProps {
+export interface ILabelProps extends TextInputProps {
   text: string;
+  touched?: boolean;
+  error?: string;
 }
 
-export const Label: FC<ILabelProps> = ({text, children}) => (
+export const Label: FC<ILabelProps> = ({text, touched, error, children}) => (
   <View style={styles.wrapper}>
     <Text style={styles.text}>{text}</Text>
     {children}
+    {touched && error && <Text style={styles.error}>{error}</Text>}
   </View>
 );

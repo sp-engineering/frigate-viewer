@@ -2,6 +2,7 @@ import {Formik, FormikProps} from 'formik';
 import React, {useCallback, useEffect, useRef} from 'react';
 import {Keyboard, StyleSheet, View} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
+import * as yup from 'yup';
 import {Dropdown} from '../../components/forms/Dropdown';
 import {Input} from '../../components/forms/Input';
 import {Label} from '../../components/forms/Label';
@@ -17,6 +18,14 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: 'white',
   },
+});
+
+const requiredError = 'This field is required.';
+
+const settingsValidationSchema = yup.object().shape({
+  protocol: yup.string().required(requiredError),
+  host: yup.string().required(requiredError),
+  port: yup.number().required(requiredError),
 });
 
 const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
@@ -49,10 +58,17 @@ const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
   );
 
   return (
-    <Formik initialValues={currentSettings} onSubmit={save} innerRef={formRef}>
-      {({values, handleBlur, handleChange, setFieldValue}) => (
+    <Formik
+      initialValues={currentSettings}
+      validationSchema={settingsValidationSchema}
+      onSubmit={save}
+      innerRef={formRef}>
+      {({values, handleBlur, handleChange, setFieldValue, errors, touched}) => (
         <View style={styles.wrapper}>
-          <Label text="Protocol">
+          <Label
+            text="Protocol"
+            touched={touched.protocol}
+            error={errors.protocol}>
             <Dropdown
               value={values.protocol}
               options={[{value: 'http'}, {value: 'https'}]}
@@ -60,17 +76,23 @@ const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
             />
           </Label>
           <Input
-            label="Host"
+            text="Host"
+            touched={touched.host}
+            error={errors.host}
             value={values.host}
             onBlur={handleBlur('host')}
             onChangeText={handleChange('host')}
             keyboardType="default"
           />
           <Input
-            label="Port"
-            value={`${values.port}`}
+            text="Port"
+            touched={touched.port}
+            error={errors.port}
+            value={`${values.port || ''}`}
             onBlur={handleBlur('port')}
-            onChangeText={value => setFieldValue('port', parseFloat(value))}
+            onChangeText={value =>
+              setFieldValue('port', parseFloat(value) || null)
+            }
             keyboardType="numeric"
           />
         </View>
