@@ -1,7 +1,7 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {FlatList, View} from 'react-native';
 import {NavigationFunctionComponent} from 'react-native-navigation';
-import {catchError} from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
 import {componentWithRedux} from '../../helpers/redux';
 import {get} from '../../helpers/rest';
 import {selectServerApiUrl} from '../../store/settings';
@@ -17,27 +17,50 @@ const CameraEventsComponent: NavigationFunctionComponent<
   ICameraEventsProps
 > = ({cameraNames, componentId}) => {
   useMenu(componentId, 'cameraEvents');
-  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(true);
   const [events, setEvents] = useState<ICameraEvent[]>([]);
+  const [endReached, setEndReached] = useState<boolean>(false);
   const apiUrl = useAppSelector(selectServerApiUrl);
 
-  const refresh = useCallback(() => {
-    setLoading(true);
-    get<ICameraEvent[]>(`${apiUrl}/events`, {
+  const loadMore$ = useMemo(() => {
+    return get<ICameraEvent[]>(`${apiUrl}/events`, {
       ...(cameraNames ? {cameras: cameraNames.join(',')} : {}),
-      limit: '300',
+      ...(events.length > 0
+        ? {before: `${events[events.length - 1].start_time}`}
+        : {}),
+      limit: '100',
       include_thumbnails: '0',
-    })
-      .pipe(catchError(() => []))
-      .subscribe(data => {
-        setEvents(data);
-        setLoading(false);
-      });
-  }, [cameraNames, apiUrl]);
+    }).pipe(
+      tap(data => {
+        if (data.length === 0) {
+          setEndReached(true);
+        }
+      }),
+      catchError(() => []),
+    );
+  }, [apiUrl, cameraNames, events]);
+
+  const refresh = useCallback(() => {
+    setRefreshing(true);
+    setEndReached(false);
+    loadMore$.subscribe(data => {
+      setEvents(data);
+      setRefreshing(false);
+    });
+  }, [loadMore$]);
+
+  const loadMore = useCallback(() => {
+    loadMore$.subscribe(data => {
+      if (!endReached) {
+        setEvents([...events, ...data]);
+      }
+    });
+  }, [endReached, events, loadMore$]);
 
   useEffect(() => {
     refresh();
-  }, [refresh]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <View>
@@ -47,8 +70,12 @@ const CameraEventsComponent: NavigationFunctionComponent<
           <CameraEvent {...item} componentId={componentId} />
         )}
         keyExtractor={data => data.id}
-        refreshing={loading}
+        initialNumToRender={30}
+        refreshing={refreshing}
         onRefresh={refresh}
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.5}
+        numColumns={3}
       />
     </View>
   );
