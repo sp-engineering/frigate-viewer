@@ -1,9 +1,11 @@
 import {Navigation} from 'react-native-navigation';
+import {CameraEventClip} from './views/camera-event-clip/CameraEventClip';
 import {CameraEvents} from './views/camera-events/CameraEvents';
 import {CamerasList} from './views/cameras-list/CamerasList';
 
 Navigation.registerComponent('CamerasList', () => CamerasList);
 Navigation.registerComponent('CameraEvents', () => CameraEvents);
+Navigation.registerComponent('CameraEventClip', () => CameraEventClip);
 
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setRoot({

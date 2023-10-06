@@ -1,7 +1,14 @@
 import {formatDistance, formatRelative} from 'date-fns';
 import {enGB} from 'date-fns/locale';
-import React, {FC, useEffect, useMemo, useState} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import {Navigation} from 'react-native-navigation';
 import {apiUrl} from '../../config';
 
 export interface ICameraEvent {
@@ -23,6 +30,10 @@ export interface ICameraEvent {
   ratio: null;
   region: null;
   retain_indefinitely: boolean;
+}
+
+interface ICameraEventProps extends ICameraEvent {
+  componentId: string;
 }
 
 const styles = StyleSheet.create({
@@ -73,7 +84,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const CameraEvent: FC<ICameraEvent> = ({
+export const CameraEvent: FC<ICameraEventProps> = ({
   id,
   has_snapshot,
   start_time,
@@ -108,33 +119,51 @@ export const CameraEvent: FC<ICameraEvent> = ({
 
   const score = useMemo(() => `${Math.round(top_score * 100)}%`, [top_score]);
 
+  const showEventClip = useCallback(() => {
+    Navigation.showModal({
+      component: {
+        name: 'CameraEventClip',
+        passProps: {
+          eventId: id,
+        },
+        options: {
+          layout: {
+            orientation: ['landscape'],
+          },
+        },
+      },
+    });
+  }, [id]);
+
   return (
-    <View style={styles.cameraEvent}>
-      {snapshot && (
-        <Image
-          source={{uri: snapshot}}
-          style={styles.cameraEventImage}
-          fadeDuration={0}
-          resizeMode="contain"
-          resizeMethod="scale"
-        />
-      )}
-      <Text style={[styles.cameraEventTitle]}>
-        {startDate} ({duration})
-      </Text>
-      <View style={[styles.cameraEventLabels]}>
-        <Text style={[styles.cameraEventLabel]}>{label}</Text>
-        {zones.map(zone => (
-          <Text
-            style={[styles.cameraEventLabel, styles.cameraEventZone]}
-            key={zone}>
-            {zone}
-          </Text>
-        ))}
-        <Text style={[styles.cameraEventLabel, styles.cameraEventScore]}>
-          {score}
+    <TouchableWithoutFeedback onPress={showEventClip}>
+      <View style={styles.cameraEvent}>
+        {snapshot && (
+          <Image
+            source={{uri: snapshot}}
+            style={styles.cameraEventImage}
+            fadeDuration={0}
+            resizeMode="contain"
+            resizeMethod="scale"
+          />
+        )}
+        <Text style={[styles.cameraEventTitle]}>
+          {startDate} ({duration})
         </Text>
+        <View style={[styles.cameraEventLabels]}>
+          <Text style={[styles.cameraEventLabel]}>{label}</Text>
+          {zones.map(zone => (
+            <Text
+              style={[styles.cameraEventLabel, styles.cameraEventZone]}
+              key={zone}>
+              {zone}
+            </Text>
+          ))}
+          <Text style={[styles.cameraEventLabel, styles.cameraEventScore]}>
+            {score}
+          </Text>
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };

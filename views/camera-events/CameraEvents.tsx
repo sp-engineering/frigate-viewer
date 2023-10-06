@@ -11,6 +11,7 @@ interface ICameraEventsProps {
 
 export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   cameraName,
+  componentId,
 }) => {
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState<ICameraEvent[]>([]);
@@ -37,7 +38,9 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
     <View>
       <FlatList
         data={events}
-        renderItem={({item}) => <CameraEvent {...item} />}
+        renderItem={({item}) => (
+          <CameraEvent {...item} componentId={componentId} />
+        )}
         keyExtractor={data => data.id}
         refreshing={loading}
         onRefresh={refresh}
