@@ -46,6 +46,14 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   const filtersZones = useAppSelector(selectFiltersZones);
   const intl = useIntl();
 
+  const filterCount = useMemo(
+    () =>
+      (filtersCameras.length || 0) +
+      (filtersLabels.length || 0) +
+      (filtersZones.length || 0),
+    [filtersCameras, filtersLabels, filtersZones],
+  );
+
   useEffect(() => {
     Navigation.mergeOptions(componentId, {
       topBar:
@@ -57,17 +65,23 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
                   {cameraName: cameraNames[0]},
                 ),
               },
-              rightButtons: [filterButton],
+              rightButtons: [filterButton(filterCount)],
             }
           : {
               title: {
                 text: intl.formatMessage(messages['topBar.general.title']),
               },
               leftButtons: [menuButton],
-              rightButtons: [filterButton],
+              rightButtons: [filterButton(filterCount)],
             },
     });
-  }, [componentId, intl, cameraNames]);
+  }, [componentId, intl, cameraNames, filterCount]);
+
+  useEffect(() => {
+    Navigation.updateProps('FilterButton', {
+      count: filterCount,
+    });
+  }, [filterCount]);
 
   const eventsQueryParams = useMemo(
     () => ({
@@ -130,14 +144,6 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
 
   useEffect(() => {
     refresh();
-    setTimeout(() => {
-      Navigation.updateProps('FilterButton', {
-        count:
-          (filtersCameras.length || 0) +
-          (filtersLabels.length || 0) +
-          (filtersZones.length || 0),
-      });
-    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filtersCameras, filtersLabels, filtersZones]);
 

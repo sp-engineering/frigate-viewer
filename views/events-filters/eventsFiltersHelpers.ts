@@ -31,13 +31,14 @@ export const useEventsFilters = (
   }, [componentId]);
 };
 
-export const filterButton: OptionsTopBarButton = {
+export const filterButton: (count?: number) => OptionsTopBarButton = count => ({
   id: 'filter',
   component: {
     id: 'FilterButton',
     name: 'TopBarButton',
     passProps: {
       icon: 'filter',
+      count,
       onPress: () => {
         Navigation.mergeOptions('Menu', {
           sideMenu: {
@@ -49,4 +50,4 @@ export const filterButton: OptionsTopBarButton = {
       },
     },
   },
-};
+});
