@@ -1,5 +1,5 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
-import {FlatList, Pressable, StyleSheet, Text} from 'react-native';
+import {FlatList, Modal, Pressable, StyleSheet, Text} from 'react-native';
 import {formsStyles} from './styles';
 
 interface IDropdownOption {
@@ -14,24 +14,16 @@ interface IDropdownProps {
 }
 
 const styles = StyleSheet.create({
-  dropdown: {
-    position: 'relative',
-    zIndex: 1000,
-  },
   overlay: {
-    // position: 'absolute',
-    // left: 0,
-    // top: 0,
-    // right: 0,
-    // bottom: 0,
-    // backgroundColor: '#00000077',
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: '#00000077',
   },
   options: {
-    position: 'absolute',
-    backgroundColor: 'white',
-    top: 37,
+    flexGrow: 1,
+    justifyContent: 'center',
     width: '100%',
-    zIndex: 1000,
+    borderTopWidth: 1,
+    borderColor: 'black',
   },
   item: {
     paddingHorizontal: 4,
@@ -39,6 +31,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: 'black',
     backgroundColor: 'white',
+  },
+  itemSelected: {
+    backgroundColor: '#ccd',
   },
   itemText: {
     color: 'black',
@@ -89,22 +84,29 @@ export const Dropdown: FC<IDropdownProps> = ({
 
   return (
     <>
-      {opened && <Pressable style={styles.overlay} onPress={close} />}
-      <Pressable style={[formsStyles.input, styles.dropdown]} onPress={toggle}>
-        <Text style={formsStyles.inputText}>
-          {selected ? selected.label || selected.value : ''}
-        </Text>
-        {opened && (
+      {opened && (
+        <Modal>
+          <Pressable style={styles.overlay} />
           <FlatList
-            style={[styles.options]}
+            contentContainerStyle={[styles.options]}
             data={options}
             renderItem={({item}) => (
-              <Pressable style={styles.item} onPress={select(item)}>
+              <Pressable
+                style={[
+                  styles.item,
+                  item === selected ? styles.itemSelected : undefined,
+                ]}
+                onPress={select(item)}>
                 <Text style={styles.itemText}>{item.label || item.value}</Text>
               </Pressable>
             )}
           />
-        )}
+        </Modal>
+      )}
+      <Pressable style={formsStyles.input} onPress={toggle}>
+        <Text style={formsStyles.inputText}>
+          {selected ? selected.label || selected.value : ''}
+        </Text>
       </Pressable>
     </>
   );
