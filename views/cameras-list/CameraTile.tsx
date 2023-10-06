@@ -1,6 +1,7 @@
 import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  Dimensions,
   Image,
   StyleSheet,
   Text,
@@ -8,11 +9,13 @@ import {
   View,
 } from 'react-native';
 import {Navigation} from 'react-native-navigation';
-import {useAppSelector} from '../../store/store';
+import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
+  selectCamerasNumColumns,
   selectCamerasPreviewHeight,
   selectCamerasRefreshFrequency,
   selectServerApiUrl,
+  setCameraPreviewHeight,
 } from '../../store/settings';
 
 type CameraTileProps = PropsWithChildren<{
@@ -24,7 +27,6 @@ const styles = StyleSheet.create({
   cameraTile: {
     paddingVertical: 2,
     paddingHorizontal: 1,
-    width: '100%',
   },
   cameraTileTitle: {
     position: 'absolute',
@@ -47,9 +49,11 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   const [lastImageSrc, setLastImageSrc] = useState<string | undefined>(
     undefined,
   );
+  const dispatch = useAppDispatch();
   const apiUrl = useAppSelector(selectServerApiUrl);
   const refreshFrequency = useAppSelector(selectCamerasRefreshFrequency);
   const previewHeight = useAppSelector(selectCamerasPreviewHeight);
+  const numColumns = useAppSelector(selectCamerasNumColumns);
   let interval = useRef<number>();
 
   useEffect(() => {
@@ -81,9 +85,28 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
     });
   }, [cameraName, componentId]);
 
+  const onPreviewLoad = useCallback(async () => {
+    if (lastImageSrc) {
+      try {
+        Image.getSize(lastImageSrc, (width, height) => {
+          const proportion = height / width;
+          const windowWidth = Dimensions.get('window').width;
+          const newHeight = (windowWidth * proportion) / numColumns;
+          if (newHeight !== previewHeight) {
+            dispatch(setCameraPreviewHeight(newHeight));
+          }
+        });
+      } catch (err) {}
+    }
+  }, [dispatch, lastImageSrc, numColumns, previewHeight]);
+
   return (
     <TouchableWithoutFeedback onPress={showCameraEvents}>
-      <View style={[styles.cameraTile, {height: previewHeight}]}>
+      <View
+        style={[
+          styles.cameraTile,
+          {width: `${100 / numColumns}%`, height: previewHeight},
+        ]}>
         {lastImageSrc && (
           <Image
             source={{uri: lastImageSrc}}
@@ -91,6 +114,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
             fadeDuration={0}
             resizeMode="contain"
             resizeMethod="scale"
+            onLoad={onPreviewLoad}
           />
         )}
         <Text style={[styles.cameraTileTitle]}>{cameraName}</Text>

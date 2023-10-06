@@ -6,6 +6,7 @@ import {componentWithRedux} from '../../helpers/redux';
 import {get} from '../../helpers/rest';
 import {
   fillGapsWithInitialData,
+  selectCamerasNumColumns,
   selectServerApiUrl,
 } from '../../store/settings';
 import {useAppDispatch, useAppSelector} from '../../store/store';
@@ -18,6 +19,7 @@ const CamerasListComponent: NavigationFunctionComponent = ({componentId}) => {
   const [loading, setLoading] = useState(true);
   const [cameras, setCameras] = useState<string[]>([]);
   const apiUrl = useAppSelector(selectServerApiUrl);
+  const numColumns = useAppSelector(selectCamerasNumColumns);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -59,6 +61,7 @@ const CamerasListComponent: NavigationFunctionComponent = ({componentId}) => {
       keyExtractor={cameraName => cameraName}
       refreshing={loading}
       onRefresh={refresh}
+      numColumns={numColumns}
     />
   );
 };

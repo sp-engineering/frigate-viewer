@@ -19,9 +19,11 @@ export interface ISettings {
   };
   cameras: {
     refreshFrequency: number;
+    numColumns: number;
     previewHeight: number;
   };
   events: {
+    numColumns: number;
     snapshotHeight: number;
   };
 }
@@ -38,9 +40,11 @@ export const initialSettings: ISettings = {
   },
   cameras: {
     refreshFrequency: 10,
+    numColumns: 1,
     previewHeight: 222,
   },
   events: {
+    numColumns: 1,
     snapshotHeight: 222,
   },
 };
@@ -80,6 +84,12 @@ export const settingsStore = createSlice({
     saveSettings: (state, action: PayloadAction<ISettings>) => {
       state.v1 = action.payload;
     },
+    setCameraPreviewHeight: (state, action: PayloadAction<number>) => {
+      state.v1.cameras.previewHeight = action.payload;
+    },
+    setEventSnapshotHeight: (state, action: PayloadAction<number>) => {
+      state.v1.events.snapshotHeight = action.payload;
+    },
   },
 });
 
@@ -87,7 +97,12 @@ export const settingsStore = createSlice({
  * ACTIONS
  **/
 
-export const {fillGapsWithInitialData, saveSettings} = settingsStore.actions;
+export const {
+  fillGapsWithInitialData,
+  saveSettings,
+  setCameraPreviewHeight,
+  setEventSnapshotHeight,
+} = settingsStore.actions;
 
 /**
  * SELECTORS
@@ -126,12 +141,18 @@ export const selectCameras = (state: RootState) =>
 export const selectCamerasRefreshFrequency = (state: RootState) =>
   selectCameras(state).refreshFrequency;
 
+export const selectCamerasNumColumns = (state: RootState) =>
+  selectCameras(state).numColumns;
+
 export const selectCamerasPreviewHeight = (state: RootState) =>
   selectCameras(state).previewHeight;
 
 /* events */
 
 export const selectEvents = (state: RootState) => selectSettings(state).events;
+
+export const selectEventsNumColumns = (state: RootState) =>
+  selectEvents(state).numColumns;
 
 export const selectEventsSnapshotHeight = (state: RootState) =>
   selectEvents(state).snapshotHeight;

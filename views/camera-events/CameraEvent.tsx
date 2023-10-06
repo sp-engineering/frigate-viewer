@@ -1,6 +1,7 @@
 import {format, formatDistance, formatRelative} from 'date-fns';
 import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {
+  Dimensions,
   Image,
   StyleSheet,
   Text,
@@ -13,8 +14,10 @@ import {
   selectServerApiUrl,
   selectLocaleDatesDisplay,
   selectEventsSnapshotHeight,
+  selectEventsNumColumns,
+  setEventSnapshotHeight,
 } from '../../store/settings';
-import {useAppSelector} from '../../store/store';
+import {useAppDispatch, useAppSelector} from '../../store/store';
 
 export interface ICameraEvent {
   id: string;
@@ -45,7 +48,6 @@ const styles = StyleSheet.create({
   cameraEvent: {
     paddingVertical: 1,
     paddingHorizontal: 2,
-    width: '100%',
   },
   cameraEventTitle: {
     position: 'absolute',
@@ -106,6 +108,8 @@ export const CameraEvent: FC<ICameraEventProps> = ({
   const dateLocale = useDateLocale();
   const datesDisplay = useAppSelector(selectLocaleDatesDisplay);
   const snapshotHeight = useAppSelector(selectEventsSnapshotHeight);
+  const numColumns = useAppSelector(selectEventsNumColumns);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const url = has_snapshot
@@ -159,9 +163,31 @@ export const CameraEvent: FC<ICameraEventProps> = ({
     });
   }, [id]);
 
+  const onSnapshotLoad = useCallback(async () => {
+    if (snapshot) {
+      try {
+        Image.getSize(snapshot, (width, height) => {
+          const proportion = height / width;
+          const windowWidth = Dimensions.get('window').width;
+          const newHeight = (windowWidth * proportion) / numColumns;
+          if (newHeight !== snapshotHeight) {
+            dispatch(setEventSnapshotHeight(newHeight));
+          }
+        });
+      } catch (err) {}
+    }
+  }, [snapshot, numColumns, dispatch, snapshotHeight]);
+
   return (
     <TouchableWithoutFeedback onPress={showEventClip}>
-      <View style={[styles.cameraEvent, {height: snapshotHeight}]}>
+      <View
+        style={[
+          styles.cameraEvent,
+          {
+            width: `${100 / numColumns}%`,
+            height: snapshotHeight,
+          },
+        ]}>
         {snapshot && (
           <Image
             source={{uri: snapshot}}
@@ -169,6 +195,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
             fadeDuration={0}
             resizeMode="contain"
             resizeMethod="scale"
+            onLoad={onSnapshotLoad}
           />
         )}
         <Text style={[styles.cameraEventTitle]}>

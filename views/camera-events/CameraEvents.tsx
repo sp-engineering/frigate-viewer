@@ -4,7 +4,7 @@ import {NavigationFunctionComponent} from 'react-native-navigation';
 import {catchError, tap} from 'rxjs/operators';
 import {componentWithRedux} from '../../helpers/redux';
 import {get} from '../../helpers/rest';
-import {selectServerApiUrl} from '../../store/settings';
+import {selectEventsNumColumns, selectServerApiUrl} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {CameraEvent, ICameraEvent} from './CameraEvent';
@@ -21,6 +21,7 @@ const CameraEventsComponent: NavigationFunctionComponent<
   const [events, setEvents] = useState<ICameraEvent[]>([]);
   const [endReached, setEndReached] = useState<boolean>(false);
   const apiUrl = useAppSelector(selectServerApiUrl);
+  const numColumns = useAppSelector(selectEventsNumColumns);
 
   const loadMore$ = useMemo(() => {
     return get<ICameraEvent[]>(`${apiUrl}/events`, {
@@ -75,7 +76,7 @@ const CameraEventsComponent: NavigationFunctionComponent<
         onRefresh={refresh}
         onEndReached={loadMore}
         onEndReachedThreshold={0.5}
-        numColumns={3}
+        numColumns={numColumns}
       />
     </View>
   );

@@ -10,6 +10,8 @@ import {Section} from '../../components/forms/Section';
 import {componentWithRedux} from '../../helpers/redux';
 import {ISettings, saveSettings, selectSettings} from '../../store/settings';
 import {useAppDispatch, useAppSelector} from '../../store/store';
+import {camerasListMenuItem, navigateToMenuItem} from '../menu/Menu';
+import {menuButton, useMenu} from '../menu/menuHelpers';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -37,22 +39,23 @@ const settingsValidationSchema = yup.object().shape({
   }),
   cameras: yup.object().shape({
     refreshFrequency: yup.number().required(requiredError).min(1, minError),
-    previewHeight: yup
+    numColumns: yup
       .number()
       .required(requiredError)
-      .min(50, minError)
-      .max(1000, maxError),
+      .min(1, minError)
+      .max(3, maxError),
   }),
   events: yup.object().shape({
-    snapshotHeight: yup
+    numColumns: yup
       .number()
       .required(requiredError)
-      .min(50, minError)
-      .max(1000, maxError),
+      .min(1, minError)
+      .max(3, maxError),
   }),
 });
 
 const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
+  useMenu(componentId, 'settings');
   const formRef = useRef<FormikProps<ISettings>>(null);
   const currentSettings = useAppSelector(selectSettings);
   const dispatch = useAppDispatch();
@@ -70,15 +73,15 @@ const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
     return () => {
       sub.remove();
     };
-  }, [componentId]);
+  }, []);
 
   const save = useCallback(
     (settings: ISettings) => {
-      Navigation.pop(componentId);
+      navigateToMenuItem(camerasListMenuItem)();
       dispatch(saveSettings(settings));
       Keyboard.dismiss();
     },
-    [componentId, dispatch],
+    [dispatch],
   );
 
   return (
@@ -172,37 +175,25 @@ const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
               />
             </Label>
             <Label
-              text="Preview height"
-              touched={touched.cameras?.previewHeight}
-              error={errors.cameras?.previewHeight}>
-              <Input
-                value={`${values.cameras.previewHeight || ''}`}
-                onBlur={handleBlur('previewHeight')}
-                onChangeText={value =>
-                  setFieldValue(
-                    'cameras.previewHeight',
-                    parseFloat(value) || null,
-                  )
-                }
-                keyboardType="numeric"
+              text="Number of columns"
+              touched={touched.cameras?.numColumns}
+              error={errors.cameras?.numColumns}>
+              <Dropdown
+                value={values.cameras.numColumns}
+                options={[{value: 1}, {value: 2}, {value: 3}]}
+                onValueChange={v => setFieldValue('cameras.numColumns', v)}
               />
             </Label>
           </Section>
           <Section header="Events">
             <Label
-              text="Snapshot height"
-              touched={touched.events?.snapshotHeight}
-              error={errors.events?.snapshotHeight}>
-              <Input
-                value={`${values.events.snapshotHeight || ''}`}
-                onBlur={handleBlur('snapshotHeight')}
-                onChangeText={value =>
-                  setFieldValue(
-                    'events.snapshotHeight',
-                    parseFloat(value) || null,
-                  )
-                }
-                keyboardType="numeric"
+              text="Number of columns"
+              touched={touched.events?.numColumns}
+              error={errors.events?.numColumns}>
+              <Dropdown
+                value={values.events.numColumns}
+                options={[{value: 1}, {value: 2}, {value: 3}]}
+                onValueChange={v => setFieldValue('events.numColumns', v)}
               />
             </Label>
           </Section>
@@ -225,6 +216,7 @@ Settings.options = () => ({
         text: 'Save',
         color: 'white',
       },
+      menuButton,
     ],
   },
 });

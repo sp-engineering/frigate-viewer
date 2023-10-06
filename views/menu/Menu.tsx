@@ -78,7 +78,6 @@ export const settingsMenuItem: IMenuItem = {
   icon: 'tool',
   label: 'Settings',
   view: 'Settings',
-  stack: true,
 };
 
 export const authorMenuItem: IMenuItem = {
