@@ -1,5 +1,6 @@
 import {Formik, FormikProps} from 'formik';
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import {useIntl} from 'react-intl';
 import {Keyboard, Pressable, ScrollView, StyleSheet, Text} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import * as yup from 'yup';
@@ -11,6 +12,7 @@ import {ISettings, saveSettings, selectSettings} from '../../store/settings';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {camerasListMenuItem, navigateToMenuItem} from '../menu/Menu';
 import {menuButton, useMenu} from '../menu/menuHelpers';
+import {MessageKey, messages} from './messages';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -25,42 +27,70 @@ const styles = StyleSheet.create({
   },
 });
 
-const requiredError = 'This field is required.';
-const minError = ({min}: {min: number}) => `Minimum value is ${min}.`;
-const maxError = ({max}: {max: number}) => `Maximum value is ${max}`;
-
-const settingsValidationSchema = yup.object().shape({
-  server: yup.object().shape({
-    protocol: yup.string().required(requiredError),
-    host: yup.string().required(requiredError),
-    port: yup.number().required(requiredError),
-  }),
-  locale: yup.object().shape({
-    region: yup.string().required(requiredError),
-    datesDisplay: yup.string().required(requiredError),
-  }),
-  cameras: yup.object().shape({
-    refreshFrequency: yup.number().required(requiredError).min(1, minError),
-    numColumns: yup
-      .number()
-      .required(requiredError)
-      .min(1, minError)
-      .max(3, maxError),
-  }),
-  events: yup.object().shape({
-    numColumns: yup
-      .number()
-      .required(requiredError)
-      .min(1, minError)
-      .max(3, maxError),
-  }),
-});
-
 export const Settings: NavigationFunctionComponent = ({componentId}) => {
   useMenu(componentId, 'settings');
   const formRef = useRef<FormikProps<ISettings>>(null);
   const currentSettings = useAppSelector(selectSettings);
   const dispatch = useAppDispatch();
+  const intl = useIntl();
+
+  useEffect(() => {
+    Navigation.mergeOptions(componentId, {
+      topBar: {
+        title: {
+          text: intl.formatMessage(messages['topBar.title']),
+        },
+        leftButtons: [menuButton],
+        rightButtons: [
+          {
+            id: 'save',
+            text: intl.formatMessage(messages['action.save']),
+            color: 'white',
+          },
+          {
+            id: 'cancel',
+            text: intl.formatMessage(messages['action.cancel']),
+            color: 'white',
+          },
+        ],
+      },
+    });
+  }, [componentId, intl]);
+
+  const settingsValidationSchema = useMemo(() => {
+    const requiredError = intl.formatMessage(messages['error.required']);
+    const minError = ({min}: {min: number}) =>
+      intl.formatMessage(messages['error.min'], {min});
+    const maxError = ({max}: {max: number}) =>
+      intl.formatMessage(messages['error.max'], {max});
+
+    return yup.object().shape({
+      server: yup.object().shape({
+        protocol: yup.string().required(requiredError),
+        host: yup.string().required(requiredError),
+        port: yup.number().required(requiredError),
+      }),
+      locale: yup.object().shape({
+        region: yup.string().required(requiredError),
+        datesDisplay: yup.string().required(requiredError),
+      }),
+      cameras: yup.object().shape({
+        refreshFrequency: yup.number().required(requiredError).min(1, minError),
+        numColumns: yup
+          .number()
+          .required(requiredError)
+          .min(1, minError)
+          .max(3, maxError),
+      }),
+      events: yup.object().shape({
+        numColumns: yup
+          .number()
+          .required(requiredError)
+          .min(1, minError)
+          .max(3, maxError),
+      }),
+    });
+  }, [intl]);
 
   useEffect(() => {
     const sub = Navigation.events().registerNavigationButtonPressedListener(
@@ -105,9 +135,9 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
       innerRef={formRef}>
       {({values, handleBlur, handleChange, setFieldValue, errors, touched}) => (
         <ScrollView style={styles.wrapper}>
-          <Section header="Server">
+          <Section header={intl.formatMessage(messages['server.header'])}>
             <Label
-              text="Protocol"
+              text={intl.formatMessage(messages['server.protocol.label'])}
               touched={touched.server?.protocol}
               error={errors.server?.protocol}
               required={true}>
@@ -118,7 +148,7 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
               />
             </Label>
             <Label
-              text="Host"
+              text={intl.formatMessage(messages['server.host.label'])}
               touched={touched.server?.host}
               error={errors.server?.host}
               required={true}>
@@ -130,7 +160,7 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
               />
             </Label>
             <Label
-              text="Port"
+              text={intl.formatMessage(messages['server.port.label'])}
               touched={touched.server?.port}
               error={errors.server?.port}
               required={true}>
@@ -144,41 +174,56 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
               />
             </Label>
             <Pressable onPress={fillDemoServer}>
-              <Text style={styles.demoServerButton}>Use demo server</Text>
+              <Text style={styles.demoServerButton}>
+                {intl.formatMessage(messages['server.useDemoServerButton'])}
+              </Text>
             </Pressable>
           </Section>
-          <Section header="Locale">
+          <Section header={intl.formatMessage(messages['locale.header'])}>
             <Label
-              text="Region"
+              text={intl.formatMessage(messages['locale.region.label'])}
               touched={touched.locale?.region}
               error={errors.locale?.region}>
               <Dropdown
                 value={values.locale.region}
-                options={[
-                  {value: 'enGB', label: 'Great Britain'},
-                  {value: 'enUS', label: 'United States'},
-                  {value: 'pl', label: 'Poland'},
-                ]}
+                options={['enGB', 'enUS', 'pl'].map(code => ({
+                  value: code,
+                  label: intl.formatMessage(
+                    messages[`locale.region.option.${code}` as MessageKey],
+                  ),
+                }))}
                 onValueChange={handleChange('locale.region')}
               />
             </Label>
             <Label
-              text="Dates display"
+              text={intl.formatMessage(messages['locale.datesDisplay.label'])}
               touched={touched.locale?.datesDisplay}
               error={errors.locale?.datesDisplay}>
               <Dropdown
                 value={values.locale.datesDisplay}
                 options={[
-                  {value: 'descriptive', label: 'Descriptive'},
-                  {value: 'numeric', label: 'Numeric'},
+                  {
+                    value: 'descriptive',
+                    label: intl.formatMessage(
+                      messages['locale.datesDisplay.option.descriptive'],
+                    ),
+                  },
+                  {
+                    value: 'numeric',
+                    label: intl.formatMessage(
+                      messages['locale.datesDisplay.option.numeric'],
+                    ),
+                  },
                 ]}
                 onValueChange={handleChange('locale.datesDisplay')}
               />
             </Label>
           </Section>
-          <Section header="Cameras">
+          <Section header={intl.formatMessage(messages['cameras.header'])}>
             <Label
-              text="Image refresh frequency (seconds)"
+              text={intl.formatMessage(
+                messages['cameras.imageRefreshFrequency.label'],
+              )}
               touched={touched.cameras?.refreshFrequency}
               error={errors.cameras?.refreshFrequency}>
               <Input
@@ -194,7 +239,9 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
               />
             </Label>
             <Label
-              text="Number of columns"
+              text={intl.formatMessage(
+                messages['cameras.numberOfColumns.label'],
+              )}
               touched={touched.cameras?.numColumns}
               error={errors.cameras?.numColumns}>
               <Dropdown
@@ -204,9 +251,11 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
               />
             </Label>
           </Section>
-          <Section header="Events">
+          <Section header={intl.formatMessage(messages['events.header'])}>
             <Label
-              text="Number of columns"
+              text={intl.formatMessage(
+                messages['events.numberOfColumns.label'],
+              )}
               touched={touched.events?.numColumns}
               error={errors.events?.numColumns}>
               <Dropdown
@@ -221,24 +270,3 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
     </Formik>
   );
 };
-
-Settings.options = () => ({
-  topBar: {
-    title: {
-      text: 'Settings',
-    },
-    leftButtons: [menuButton],
-    rightButtons: [
-      {
-        id: 'save',
-        text: 'Save',
-        color: 'white',
-      },
-      {
-        id: 'cancel',
-        text: 'Cancel',
-        color: 'white',
-      },
-    ],
-  },
-});
