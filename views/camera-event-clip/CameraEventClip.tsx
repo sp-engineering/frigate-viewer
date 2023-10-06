@@ -3,6 +3,7 @@ import React, {FC, useCallback, useMemo, useState} from 'react';
 import {StyleSheet, Text, TouchableNativeFeedback, View} from 'react-native';
 import {NavigationFunctionComponent} from 'react-native-navigation';
 import {ProgressInfo, VLCPlayer} from 'react-native-vlc-media-player';
+import {ZoomableView} from '../../components/ZoomableView';
 import {formatVideoTime} from '../../helpers/locale';
 import {componentWithRedux} from '../../helpers/redux';
 import {selectServerApiUrl} from '../../store/settings';
@@ -81,13 +82,15 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
   return (
     <View>
       <TouchableNativeFeedback onPress={togglePlay}>
-        <VLCPlayer
-          paused={paused}
-          source={{uri: clipUrl}}
-          style={[styles.player]}
-          resizeMode="contain"
-          onProgress={onProgress}
-        />
+        <ZoomableView>
+          <VLCPlayer
+            paused={paused}
+            source={{uri: clipUrl}}
+            style={[styles.player]}
+            resizeMode="contain"
+            onProgress={onProgress}
+          />
+        </ZoomableView>
       </TouchableNativeFeedback>
       <View style={[styles.playerBar]}>
         {paused ? (
