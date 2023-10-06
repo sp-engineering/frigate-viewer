@@ -5,4 +5,6 @@ export const messages = makeMessages('cameraEvents', {
   'topBar.specificCamera.title': 'Events of {cameraName}',
   'labels.inProgressLabel': 'In progress',
   'action.delete': 'Delete',
+  'action.retain': 'Retain',
+  'action.unretain': 'Unretain',
 });

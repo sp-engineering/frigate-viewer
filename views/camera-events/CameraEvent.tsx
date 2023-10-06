@@ -10,7 +10,7 @@ import {
 import {Navigation} from 'react-native-navigation';
 import {Colors, Drawer, DrawerItemProps} from 'react-native-ui-lib';
 import {ZoomableImage} from '../../components/ZoomableImage';
-import {del} from '../../helpers/rest';
+import {del, post} from '../../helpers/rest';
 import {
   selectServerApiUrl,
   selectEventsSnapshotHeight,
@@ -66,14 +66,21 @@ export const CameraEvent: FC<ICameraEventProps> = ({
   label,
   zones,
   top_score,
+  retain_indefinitely,
   onDelete,
   onSnapshotHeight,
 }) => {
   const [snapshot, setSnapshot] = useState<string>();
+  const [retained, setRetained] = useState(false);
   const apiUrl = useAppSelector(selectServerApiUrl);
   const snapshotHeight = useAppSelector(selectEventsSnapshotHeight);
   const numColumns = useAppSelector(selectEventsNumColumns);
   const intl = useIntl();
+
+  useEffect(() => {
+    setRetained(retain_indefinitely);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const url = has_snapshot
@@ -118,7 +125,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
       text: intl.formatMessage(messages['action.delete']),
       background: Colors.red30,
       onPress: () => {
-        del(`${apiUrl}/events/${id}`).subscribe(() => {
+        del(`${apiUrl}/events/${id}`, undefined, false).subscribe(() => {
           onDelete([id]);
         });
       },
@@ -126,8 +133,36 @@ export const CameraEvent: FC<ICameraEventProps> = ({
     [apiUrl, id, intl, onDelete],
   );
 
+  const retainDrawerItem: DrawerItemProps = useMemo(
+    () =>
+      retained
+        ? {
+            text: intl.formatMessage(messages['action.unretain']),
+            background: Colors.red40,
+            onPress: () => {
+              del(`${apiUrl}/events/${id}/retain`, undefined, false).subscribe(
+                () => {
+                  setRetained(false);
+                },
+              );
+            },
+          }
+        : {
+            text: intl.formatMessage(messages['action.retain']),
+            background: Colors.green30,
+            onPress: () => {
+              post(`${apiUrl}/events/${id}/retain`, undefined, false).subscribe(
+                () => {
+                  setRetained(true);
+                },
+              );
+            },
+          },
+    [apiUrl, id, intl, retained],
+  );
+
   return (
-    <Drawer leftItem={deleteDrawerItem}>
+    <Drawer leftItem={deleteDrawerItem} rightItems={[retainDrawerItem]}>
       <TouchableWithoutFeedback onPress={showEventClip}>
         <View
           style={[
@@ -147,7 +182,11 @@ export const CameraEvent: FC<ICameraEventProps> = ({
               onLoad={onSnapshotLoad}
             />
           )}
-          <EventTitle startTime={start_time} endTime={end_time} />
+          <EventTitle
+            startTime={start_time}
+            endTime={end_time}
+            retained={retained}
+          />
           <EventLabels
             endTime={end_time}
             label={label}

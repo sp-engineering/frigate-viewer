@@ -14,6 +14,8 @@ export default {
   'cameraEvents.topBar.specificCamera.title': 'Zdarzenia na {cameraName}',
   'cameraEvents.labels.inProgressLabel': 'W trakcie',
   'cameraEvents.action.delete': 'Usuń',
+  'cameraEvents.action.retain': 'Zachowaj',
+  'cameraEvents.action.unretain': 'Nie zachowuj',
   'eventsFilters.cameras.title': 'Kamery',
   'eventsFilters.labels.title': 'Etykiety',
   'eventsFilters.zones.title': 'Strefy',

@@ -1,6 +1,6 @@
 import {format, formatDistance, formatRelative} from 'date-fns';
 import React, {FC, useMemo} from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {formatVideoTime, useDateLocale} from '../../helpers/locale';
 import {selectLocaleDatesDisplay} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
@@ -8,23 +8,34 @@ import {useAppSelector} from '../../store/store';
 const styles = StyleSheet.create({
   wrapper: {
     position: 'absolute',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     left: 2,
     top: 1,
     width: '100%',
     padding: 5,
+    backgroundColor: '#00000040',
+  },
+  timeText: {
     fontSize: 12,
     fontWeight: '600',
     color: 'white',
-    backgroundColor: '#00000040',
   },
 });
 
 interface IEventTitleProps {
   startTime: number;
   endTime: number;
+  retained: boolean;
 }
 
-export const EventTitle: FC<IEventTitleProps> = ({startTime, endTime}) => {
+export const EventTitle: FC<IEventTitleProps> = ({
+  startTime,
+  endTime,
+  retained,
+}) => {
   const dateLocale = useDateLocale();
   const datesDisplay = useAppSelector(selectLocaleDatesDisplay);
 
@@ -52,8 +63,11 @@ export const EventTitle: FC<IEventTitleProps> = ({startTime, endTime}) => {
   );
 
   return (
-    <Text style={[styles.wrapper]}>
-      {startDate} {!isInProgress && <Text>({duration})</Text>}
-    </Text>
+    <View style={styles.wrapper}>
+      <Text style={styles.timeText}>
+        {startDate} {!isInProgress && <Text>({duration})</Text>}
+      </Text>
+      {retained && <Text>⭐</Text>}
+    </View>
   );
 };
