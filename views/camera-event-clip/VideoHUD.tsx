@@ -47,6 +47,20 @@ interface IVideoHUDProps extends ViewProps {
   onSeek?: (pos: number) => void;
 }
 
+const Baunce = () => {
+  'worklet';
+  return {
+    initialValues: {
+      opacity: 0,
+      transform: [{scale: 0}],
+    },
+    animations: {
+      opacity: withSequence(withTiming(1), withDelay(500, withTiming(0))),
+      transform: [{scale: withSpring(1)}],
+    },
+  };
+};
+
 const BackwardIcon: FC = () => (
   <Animated.View entering={LightSpeedInRight}>
     <IconOutline style={styles.icon} name="backward" color="white" size={80} />
@@ -60,51 +74,21 @@ const ForwardIcon: FC = () => (
 );
 
 const PauseIcon: FC = () => (
-  <IconOutline style={styles.icon} name="pause" color="white" size={80} />
+  <Animated.View entering={Baunce}>
+    <IconOutline style={styles.icon} name="pause" color="white" size={80} />
+  </Animated.View>
 );
 
 const PlayIcon: FC = () => (
-  <IconOutline style={styles.icon} name="caret-right" color="white" size={80} />
+  <Animated.View entering={Baunce}>
+    <IconOutline
+      style={styles.icon}
+      name="caret-right"
+      color="white"
+      size={80}
+    />
+  </Animated.View>
 );
-
-const Baunce: FC<ViewProps> = ({children, ...restProps}) => {
-  const baunce = () => {
-    'worklet';
-    return {
-      initialValues: {
-        opacity: 0,
-        transform: [{scale: 0}],
-      },
-      animations: {
-        opacity: withSequence(withTiming(1), withDelay(500, withTiming(0))),
-        transform: [{scale: withSpring(1)}],
-      },
-    };
-  };
-
-  return (
-    <Animated.View entering={baunce} {...restProps}>
-      {children}
-    </Animated.View>
-  );
-};
-
-const PlaybackIndicator: FC<{paused: boolean}> = ({paused}) => {
-  return (
-    <View>
-      {paused && (
-        <Baunce>
-          <PauseIcon />
-        </Baunce>
-      )}
-      {!paused && (
-        <Baunce>
-          <PlayIcon />
-        </Baunce>
-      )}
-    </View>
-  );
-};
 
 export const VideoHUD: FC<IVideoHUDProps> = ({
   paused,
@@ -204,7 +188,10 @@ export const VideoHUD: FC<IVideoHUDProps> = ({
             {seekTime ? (
               <Text style={styles.bigText}>{seekTime}</Text>
             ) : (
-              <PlaybackIndicator paused={paused} />
+              <View>
+                {paused && <PauseIcon />}
+                {!paused && <PlayIcon />}
+              </View>
             )}
           </View>
           <View style={styles.right}>

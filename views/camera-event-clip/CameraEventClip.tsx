@@ -25,19 +25,43 @@ interface IVideoPlayerProps {
 }
 
 const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
-  const [paused, setPaused] = useState<boolean>(false);
+  const [paused, setPaused] = useState(false);
+  const [stopped, setStopped] = useState(false);
   const [progressInfo, setProgressInfo] = useState<ProgressInfo>();
   const player = useRef<VLCPlayer>(null);
+
+  const resumeIfStopped = useCallback(() => {
+    if (player.current && stopped) {
+      player.current.resume(true);
+      setStopped(false);
+    }
+  }, [stopped]);
+
+  const onPaused = useCallback(
+    (pause: boolean) => {
+      resumeIfStopped();
+      setPaused(pause);
+    },
+    [resumeIfStopped],
+  );
 
   const onProgress = useCallback((info: ProgressInfo) => {
     setProgressInfo(info);
   }, []);
 
-  const seek = useCallback((pos: number) => {
-    if (player.current) {
-      player.current.seek(pos * 10);
-    }
+  const onStopped = useCallback(() => {
+    setStopped(true);
   }, []);
+
+  const seek = useCallback(
+    (pos: number) => {
+      if (player.current) {
+        resumeIfStopped();
+        player.current.seek(pos * 10);
+      }
+    },
+    [resumeIfStopped],
+  );
 
   return (
     <View>
@@ -46,7 +70,7 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
           paused={paused}
           duration={progressInfo?.duration}
           position={progressInfo?.position}
-          onPaused={setPaused}
+          onPaused={onPaused}
           onSeek={seek}>
           <VLCPlayer
             ref={player}
@@ -55,6 +79,7 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
             style={[styles.player]}
             resizeMode="contain"
             onProgress={onProgress}
+            onStopped={onStopped}
           />
         </VideoHUD>
       </ZoomableView>
