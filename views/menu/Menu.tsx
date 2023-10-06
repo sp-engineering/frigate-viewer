@@ -12,7 +12,6 @@ import {MenuId} from './menuHelpers';
 
 interface IMenuProps {
   current: string;
-  navComponentId: string;
 }
 
 const styles = StyleSheet.create({
@@ -53,7 +52,7 @@ interface IMenuItem {
   view?: string;
 }
 
-export const Menu: FC<IMenuProps> = ({current, navComponentId}) => {
+export const Menu: FC<IMenuProps> = ({current}) => {
   const menuItems: IMenuItem[] = useMemo(
     () => [
       {
@@ -87,15 +86,21 @@ export const Menu: FC<IMenuProps> = ({current, navComponentId}) => {
     ({view}: IMenuItem) =>
       () => {
         if (view) {
-          Navigation.push(navComponentId, {
+          Navigation.setStackRoot('MainMenu', {
             component: {
               name: view,
+              options: {
+                sideMenu: {
+                  right: {
+                    visible: false,
+                  },
+                },
+              },
             },
           });
-          Navigation.dismissAllModals();
         }
       },
-    [navComponentId],
+    [],
   );
 
   return (

@@ -95,7 +95,7 @@ export const Author: NavigationFunctionComponent = ({componentId}) => {
         />
         <Text style={styles.item}>
           <Text style={styles.itemLabel}>Author: </Text>
-          <Text style={styles.itemValue}>SP Engineering</Text>
+          <Text style={styles.itemValue}>SP engineering</Text>
         </Text>
         <Text style={styles.item}>
           <Text style={styles.itemLabel}>Contact: </Text>

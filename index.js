@@ -16,14 +16,24 @@ Navigation.registerComponent('Menu', () => Menu);
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setRoot({
     root: {
-      stack: {
-        children: [
-          {
-            component: {
-              name: 'CamerasList',
-            },
+      sideMenu: {
+        center: {
+          stack: {
+            id: 'MainMenu',
+            children: [
+              {
+                component: {
+                  name: 'CamerasList',
+                },
+              },
+            ],
           },
-        ],
+        },
+        right: {
+          component: {
+            name: 'Menu',
+          },
+        },
       },
     },
   });

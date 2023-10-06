@@ -3,21 +3,15 @@ import {Navigation, OptionsTopBarButton} from 'react-native-navigation';
 
 export type MenuId = 'camerasList' | 'retained' | 'settings' | 'author';
 
-export const useMenu = (navComponentId: string, current?: MenuId) => {
+export const useMenu = (componentId: string, current?: MenuId) => {
   useEffect(() => {
     const sub = Navigation.events().registerNavigationButtonPressedListener(
       event => {
         if (event.buttonId === 'menu') {
-          Navigation.showModal({
+          Navigation.mergeOptions(componentId, {
             sideMenu: {
-              center: {
-                component: {
-                  name: 'Menu',
-                  passProps: {
-                    current,
-                    navComponentId,
-                  },
-                },
+              right: {
+                visible: true,
               },
             },
           });
@@ -27,7 +21,7 @@ export const useMenu = (navComponentId: string, current?: MenuId) => {
     return () => {
       sub.remove();
     };
-  }, [navComponentId, current]);
+  }, [componentId, current]);
 };
 
 export const menuButton: OptionsTopBarButton = {
