@@ -18,7 +18,6 @@ const CamerasListComponent: NavigationFunctionComponent = ({componentId}) => {
 
   const refresh = useCallback(() => {
     setLoading(true);
-    console.log(`${apiUrl}/config`);
     get<{cameras: Array<unknown>}>(`${apiUrl}/config`)
       .pipe(
         map(data => Object.keys(data.cameras)),

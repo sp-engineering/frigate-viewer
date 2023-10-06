@@ -43,7 +43,6 @@ const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
     (settings: ISettings) => {
       Navigation.pop(componentId);
       dispatch(saveSettings(settings));
-      console.log('values', settings);
       Keyboard.dismiss();
     },
     [componentId, dispatch],
