@@ -6,6 +6,10 @@ import {componentWithRedux} from '../../helpers/redux';
 import {get} from '../../helpers/rest';
 import {selectEventsNumColumns, selectServerApiUrl} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
+import {
+  filterButton,
+  useEventsFilters,
+} from '../events-filters/eventsFiltersHelpers';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {CameraEvent, ICameraEvent} from './CameraEvent';
 
@@ -17,6 +21,7 @@ const CameraEventsComponent: NavigationFunctionComponent<
   ICameraEventsProps
 > = ({cameraNames, componentId}) => {
   useMenu(componentId, 'cameraEvents');
+  useEventsFilters(componentId);
   const [refreshing, setRefreshing] = useState(true);
   const [events, setEvents] = useState<ICameraEvent[]>([]);
   const [endReached, setEndReached] = useState<boolean>(false);
@@ -91,11 +96,12 @@ CameraEvents.options = ({cameraNames}) => ({
           title: {
             text: `Events of ${cameraNames[0]}`,
           },
+          rightButtons: [filterButton],
         }
       : {
           title: {
             text: 'Events',
           },
-          rightButtons: [menuButton],
+          rightButtons: [filterButton, menuButton],
         },
 });

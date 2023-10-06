@@ -1,9 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, ToastAndroid} from 'react-native';
 import {NavigationFunctionComponent} from 'react-native-navigation';
-import {catchError, map} from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
 import {componentWithRedux} from '../../helpers/redux';
 import {get} from '../../helpers/rest';
+import {
+  selectAvailableCameras,
+  setAvailableCameras,
+  setAvailableLabels,
+  setAvailableZones,
+} from '../../store/events';
 import {
   fillGapsWithInitialData,
   selectCamerasNumColumns,
@@ -14,11 +20,23 @@ import {navigateToMenuItem, settingsMenuItem} from '../menu/Menu';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {CameraTile} from './CameraTile';
 
+interface IConfigResponse {
+  cameras: Record<
+    string,
+    {
+      zones: Record<string, unknown>;
+    }
+  >;
+  objects: {
+    track: string[];
+  };
+}
+
 const CamerasListComponent: NavigationFunctionComponent = ({componentId}) => {
   useMenu(componentId, 'camerasList');
   const [loading, setLoading] = useState(true);
-  const [cameras, setCameras] = useState<string[]>([]);
   const apiUrl = useAppSelector(selectServerApiUrl);
+  const cameras = useAppSelector(selectAvailableCameras);
   const numColumns = useAppSelector(selectCamerasNumColumns);
   const dispatch = useAppDispatch();
 
@@ -28,16 +46,33 @@ const CamerasListComponent: NavigationFunctionComponent = ({componentId}) => {
 
   const refresh = useCallback(() => {
     setLoading(true);
-    get<{cameras: Array<unknown>}>(`${apiUrl}/config`)
+    get<IConfigResponse>(`${apiUrl}/config`)
       .pipe(
-        map(data => Object.keys(data.cameras)),
-        catchError(() => []),
+        tap(config => {
+          const availableCameras = Object.keys(config.cameras);
+          const availableLabels = config.objects.track;
+          const availableZones = availableCameras.reduce(
+            (zones, cameraName) => [
+              ...zones,
+              ...Object.keys(config.cameras[cameraName].zones).filter(
+                zoneName => !zones.includes(zoneName),
+              ),
+            ],
+            [] as string[],
+          );
+          dispatch(setAvailableCameras(availableCameras));
+          dispatch(setAvailableLabels(availableLabels));
+          dispatch(setAvailableZones(availableZones));
+        }),
+        catchError(() => {
+          dispatch(setAvailableCameras([]));
+          return [];
+        }),
       )
-      .subscribe(data => {
-        setCameras(data);
+      .subscribe(() => {
         setLoading(false);
       });
-  }, [apiUrl]);
+  }, [apiUrl, dispatch]);
 
   useEffect(() => {
     if (apiUrl === undefined) {
