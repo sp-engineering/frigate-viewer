@@ -1,5 +1,6 @@
 import {format, formatDistance, formatRelative} from 'date-fns';
 import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
+import {useIntl} from 'react-intl';
 import {
   Dimensions,
   Image,
@@ -19,6 +20,7 @@ import {
   setEventSnapshotHeight,
 } from '../../store/settings';
 import {useAppDispatch, useAppSelector} from '../../store/store';
+import {messages} from './messages';
 
 export interface ICameraEvent {
   id: string;
@@ -111,6 +113,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
   const snapshotHeight = useAppSelector(selectEventsSnapshotHeight);
   const numColumns = useAppSelector(selectEventsNumColumns);
   const dispatch = useAppDispatch();
+  const intl = useIntl();
 
   useEffect(() => {
     const url = has_snapshot
@@ -217,7 +220,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
           {isInProgress && (
             <Text
               style={[styles.cameraEventLabel, styles.cameraEventInProgress]}>
-              In progress
+              {intl.formatMessage(messages['labels.inProgressLabel'])}
             </Text>
           )}
         </View>

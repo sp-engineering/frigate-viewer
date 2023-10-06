@@ -8,7 +8,8 @@ import {CamerasList} from './views/cameras-list/CamerasList';
 import {EventsFilters} from './views/events-filters/EventsFilters';
 import {Menu} from './views/menu/Menu';
 import {Settings} from './views/settings/Settings';
-import {componentWithRedux} from './helpers/redux';
+import {withRedux} from './helpers/redux';
+import {withTranslations} from './helpers/locale';
 
 const registerComponent = (name, component, decorators = []) => {
   Navigation.registerComponent(
@@ -22,7 +23,7 @@ const registerComponent = (name, component, decorators = []) => {
   );
 };
 
-const viewDecorators = [gestureHandlerRootHOC, componentWithRedux];
+const viewDecorators = [gestureHandlerRootHOC, withTranslations, withRedux];
 
 registerComponent('CamerasList', CamerasList, viewDecorators);
 registerComponent('CameraEvents', CameraEvents, viewDecorators);
@@ -30,8 +31,11 @@ registerComponent('CameraEventClip', CameraEventClip, viewDecorators);
 registerComponent('Settings', Settings, viewDecorators);
 registerComponent('Author', Author, viewDecorators);
 
-registerComponent('Menu', Menu);
-registerComponent('EventsFilters', EventsFilters);
+registerComponent('Menu', Menu, [withTranslations, withRedux]);
+registerComponent('EventsFilters', EventsFilters, [
+  withTranslations,
+  withRedux,
+]);
 registerComponent('TopBarButton', TopBarButton);
 
 Navigation.events().registerAppLaunchedListener(() => {

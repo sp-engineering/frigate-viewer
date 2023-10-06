@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
+import {useIntl} from 'react-intl';
 import {FlatList, ToastAndroid} from 'react-native';
-import {NavigationFunctionComponent} from 'react-native-navigation';
+import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {catchError, tap} from 'rxjs/operators';
 import {get} from '../../helpers/rest';
 import {
@@ -18,6 +19,7 @@ import {useAppDispatch, useAppSelector} from '../../store/store';
 import {navigateToMenuItem, settingsMenuItem} from '../menu/Menu';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {CameraTile} from './CameraTile';
+import {messages} from './messages';
 
 interface IConfigResponse {
   cameras: Record<
@@ -38,6 +40,18 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
   const cameras = useAppSelector(selectAvailableCameras);
   const numColumns = useAppSelector(selectCamerasNumColumns);
   const dispatch = useAppDispatch();
+  const intl = useIntl();
+
+  useEffect(() => {
+    Navigation.mergeOptions(componentId, {
+      topBar: {
+        title: {
+          text: intl.formatMessage(messages['topBar.title']),
+        },
+        leftButtons: [menuButton],
+      },
+    });
+  }, [componentId, intl]);
 
   useEffect(() => {
     dispatch(fillGapsWithInitialData());
@@ -77,14 +91,14 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
     if (apiUrl === undefined) {
       navigateToMenuItem(settingsMenuItem)();
       ToastAndroid.showWithGravity(
-        'You need to provide frigate nvr server data.',
+        intl.formatMessage(messages['toast.noServerData']),
         ToastAndroid.LONG,
         ToastAndroid.TOP,
       );
     } else {
       refresh();
     }
-  }, [refresh, apiUrl]);
+  }, [refresh, apiUrl, intl]);
 
   return (
     <FlatList
@@ -98,13 +112,4 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
       numColumns={numColumns}
     />
   );
-};
-
-CamerasList.options = {
-  topBar: {
-    title: {
-      text: 'List of cameras',
-    },
-    leftButtons: [menuButton],
-  },
 };

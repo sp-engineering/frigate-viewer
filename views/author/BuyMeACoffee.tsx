@@ -1,5 +1,7 @@
 import React, {FC} from 'react';
+import {useIntl} from 'react-intl';
 import {Pressable, StyleSheet, Text, View, ViewProps} from 'react-native';
+import {messages} from './messages';
 
 const styles = StyleSheet.create({
   buyMeCoffee: {
@@ -39,15 +41,25 @@ export const BuyMeACoffee: FC<IButMeACoffeeProps> = ({
   onPress,
   style,
   ...viewProps
-}) => (
-  <View {...viewProps} style={[style, styles.buyMeCoffee]}>
-    <Text style={styles.buyMeCoffeeText}>Do you like this application</Text>
-    <Text style={styles.buyMeCoffeeText}>and want to say "thank you"?</Text>
-    <View style={styles.buyMeCoffeeButtonInline}>
-      <Pressable style={styles.buyMeCoffeeButton} onPress={onPress}>
-        <Text style={styles.buyMeCoffeeButtonText}>☕</Text>
-        <Text style={styles.buyMeCoffeeButtonText}>Buy me a coffee</Text>
-      </Pressable>
+}) => {
+  const intl = useIntl();
+
+  return (
+    <View {...viewProps} style={[style, styles.buyMeCoffee]}>
+      <Text style={styles.buyMeCoffeeText}>
+        {intl.formatMessage(messages['buyMeCoffee.doYouLikeLabel'])}
+      </Text>
+      <Text style={styles.buyMeCoffeeText}>
+        {intl.formatMessage(messages['buyMeCoffee.sayThankYouLabel'])}
+      </Text>
+      <View style={styles.buyMeCoffeeButtonInline}>
+        <Pressable style={styles.buyMeCoffeeButton} onPress={onPress}>
+          <Text style={styles.buyMeCoffeeButtonText}>☕</Text>
+          <Text style={styles.buyMeCoffeeButtonText}>
+            {intl.formatMessage(messages['buyMeCoffee.buttonText'])}
+          </Text>
+        </Pressable>
+      </View>
     </View>
-  </View>
-);
+  );
+};

@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {useIntl} from 'react-intl';
 import {FlatList, View} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {tap} from 'rxjs/operators';
@@ -16,6 +17,7 @@ import {
 } from '../events-filters/eventsFiltersHelpers';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {CameraEvent, ICameraEvent} from './CameraEvent';
+import {messages} from './messages';
 
 interface ICameraEventsProps {
   cameraNames?: string[];
@@ -36,6 +38,30 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   const filtersCameras = useAppSelector(selectFiltersCameras);
   const filtersLabels = useAppSelector(selectFiltersLabels);
   const filtersZones = useAppSelector(selectFiltersZones);
+  const intl = useIntl();
+
+  useEffect(() => {
+    Navigation.mergeOptions(componentId, {
+      topBar:
+        cameraNames && cameraNames.length === 1
+          ? {
+              title: {
+                text: intl.formatMessage(
+                  messages['topBar.specificCamera.title'],
+                  {cameraName: cameraNames[0]},
+                ),
+              },
+              rightButtons: [filterButton],
+            }
+          : {
+              title: {
+                text: intl.formatMessage(messages['topBar.general.title']),
+              },
+              leftButtons: [menuButton],
+              rightButtons: [filterButton],
+            },
+    });
+  }, [componentId, intl, cameraNames]);
 
   const eventsQueryParams = useMemo(
     () => ({
@@ -128,21 +154,3 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
     </View>
   );
 };
-
-CameraEvents.options = ({cameraNames}) => ({
-  topBar:
-    cameraNames && cameraNames.length === 1
-      ? {
-          title: {
-            text: `Events of ${cameraNames[0]}`,
-          },
-          rightButtons: [filterButton],
-        }
-      : {
-          title: {
-            text: 'Events',
-          },
-          leftButtons: [menuButton],
-          rightButtons: [filterButton],
-        },
-});

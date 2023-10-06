@@ -1,0 +1,23 @@
+export default {
+  'author.topBar.title': 'Author',
+  'author.info.authorLabel': 'Author',
+  'author.info.contactLabel': 'Contact',
+  'author.info.githubLabel': 'See on github',
+  'author.buyMeCoffee.doYouLikeLabel': 'Do you like this application',
+  'author.buyMeCoffee.sayThankYouLabel': 'and want to say "thank you"?',
+  'author.buyMeCoffee.buttonText': 'Buy me a coffee',
+  'author.error.cantOpenLink': "Can't find any app to open this link.",
+  'camerasList.topBar.title': 'List of cameras',
+  'camerasList.toast.noServerData':
+    'You need to provide frigate nvr server data.',
+  'cameraEvents.topBar.general.title': 'Events',
+  'cameraEvents.topBar.specificCamera.title': 'Events of {cameraName}',
+  'cameraEvents.labels.inProgressLabel': 'In progress',
+  'eventsFilters.cameras.title': 'Cameras',
+  'eventsFilters.labels.title': 'Labels',
+  'eventsFilters.zones.title': 'Zones',
+  'menu.item.camerasList.label': 'List of cameras',
+  'menu.item.cameraEvents.label': 'All events',
+  'menu.item.settings.label': 'Settings',
+  'menu.item.author.label': 'Author',
+};

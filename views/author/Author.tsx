@@ -1,4 +1,5 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
+import {useIntl} from 'react-intl';
 import {
   Alert,
   Image,
@@ -8,9 +9,10 @@ import {
   Text,
   View,
 } from 'react-native';
-import {NavigationFunctionComponent} from 'react-native-navigation';
+import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {BuyMeACoffee} from './BuyMeACoffee';
+import {messages} from './messages';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -47,6 +49,7 @@ const styles = StyleSheet.create({
 
 export const Author: NavigationFunctionComponent = ({componentId}) => {
   useMenu(componentId, 'author');
+  const intl = useIntl();
 
   const openLink = useCallback(
     (url: string) => async () => {
@@ -60,6 +63,17 @@ export const Author: NavigationFunctionComponent = ({componentId}) => {
     [],
   );
 
+  useEffect(() => {
+    Navigation.mergeOptions(componentId, {
+      topBar: {
+        title: {
+          text: intl.formatMessage(messages['topBar.title']),
+        },
+        leftButtons: [menuButton],
+      },
+    });
+  }, [componentId, intl]);
+
   return (
     <ScrollView style={styles.wrapper}>
       <View style={styles.authorInfo}>
@@ -68,11 +82,15 @@ export const Author: NavigationFunctionComponent = ({componentId}) => {
           style={styles.logo}
         />
         <Text style={styles.item}>
-          <Text style={styles.itemLabel}>Author: </Text>
+          <Text style={styles.itemLabel}>
+            {intl.formatMessage(messages['info.authorLabel'])}:{' '}
+          </Text>
           <Text style={styles.itemValue}>SP engineering</Text>
         </Text>
         <Text style={styles.item}>
-          <Text style={styles.itemLabel}>Contact: </Text>
+          <Text style={styles.itemLabel}>
+            {intl.formatMessage(messages['info.contactLabel'])}:{' '}
+          </Text>
           <Text
             style={[styles.itemValue, styles.link]}
             onPress={openLink('mailto:szymon@piwowarczyk.net')}>
@@ -83,7 +101,7 @@ export const Author: NavigationFunctionComponent = ({componentId}) => {
           <Text
             style={[styles.itemValue, styles.link]}
             onPress={openLink('https://github.com/piwko28')}>
-            See on github
+            {intl.formatMessage(messages['info.githubLabel'])}
           </Text>
         </Text>
       </View>
@@ -93,12 +111,3 @@ export const Author: NavigationFunctionComponent = ({componentId}) => {
     </ScrollView>
   );
 };
-
-Author.options = () => ({
-  topBar: {
-    title: {
-      text: 'Author',
-    },
-    leftButtons: [menuButton],
-  },
-});

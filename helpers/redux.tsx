@@ -7,7 +7,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 import {persistor, store} from '../store/store';
 
-export const componentWithRedux =
+export const withRedux =
   <P,>(
     Component: NavigationFunctionComponent<P>,
   ): NavigationFunctionComponent<P> =>

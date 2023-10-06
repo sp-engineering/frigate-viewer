@@ -105,11 +105,3 @@ export const CameraEventClip: NavigationFunctionComponent<
 
   return <VideoPlayer clipUrl={clipUrl} />;
 };
-
-CameraEventClip.options = () => ({
-  topBar: {
-    title: {
-      text: 'Clip preview',
-    },
-  },
-});

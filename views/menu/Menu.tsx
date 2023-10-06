@@ -1,5 +1,6 @@
 import {IconOutline, OutlineGlyphMapType} from '@ant-design/icons-react-native';
 import React, {FC, useCallback, useMemo} from 'react';
+import {useIntl} from 'react-intl';
 import {
   Image,
   StyleSheet,
@@ -9,6 +10,7 @@ import {
 } from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import {MenuId} from './menuHelpers';
+import {MessageKey, messages} from './messages';
 
 interface IMenuProps {
   current: string;
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
 interface IMenuItem {
   id: MenuId;
   icon: OutlineGlyphMapType;
-  label: string;
+  label?: string;
   view?: string;
   stack?: boolean;
 }
@@ -56,34 +58,29 @@ interface IMenuItem {
 export const camerasListMenuItem: IMenuItem = {
   id: 'camerasList',
   icon: 'video-camera',
-  label: 'List of cameras',
   view: 'CamerasList',
 };
 
 export const cameraEventsMenuItem: IMenuItem = {
   id: 'cameraEvents',
   icon: 'unordered-list',
-  label: 'All events',
   view: 'CameraEvents',
 };
 
 // export const retainedMenuItem: IMenuItem = {
 //   id: 'retained',
 //   icon: 'picture',
-//   label: 'Retained',
 // };
 
 export const settingsMenuItem: IMenuItem = {
   id: 'settings',
   icon: 'tool',
-  label: 'Settings',
   view: 'Settings',
 };
 
 export const authorMenuItem: IMenuItem = {
   id: 'author',
   icon: 'robot',
-  label: 'Author',
   view: 'Author',
 };
 
@@ -107,14 +104,21 @@ export const navigateToMenuItem =
   };
 
 export const Menu: FC<IMenuProps> = ({current}) => {
+  const intl = useIntl();
   const menuItems: IMenuItem[] = useMemo(
-    () => [
-      camerasListMenuItem,
-      cameraEventsMenuItem,
-      settingsMenuItem,
-      authorMenuItem,
-    ],
-    [],
+    () =>
+      [
+        camerasListMenuItem,
+        cameraEventsMenuItem,
+        settingsMenuItem,
+        authorMenuItem,
+      ].map(item => ({
+        ...item,
+        label: intl.formatMessage(
+          messages[`item.${item.id}.label` as MessageKey],
+        ),
+      })),
+    [intl],
   );
 
   const navigate = useCallback(navigateToMenuItem, []);
