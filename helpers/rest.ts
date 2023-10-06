@@ -1,5 +1,4 @@
 import {from, Observable} from 'rxjs';
-import {apiUrl} from '../config';
 
 export const get = <T>(
   endpoint: string,
@@ -7,9 +6,7 @@ export const get = <T>(
 ): Observable<T> => {
   return from(
     fetch(
-      `${apiUrl}${endpoint}${
-        queryParams ? `?${new URLSearchParams(queryParams)}` : ''
-      }`,
+      `${endpoint}${queryParams ? `?${new URLSearchParams(queryParams)}` : ''}`,
     ).then(res => res.json()),
   );
 };

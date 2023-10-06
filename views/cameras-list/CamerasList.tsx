@@ -1,19 +1,25 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, ToastAndroid} from 'react-native';
 import {NavigationFunctionComponent} from 'react-native-navigation';
 import {catchError, map} from 'rxjs/operators';
+import {componentWithRedux} from '../../helpers/redux';
 import {get} from '../../helpers/rest';
+import {selectApiUrl} from '../../store/settings';
+import {useAppSelector} from '../../store/store';
+import {navigateToMenuItem, settingsMenuItem} from '../menu/Menu';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {CameraTile} from './CameraTile';
 
-export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
+const CamerasListComponent: NavigationFunctionComponent = ({componentId}) => {
   useMenu(componentId, 'camerasList');
   const [loading, setLoading] = useState(true);
   const [cameras, setCameras] = useState<string[]>([]);
+  const apiUrl = useAppSelector(selectApiUrl);
 
   const refresh = useCallback(() => {
     setLoading(true);
-    get<{cameras: Array<unknown>}>('/config')
+    console.log(`${apiUrl}/config`);
+    get<{cameras: Array<unknown>}>(`${apiUrl}/config`)
       .pipe(
         map(data => Object.keys(data.cameras)),
         catchError(() => []),
@@ -22,11 +28,20 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
         setCameras(data);
         setLoading(false);
       });
-  }, []);
+  }, [apiUrl]);
 
   useEffect(() => {
-    refresh();
-  }, [refresh]);
+    if (apiUrl === undefined) {
+      navigateToMenuItem(settingsMenuItem)();
+      ToastAndroid.showWithGravity(
+        'You need to provide frigate nvr server data.',
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+      );
+    } else {
+      refresh();
+    }
+  }, [refresh, apiUrl]);
 
   return (
     <FlatList
@@ -40,6 +55,8 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
     />
   );
 };
+
+export const CamerasList = componentWithRedux(CamerasListComponent);
 
 CamerasList.options = {
   topBar: {

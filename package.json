@@ -12,11 +12,15 @@
   },
   "dependencies": {
     "@ant-design/icons-react-native": "^2.3.2",
+    "@reduxjs/toolkit": "^1.9.5",
     "date-fns": "^2.30.0",
+    "formik": "^2.4.5",
     "react": "18.2.0",
     "react-native": "0.71.1",
     "react-native-navigation": "^7.37.0-hotfix.1",
     "react-native-vlc-media-player": "^1.0.61",
+    "react-redux": "^8.1.2",
+    "redux": "^4.2.1",
     "rxjs": "^7.8.0"
   },
   "devDependencies": {

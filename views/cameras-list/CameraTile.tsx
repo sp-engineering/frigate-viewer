@@ -7,8 +7,9 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import {apiUrl} from '../../config';
 import {Navigation} from 'react-native-navigation';
+import {useAppSelector} from '../../store/store';
+import {selectApiUrl} from '../../store/settings';
 
 type CameraTileProps = PropsWithChildren<{
   componentId: string;
@@ -43,6 +44,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   const [lastImageSrc, setLastImageSrc] = useState<string | undefined>(
     undefined,
   );
+  const apiUrl = useAppSelector(selectApiUrl);
 
   useEffect(() => {
     const getUrl = () =>
@@ -54,7 +56,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
       setLastImageSrc(url);
     }, 10000);
     return () => clearInterval(interval);
-  }, [cameraName, setLastImageSrc]);
+  }, [cameraName, setLastImageSrc, apiUrl]);
 
   const showCameraEvents = useCallback(() => {
     Navigation.push(componentId, {

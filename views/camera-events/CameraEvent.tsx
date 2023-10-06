@@ -9,7 +9,8 @@ import {
   View,
 } from 'react-native';
 import {Navigation} from 'react-native-navigation';
-import {apiUrl} from '../../config';
+import {selectApiUrl} from '../../store/settings';
+import {useAppSelector} from '../../store/store';
 
 export interface ICameraEvent {
   id: string;
@@ -98,13 +99,14 @@ export const CameraEvent: FC<ICameraEventProps> = ({
   top_score,
 }) => {
   const [snapshot, setSnapshot] = useState<string>();
+  const apiUrl = useAppSelector(selectApiUrl);
 
   useEffect(() => {
     const url = has_snapshot
       ? `${apiUrl}/events/${id}/snapshot.jpg?bbox=1`
       : `${apiUrl}/events/${id}/thumbnail.jpg`;
     setSnapshot(url);
-  }, [id, has_snapshot]);
+  }, [id, has_snapshot, apiUrl]);
 
   const startDate = useMemo(
     () =>

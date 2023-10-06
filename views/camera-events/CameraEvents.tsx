@@ -2,23 +2,26 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, View} from 'react-native';
 import {NavigationFunctionComponent} from 'react-native-navigation';
 import {catchError} from 'rxjs/operators';
+import {componentWithRedux} from '../../helpers/redux';
 import {get} from '../../helpers/rest';
+import {selectApiUrl} from '../../store/settings';
+import {useAppSelector} from '../../store/store';
 import {CameraEvent, ICameraEvent} from './CameraEvent';
 
 interface ICameraEventsProps {
   cameraName: string;
 }
 
-export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
-  cameraName,
-  componentId,
-}) => {
+const CameraEventsComponent: NavigationFunctionComponent<
+  ICameraEventsProps
+> = ({cameraName, componentId}) => {
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState<ICameraEvent[]>([]);
+  const apiUrl = useAppSelector(selectApiUrl);
 
   const refresh = useCallback(() => {
     setLoading(true);
-    get<ICameraEvent[]>('/events', {
+    get<ICameraEvent[]>(`${apiUrl}/events`, {
       cameras: cameraName,
       limit: '300',
       include_thumbnails: '0',
@@ -28,7 +31,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
         setEvents(data);
         setLoading(false);
       });
-  }, [cameraName]);
+  }, [cameraName, apiUrl]);
 
   useEffect(() => {
     refresh();
@@ -48,6 +51,8 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
     </View>
   );
 };
+
+export const CameraEvents = componentWithRedux(CameraEventsComponent);
 
 CameraEvents.options = ({cameraName}) => ({
   topBar: {

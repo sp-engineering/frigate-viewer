@@ -3,7 +3,9 @@ import React, {FC, useCallback, useMemo, useState} from 'react';
 import {StyleSheet, Text, TouchableNativeFeedback, View} from 'react-native';
 import {NavigationFunctionComponent} from 'react-native-navigation';
 import {ProgressInfo, VLCPlayer} from 'react-native-vlc-media-player';
-import {apiUrl} from '../../config';
+import {componentWithRedux} from '../../helpers/redux';
+import {selectApiUrl} from '../../store/settings';
+import {useAppSelector} from '../../store/store';
 
 interface ICameraEventClipProps {
   eventId: string;
@@ -109,16 +111,19 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
   );
 };
 
-export const CameraEventClip: NavigationFunctionComponent<
+const CameraEventClipComponent: NavigationFunctionComponent<
   ICameraEventClipProps
 > = ({eventId}) => {
+  const apiUrl = useAppSelector(selectApiUrl);
   const clipUrl = useMemo(
     () => `${apiUrl}/events/${eventId}/clip.mp4`,
-    [eventId],
+    [eventId, apiUrl],
   );
 
   return <VideoPlayer clipUrl={clipUrl} />;
 };
+
+export const CameraEventClip = componentWithRedux(CameraEventClipComponent);
 
 CameraEventClip.options = () => ({
   topBar: {

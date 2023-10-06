@@ -50,58 +50,63 @@ interface IMenuItem {
   icon: OutlineGlyphMapType;
   label: string;
   view?: string;
+  stack?: boolean;
 }
+
+export const camerasListMenuItem: IMenuItem = {
+  id: 'camerasList',
+  icon: 'video-camera',
+  label: 'List of cameras',
+  view: 'CamerasList',
+};
+
+// export const retainedMenuItem: IMenuItem = {
+//   id: 'retained',
+//   icon: 'picture',
+//   label: 'Retained',
+// };
+
+export const settingsMenuItem: IMenuItem = {
+  id: 'settings',
+  icon: 'tool',
+  label: 'Settings',
+  view: 'Settings',
+  stack: true,
+};
+
+export const authorMenuItem: IMenuItem = {
+  id: 'author',
+  icon: 'robot',
+  label: 'Author',
+  view: 'Author',
+};
+
+export const navigateToMenuItem =
+  ({view, stack}: IMenuItem) =>
+  () => {
+    if (view) {
+      Navigation[stack ? 'push' : 'setStackRoot']('MainMenu', {
+        component: {
+          name: view,
+          options: {
+            sideMenu: {
+              right: {
+                visible: false,
+              },
+            },
+          },
+        },
+      });
+    }
+  };
 
 export const Menu: FC<IMenuProps> = ({current}) => {
   const menuItems: IMenuItem[] = useMemo(
-    () => [
-      {
-        id: 'camerasList',
-        icon: 'video-camera',
-        label: 'List of cameras',
-        view: 'CamerasList',
-      },
-      // {
-      //   id: 'retained',
-      //   icon: 'picture',
-      //   label: 'Retained',
-      // },
-      {
-        id: 'settings',
-        icon: 'tool',
-        label: 'Settings',
-        view: 'Settings',
-      },
-      {
-        id: 'author',
-        icon: 'robot',
-        label: 'Author',
-        view: 'Author',
-      },
-    ],
+    () => [camerasListMenuItem, settingsMenuItem, authorMenuItem],
     [],
   );
 
-  const navigate = useCallback(
-    ({view}: IMenuItem) =>
-      () => {
-        if (view) {
-          Navigation.setStackRoot('MainMenu', {
-            component: {
-              name: view,
-              options: {
-                sideMenu: {
-                  right: {
-                    visible: false,
-                  },
-                },
-              },
-            },
-          });
-        }
-      },
-    [],
-  );
+  const navigate = useCallback(navigateToMenuItem, []);
 
   return (
     <View style={[styles.menuWrapper]}>
