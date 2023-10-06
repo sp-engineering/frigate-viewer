@@ -9,8 +9,12 @@ import {
   selectFiltersLabels,
   selectFiltersZones,
 } from '../../store/events';
-import {selectEventsNumColumns, selectServerApiUrl} from '../../store/settings';
-import {useAppSelector} from '../../store/store';
+import {
+  selectEventsNumColumns,
+  selectServerApiUrl,
+  setEventSnapshotHeight,
+} from '../../store/settings';
+import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
   filterButton,
   useEventsFilters,
@@ -33,6 +37,8 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   const [refreshing, setRefreshing] = useState(true);
   const [events, setEvents] = useState<ICameraEvent[]>([]);
   const [endReached, setEndReached] = useState<boolean>(false);
+  const [snapshotHeight, setSnapshotHeight] = useState<number>();
+  const dispatch = useAppDispatch();
   const apiUrl = useAppSelector(selectServerApiUrl);
   const numColumns = useAppSelector(selectEventsNumColumns);
   const filtersCameras = useAppSelector(selectFiltersCameras);
@@ -135,13 +141,35 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filtersCameras, filtersLabels, filtersZones]);
 
+  const onDelete = useCallback(
+    (deletedIds: string[]) => {
+      setEvents(events.filter(event => !deletedIds.includes(event.id)));
+    },
+    [events],
+  );
+
+  const onSnapshotHeight = useCallback(
+    (height: number) => {
+      if (!snapshotHeight) {
+        setSnapshotHeight(height);
+        dispatch(setEventSnapshotHeight(height));
+      }
+    },
+    [dispatch, snapshotHeight],
+  );
+
   return (
     <View>
       <FlatList
         ref={listRef}
         data={events}
         renderItem={({item}) => (
-          <CameraEvent {...item} componentId={componentId} />
+          <CameraEvent
+            {...item}
+            componentId={componentId}
+            onDelete={onDelete}
+            onSnapshotHeight={onSnapshotHeight}
+          />
         )}
         keyExtractor={data => data.id}
         initialNumToRender={30}
