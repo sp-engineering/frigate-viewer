@@ -3,6 +3,7 @@ import React, {FC, useCallback, useMemo, useState} from 'react';
 import {StyleSheet, Text, TouchableNativeFeedback, View} from 'react-native';
 import {NavigationFunctionComponent} from 'react-native-navigation';
 import {ProgressInfo, VLCPlayer} from 'react-native-vlc-media-player';
+import {formatVideoTime} from '../../helpers/locale';
 import {componentWithRedux} from '../../helpers/redux';
 import {selectApiUrl} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
@@ -49,13 +50,6 @@ const styles = StyleSheet.create({
 interface IVideoPlayerProps {
   clipUrl: string;
 }
-
-const formatVideoTime = (t: number) => {
-  const time = Math.round(t / 1000);
-  const minutes = Math.floor(time / 60);
-  const seconds = time % 60;
-  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-};
 
 const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
   const [paused, setPaused] = useState<boolean>(false);

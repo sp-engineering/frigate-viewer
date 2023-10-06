@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import {Dropdown} from '../../components/forms/Dropdown';
 import {Input} from '../../components/forms/Input';
 import {Label} from '../../components/forms/Label';
+import {Section} from '../../components/forms/Section';
 import {componentWithRedux} from '../../helpers/redux';
 import {ISettings, saveSettings, selectSettings} from '../../store/settings';
 import {useAppDispatch, useAppSelector} from '../../store/store';
@@ -23,9 +24,15 @@ const styles = StyleSheet.create({
 const requiredError = 'This field is required.';
 
 const settingsValidationSchema = yup.object().shape({
-  protocol: yup.string().required(requiredError),
-  host: yup.string().required(requiredError),
-  port: yup.number().required(requiredError),
+  server: yup.object().shape({
+    protocol: yup.string().required(requiredError),
+    host: yup.string().required(requiredError),
+    port: yup.number().required(requiredError),
+  }),
+  locale: yup.object().shape({
+    region: yup.string().required(requiredError),
+    datesDisplay: yup.string().required(requiredError),
+  }),
 });
 
 const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
@@ -50,11 +57,12 @@ const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
 
   const save = useCallback(
     (settings: ISettings) => {
+      console.log(currentSettings, settings);
       Navigation.pop(componentId);
       dispatch(saveSettings(settings));
       Keyboard.dismiss();
     },
-    [componentId, dispatch],
+    [componentId, dispatch, currentSettings],
   );
 
   return (
@@ -65,36 +73,71 @@ const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
       innerRef={formRef}>
       {({values, handleBlur, handleChange, setFieldValue, errors, touched}) => (
         <View style={styles.wrapper}>
-          <Label
-            text="Protocol"
-            touched={touched.protocol}
-            error={errors.protocol}>
-            <Dropdown
-              value={values.protocol}
-              options={[{value: 'http'}, {value: 'https'}]}
-              onValueChange={handleChange('protocol')}
-            />
-          </Label>
-          <Input
-            text="Host"
-            touched={touched.host}
-            error={errors.host}
-            value={values.host}
-            onBlur={handleBlur('host')}
-            onChangeText={handleChange('host')}
-            keyboardType="default"
-          />
-          <Input
-            text="Port"
-            touched={touched.port}
-            error={errors.port}
-            value={`${values.port || ''}`}
-            onBlur={handleBlur('port')}
-            onChangeText={value =>
-              setFieldValue('port', parseFloat(value) || null)
-            }
-            keyboardType="numeric"
-          />
+          <Section header="Server">
+            <Label
+              text="Protocol"
+              touched={touched.server?.protocol}
+              error={errors.server?.protocol}>
+              <Dropdown
+                value={values.server.protocol}
+                options={[{value: 'http'}, {value: 'https'}]}
+                onValueChange={handleChange('server.protocol')}
+              />
+            </Label>
+            <Label
+              text="Host"
+              touched={touched.server?.host}
+              error={errors.server?.host}>
+              <Input
+                value={values.server.host}
+                onBlur={handleBlur('host')}
+                onChangeText={handleChange('server.host')}
+                keyboardType="default"
+              />
+            </Label>
+            <Label
+              text="Port"
+              touched={touched.server?.port}
+              error={errors.server?.port}>
+              <Input
+                value={`${values.server.port || ''}`}
+                onBlur={handleBlur('port')}
+                onChangeText={value =>
+                  setFieldValue('server.port', parseFloat(value) || null)
+                }
+                keyboardType="numeric"
+              />
+            </Label>
+          </Section>
+          <Section header="Locale">
+            <Label
+              text="Region"
+              touched={touched.locale?.region}
+              error={errors.locale?.region}>
+              <Dropdown
+                value={values.locale.region}
+                options={[
+                  {value: 'enGB', label: 'Great Britain'},
+                  {value: 'enUS', label: 'United States'},
+                  {value: 'pl', label: 'Poland'},
+                ]}
+                onValueChange={handleChange('locale.region')}
+              />
+            </Label>
+            <Label
+              text="Dates display"
+              touched={touched.locale?.datesDisplay}
+              error={errors.locale?.datesDisplay}>
+              <Dropdown
+                value={values.locale.datesDisplay}
+                options={[
+                  {value: 'descriptive', label: 'Descriptive'},
+                  {value: 'numeric', label: 'Numeric'},
+                ]}
+                onValueChange={handleChange('locale.datesDisplay')}
+              />
+            </Label>
+          </Section>
         </View>
       )}
     </Formik>

@@ -1,5 +1,4 @@
-import {formatDistance, formatRelative} from 'date-fns';
-import {enGB} from 'date-fns/locale';
+import {format, formatDistance, formatRelative} from 'date-fns';
 import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {
   Image,
@@ -9,7 +8,8 @@ import {
   View,
 } from 'react-native';
 import {Navigation} from 'react-native-navigation';
-import {selectApiUrl} from '../../store/settings';
+import {formatVideoTime, useDateLocale} from '../../helpers/locale';
+import {selectApiUrl, selectDatesDisplay} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
 
 export interface ICameraEvent {
@@ -100,6 +100,8 @@ export const CameraEvent: FC<ICameraEventProps> = ({
 }) => {
   const [snapshot, setSnapshot] = useState<string>();
   const apiUrl = useAppSelector(selectApiUrl);
+  const dateLocale = useDateLocale();
+  const datesDisplay = useAppSelector(selectDatesDisplay);
 
   useEffect(() => {
     const url = has_snapshot
@@ -110,17 +112,27 @@ export const CameraEvent: FC<ICameraEventProps> = ({
 
   const startDate = useMemo(
     () =>
-      formatRelative(new Date(start_time * 1000), new Date(), {locale: enGB}),
-    [start_time],
+      datesDisplay === 'descriptive'
+        ? formatRelative(new Date(start_time * 1000), new Date(), {
+            locale: dateLocale,
+          })
+        : format(new Date(start_time * 1000), 'Pp', {locale: dateLocale}),
+    [start_time, dateLocale, datesDisplay],
   );
 
   const duration = useMemo(
     () =>
-      formatDistance(new Date(end_time * 1000), new Date(start_time * 1000), {
-        includeSeconds: true,
-        locale: enGB,
-      }),
-    [start_time, end_time],
+      datesDisplay === 'descriptive'
+        ? formatDistance(
+            new Date(end_time * 1000),
+            new Date(start_time * 1000),
+            {
+              includeSeconds: true,
+              locale: dateLocale,
+            },
+          )
+        : formatVideoTime(Math.round(end_time * 1000 - start_time * 1000)),
+    [start_time, end_time, dateLocale, datesDisplay],
   );
 
   const score = useMemo(() => `${Math.round(top_score * 100)}%`, [top_score]);
