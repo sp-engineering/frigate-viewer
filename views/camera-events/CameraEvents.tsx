@@ -6,15 +6,17 @@ import {componentWithRedux} from '../../helpers/redux';
 import {get} from '../../helpers/rest';
 import {selectServerApiUrl} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
+import {menuButton, useMenu} from '../menu/menuHelpers';
 import {CameraEvent, ICameraEvent} from './CameraEvent';
 
 interface ICameraEventsProps {
-  cameraName: string;
+  cameraNames?: string[];
 }
 
 const CameraEventsComponent: NavigationFunctionComponent<
   ICameraEventsProps
-> = ({cameraName, componentId}) => {
+> = ({cameraNames, componentId}) => {
+  useMenu(componentId, 'cameraEvents');
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState<ICameraEvent[]>([]);
   const apiUrl = useAppSelector(selectServerApiUrl);
@@ -22,7 +24,7 @@ const CameraEventsComponent: NavigationFunctionComponent<
   const refresh = useCallback(() => {
     setLoading(true);
     get<ICameraEvent[]>(`${apiUrl}/events`, {
-      cameras: cameraName,
+      ...(cameraNames ? {cameras: cameraNames.join(',')} : {}),
       limit: '300',
       include_thumbnails: '0',
     })
@@ -31,7 +33,7 @@ const CameraEventsComponent: NavigationFunctionComponent<
         setEvents(data);
         setLoading(false);
       });
-  }, [cameraName, apiUrl]);
+  }, [cameraNames, apiUrl]);
 
   useEffect(() => {
     refresh();
@@ -54,10 +56,18 @@ const CameraEventsComponent: NavigationFunctionComponent<
 
 export const CameraEvents = componentWithRedux(CameraEventsComponent);
 
-CameraEvents.options = ({cameraName}) => ({
-  topBar: {
-    title: {
-      text: `Events of ${cameraName}`,
-    },
-  },
+CameraEvents.options = ({cameraNames}) => ({
+  topBar:
+    cameraNames && cameraNames.length === 1
+      ? {
+          title: {
+            text: `Events of ${cameraNames[0]}`,
+          },
+        }
+      : {
+          title: {
+            text: 'Events',
+          },
+          rightButtons: [menuButton],
+        },
 });

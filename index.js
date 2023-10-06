@@ -29,8 +29,9 @@ Navigation.events().registerAppLaunchedListener(() => {
             ],
           },
         },
-        right: {
+        left: {
           component: {
+            id: 'Menu',
             name: 'Menu',
           },
         },

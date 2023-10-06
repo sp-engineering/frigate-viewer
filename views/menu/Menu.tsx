@@ -60,6 +60,13 @@ export const camerasListMenuItem: IMenuItem = {
   view: 'CamerasList',
 };
 
+export const cameraEventsMenuItem: IMenuItem = {
+  id: 'cameraEvents',
+  icon: 'unordered-list',
+  label: 'All events',
+  view: 'CameraEvents',
+};
+
 // export const retainedMenuItem: IMenuItem = {
 //   id: 'retained',
 //   icon: 'picture',
@@ -90,7 +97,7 @@ export const navigateToMenuItem =
           name: view,
           options: {
             sideMenu: {
-              right: {
+              left: {
                 visible: false,
               },
             },
@@ -102,7 +109,12 @@ export const navigateToMenuItem =
 
 export const Menu: FC<IMenuProps> = ({current}) => {
   const menuItems: IMenuItem[] = useMemo(
-    () => [camerasListMenuItem, settingsMenuItem, authorMenuItem],
+    () => [
+      camerasListMenuItem,
+      cameraEventsMenuItem,
+      settingsMenuItem,
+      authorMenuItem,
+    ],
     [],
   );
 

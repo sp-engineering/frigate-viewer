@@ -75,7 +75,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
       component: {
         name: 'CameraEvents',
         passProps: {
-          cameraName,
+          cameraNames: [cameraName],
         },
       },
     });

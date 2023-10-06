@@ -76,7 +76,6 @@ export const settingsStore = createSlice({
           } as T;
         }, {} as T);
       state.v1 = fillGaps(initialSettings, state.v1);
-      console.log(state.v1);
     },
     saveSettings: (state, action: PayloadAction<ISettings>) => {
       state.v1 = action.payload;
