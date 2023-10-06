@@ -3,9 +3,11 @@ import {FlatList} from 'react-native';
 import {NavigationFunctionComponent} from 'react-native-navigation';
 import {catchError, map} from 'rxjs/operators';
 import {get} from '../../helpers/rest';
+import {menuButton, useMenu} from '../menu/menuHelpers';
 import {CameraTile} from './CameraTile';
 
 export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
+  useMenu(componentId, 'camerasList');
   const [loading, setLoading] = useState(true);
   const [cameras, setCameras] = useState<string[]>([]);
 
@@ -44,5 +46,6 @@ CamerasList.options = {
     title: {
       text: 'List of cameras',
     },
+    rightButtons: [menuButton],
   },
 };
