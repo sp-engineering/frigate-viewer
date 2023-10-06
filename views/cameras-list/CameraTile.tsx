@@ -1,13 +1,6 @@
 import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
 import type {PropsWithChildren} from 'react';
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import {Carousel} from 'react-native-ui-lib';
 import {useAppDispatch, useAppSelector} from '../../store/store';
@@ -18,20 +11,11 @@ import {
   selectServerApiUrl,
   setCameraPreviewHeight,
 } from '../../store/settings';
-import {ZoomableImage} from '../../components/ZoomableImage';
 import {CameraLabels} from './CameraLabels';
 import {setFiltersLabels, setFiltersZones} from '../../store/events';
-
-type CameraTileProps = PropsWithChildren<{
-  componentId: string;
-  cameraName: string;
-}>;
+import {ImagePreview} from './ImagePreview';
 
 const styles = StyleSheet.create({
-  cameraTile: {
-    paddingVertical: 2,
-    paddingHorizontal: 1,
-  },
   cameraTileTitle: {
     position: 'absolute',
     left: 2,
@@ -44,10 +28,12 @@ const styles = StyleSheet.create({
     color: 'white',
     backgroundColor: '#00000040',
   },
-  cameraTileImage: {
-    flex: 1,
-  },
 });
+
+type CameraTileProps = PropsWithChildren<{
+  componentId: string;
+  cameraName: string;
+}>;
 
 export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   const [lastImageSrc, setLastImageSrc] = useState<string | undefined>(
@@ -61,9 +47,9 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   let interval = useRef<NodeJS.Timer>();
 
   useEffect(() => {
-    const getUrl = () =>
+    const getLastImageUrl = () =>
       `${apiUrl}/${cameraName}/latest.jpg?bbox=1&ts=${new Date().toISOString()}`;
-    setLastImageSrc(getUrl());
+    setLastImageSrc(getLastImageUrl());
     const removeRefreshing = () => {
       if (interval.current) {
         clearInterval(interval.current);
@@ -71,9 +57,9 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
     };
     removeRefreshing();
     interval.current = setInterval(async () => {
-      const url = getUrl();
-      await Image.prefetch(url);
-      setLastImageSrc(url);
+      const lastImageUrl = getLastImageUrl();
+      await Image.prefetch(lastImageUrl);
+      setLastImageSrc(lastImageUrl);
     }, refreshFrequency * 1000);
     return removeRefreshing;
   }, [cameraName, setLastImageSrc, apiUrl, refreshFrequency]);
@@ -115,25 +101,15 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
 
   return (
     <View>
-      <Carousel>
-        <TouchableWithoutFeedback onPress={showCameraEvents}>
-          <View
-            style={[
-              styles.cameraTile,
-              {width: `${100 / numColumns}%`, height: previewHeight},
-            ]}>
-            {lastImageSrc && (
-              <ZoomableImage
-                source={{uri: lastImageSrc}}
-                style={styles.cameraTileImage}
-                fadeDuration={0}
-                resizeMode="contain"
-                resizeMethod="scale"
-                onLoad={onPreviewLoad}
-              />
-            )}
-          </View>
-        </TouchableWithoutFeedback>
+      <Carousel initialPage={2}>
+        <View>
+          <Text>Last event</Text>
+        </View>
+        <ImagePreview
+          imageUrl={lastImageSrc}
+          onPress={showCameraEvents}
+          onPreviewLoad={onPreviewLoad}
+        />
         <CameraLabels onLabelPress={showCameraEventsWithLabel} />
       </Carousel>
       <Text style={[styles.cameraTileTitle]}>{cameraName}</Text>
