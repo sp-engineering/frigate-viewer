@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import {Navigation} from 'react-native-navigation';
+import {ZoomableImage} from '../../components/ZoomableImage';
 import {formatVideoTime, useDateLocale} from '../../helpers/locale';
 import {
   selectServerApiUrl,
@@ -189,7 +190,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
           },
         ]}>
         {snapshot && (
-          <Image
+          <ZoomableImage
             source={{uri: snapshot}}
             style={styles.cameraEventImage}
             fadeDuration={0}

@@ -1,4 +1,5 @@
 import {Navigation} from 'react-native-navigation';
+import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import {TopBarButton} from './components/icons/TopBarButton';
 import {Author} from './views/author/Author';
 import {CameraEventClip} from './views/camera-event-clip/CameraEventClip';
@@ -8,11 +9,20 @@ import {EventsFilters} from './views/events-filters/EventsFilters';
 import {Menu} from './views/menu/Menu';
 import {Settings} from './views/settings/Settings';
 
-Navigation.registerComponent('CamerasList', () => CamerasList);
-Navigation.registerComponent('CameraEvents', () => CameraEvents);
-Navigation.registerComponent('CameraEventClip', () => CameraEventClip);
-Navigation.registerComponent('Settings', () => Settings);
-Navigation.registerComponent('Author', () => Author);
+const registerView = (name, component) => {
+  Navigation.registerComponent(
+    name,
+    () => gestureHandlerRootHOC(component),
+    () => component,
+  );
+};
+
+registerView('CamerasList', CamerasList);
+registerView('CameraEvents', CameraEvents);
+registerView('CameraEventClip', CameraEventClip);
+registerView('Settings', Settings);
+registerView('Author', Author);
+
 Navigation.registerComponent('Menu', () => Menu);
 Navigation.registerComponent('EventsFilters', () => EventsFilters);
 Navigation.registerComponent('TopBarButton', () => TopBarButton);

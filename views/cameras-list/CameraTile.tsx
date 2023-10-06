@@ -17,6 +17,7 @@ import {
   selectServerApiUrl,
   setCameraPreviewHeight,
 } from '../../store/settings';
+import {ZoomableImage} from '../../components/ZoomableImage';
 
 type CameraTileProps = PropsWithChildren<{
   componentId: string;
@@ -54,7 +55,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   const refreshFrequency = useAppSelector(selectCamerasRefreshFrequency);
   const previewHeight = useAppSelector(selectCamerasPreviewHeight);
   const numColumns = useAppSelector(selectCamerasNumColumns);
-  let interval = useRef<number>();
+  let interval = useRef<NodeJS.Timer>();
 
   useEffect(() => {
     const getUrl = () =>
@@ -108,7 +109,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
           {width: `${100 / numColumns}%`, height: previewHeight},
         ]}>
         {lastImageSrc && (
-          <Image
+          <ZoomableImage
             source={{uri: lastImageSrc}}
             style={styles.cameraTileImage}
             fadeDuration={0}
