@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
 
 const requiredError = 'This field is required.';
 const minError = ({min}: {min: number}) => `Minimum value is ${min}.`;
+const maxError = ({max}: {max: number}) => `Maximum value is ${max}`;
 
 const settingsValidationSchema = yup.object().shape({
   server: yup.object().shape({
@@ -36,10 +37,18 @@ const settingsValidationSchema = yup.object().shape({
   }),
   cameras: yup.object().shape({
     refreshFrequency: yup.number().required(requiredError).min(1, minError),
-    previewHeight: yup.number().required(requiredError).min(50, minError),
+    previewHeight: yup
+      .number()
+      .required(requiredError)
+      .min(50, minError)
+      .max(1000, maxError),
   }),
   events: yup.object().shape({
-    snapshotHeight: yup.number().required(requiredError).min(50, minError),
+    snapshotHeight: yup
+      .number()
+      .required(requiredError)
+      .min(50, minError)
+      .max(1000, maxError),
   }),
 });
 
@@ -65,12 +74,11 @@ const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
 
   const save = useCallback(
     (settings: ISettings) => {
-      console.log(currentSettings, settings);
       Navigation.pop(componentId);
       dispatch(saveSettings(settings));
       Keyboard.dismiss();
     },
-    [componentId, dispatch, currentSettings],
+    [componentId, dispatch],
   );
 
   return (
