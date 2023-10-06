@@ -82,6 +82,10 @@ const styles = StyleSheet.create({
   cameraEventScore: {
     backgroundColor: 'gray',
   },
+  cameraEventInProgress: {
+    color: 'black',
+    backgroundColor: 'gold',
+  },
 });
 
 export const CameraEvent: FC<ICameraEventProps> = ({
@@ -119,6 +123,8 @@ export const CameraEvent: FC<ICameraEventProps> = ({
 
   const score = useMemo(() => `${Math.round(top_score * 100)}%`, [top_score]);
 
+  const isInProgress = useMemo(() => !end_time, [end_time]);
+
   const showEventClip = useCallback(() => {
     Navigation.showModal({
       component: {
@@ -148,7 +154,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
           />
         )}
         <Text style={[styles.cameraEventTitle]}>
-          {startDate} ({duration})
+          {startDate} {!isInProgress && <Text>({duration})</Text>}
         </Text>
         <View style={[styles.cameraEventLabels]}>
           <Text style={[styles.cameraEventLabel]}>{label}</Text>
@@ -162,6 +168,12 @@ export const CameraEvent: FC<ICameraEventProps> = ({
           <Text style={[styles.cameraEventLabel, styles.cameraEventScore]}>
             {score}
           </Text>
+          {isInProgress && (
+            <Text
+              style={[styles.cameraEventLabel, styles.cameraEventInProgress]}>
+              In progress
+            </Text>
+          )}
         </View>
       </View>
     </TouchableWithoutFeedback>
