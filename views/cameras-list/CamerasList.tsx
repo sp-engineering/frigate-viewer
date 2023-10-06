@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, ToastAndroid} from 'react-native';
 import {NavigationFunctionComponent} from 'react-native-navigation';
 import {catchError, tap} from 'rxjs/operators';
-import {componentWithRedux} from '../../helpers/redux';
 import {get} from '../../helpers/rest';
 import {
   selectAvailableCameras,
@@ -32,7 +31,7 @@ interface IConfigResponse {
   };
 }
 
-const CamerasListComponent: NavigationFunctionComponent = ({componentId}) => {
+export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
   useMenu(componentId, 'camerasList');
   const [loading, setLoading] = useState(true);
   const apiUrl = useAppSelector(selectServerApiUrl);
@@ -100,8 +99,6 @@ const CamerasListComponent: NavigationFunctionComponent = ({componentId}) => {
     />
   );
 };
-
-export const CamerasList = componentWithRedux(CamerasListComponent);
 
 CamerasList.options = {
   topBar: {

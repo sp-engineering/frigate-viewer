@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {FlatList, View} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {tap} from 'rxjs/operators';
-import {componentWithRedux} from '../../helpers/redux';
 import {get} from '../../helpers/rest';
 import {
   selectFiltersCameras,
@@ -22,9 +21,10 @@ interface ICameraEventsProps {
   cameraNames?: string[];
 }
 
-const CameraEventsComponent: NavigationFunctionComponent<
-  ICameraEventsProps
-> = ({cameraNames, componentId}) => {
+export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
+  cameraNames,
+  componentId,
+}) => {
   useMenu(componentId, 'cameraEvents');
   useEventsFilters(componentId, cameraNames);
   const listRef = useRef<FlatList<ICameraEvent>>(null);
@@ -128,8 +128,6 @@ const CameraEventsComponent: NavigationFunctionComponent<
     </View>
   );
 };
-
-export const CameraEvents = componentWithRedux(CameraEventsComponent);
 
 CameraEvents.options = ({cameraNames}) => ({
   topBar:

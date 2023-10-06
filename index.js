@@ -8,24 +8,31 @@ import {CamerasList} from './views/cameras-list/CamerasList';
 import {EventsFilters} from './views/events-filters/EventsFilters';
 import {Menu} from './views/menu/Menu';
 import {Settings} from './views/settings/Settings';
+import {componentWithRedux} from './helpers/redux';
 
-const registerView = (name, component) => {
+const registerComponent = (name, component, decorators = []) => {
   Navigation.registerComponent(
     name,
-    () => gestureHandlerRootHOC(component),
+    () =>
+      decorators.reduce(
+        (decoratedComponent, decorator) => decorator(decoratedComponent),
+        component,
+      ),
     () => component,
   );
 };
 
-registerView('CamerasList', CamerasList);
-registerView('CameraEvents', CameraEvents);
-registerView('CameraEventClip', CameraEventClip);
-registerView('Settings', Settings);
-registerView('Author', Author);
+const viewDecorators = [gestureHandlerRootHOC, componentWithRedux];
 
-Navigation.registerComponent('Menu', () => Menu);
-Navigation.registerComponent('EventsFilters', () => EventsFilters);
-Navigation.registerComponent('TopBarButton', () => TopBarButton);
+registerComponent('CamerasList', CamerasList, viewDecorators);
+registerComponent('CameraEvents', CameraEvents, viewDecorators);
+registerComponent('CameraEventClip', CameraEventClip, viewDecorators);
+registerComponent('Settings', Settings, viewDecorators);
+registerComponent('Author', Author, viewDecorators);
+
+registerComponent('Menu', Menu);
+registerComponent('EventsFilters', EventsFilters);
+registerComponent('TopBarButton', TopBarButton);
 
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setRoot({

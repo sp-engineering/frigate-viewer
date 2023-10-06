@@ -3,7 +3,6 @@ import {
   Alert,
   Image,
   Linking,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -11,6 +10,7 @@ import {
 } from 'react-native';
 import {NavigationFunctionComponent} from 'react-native-navigation';
 import {menuButton, useMenu} from '../menu/menuHelpers';
+import {BuyMeACoffee} from './BuyMeACoffee';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -41,33 +41,6 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   itemValue: {
-    color: 'black',
-  },
-  buyMeCoffee: {
-    margin: 20,
-    paddingTop: 20,
-    borderColor: '#00000088',
-    borderTopWidth: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  buyMeCoffeeText: {
-    fontWeight: '500',
-    color: 'black',
-  },
-  buyMeCoffeeButtonInline: {
-    marginVertical: 15,
-    flexDirection: 'row',
-  },
-  buyMeCoffeeButton: {
-    flexDirection: 'row',
-    gap: 5,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    backgroundColor: '#fd0',
-    borderRadius: 5,
-  },
-  buyMeCoffeeButtonText: {
     color: 'black',
   },
 });
@@ -114,18 +87,9 @@ export const Author: NavigationFunctionComponent = ({componentId}) => {
           </Text>
         </Text>
       </View>
-      <View style={styles.buyMeCoffee}>
-        <Text style={styles.buyMeCoffeeText}>Do you like this application</Text>
-        <Text style={styles.buyMeCoffeeText}>and want to say "thank you"?</Text>
-        <View style={styles.buyMeCoffeeButtonInline}>
-          <Pressable
-            style={styles.buyMeCoffeeButton}
-            onPress={openLink('https://www.buymeacoffee.com/sp.engineering')}>
-            <Text style={styles.buyMeCoffeeButtonText}>☕</Text>
-            <Text style={styles.buyMeCoffeeButtonText}>Buy me a coffee</Text>
-          </Pressable>
-        </View>
-      </View>
+      <BuyMeACoffee
+        onPress={openLink('https://www.buymeacoffee.com/sp.engineering')}
+      />
     </ScrollView>
   );
 };

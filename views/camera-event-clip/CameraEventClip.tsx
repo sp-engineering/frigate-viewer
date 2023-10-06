@@ -3,7 +3,6 @@ import {StyleSheet, View} from 'react-native';
 import {NavigationFunctionComponent} from 'react-native-navigation';
 import {ProgressInfo, VLCPlayer} from 'react-native-vlc-media-player';
 import {ZoomableView} from '../../components/ZoomableView';
-import {componentWithRedux} from '../../helpers/redux';
 import {selectServerApiUrl} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
 import {ProgressBar} from './ProgressBar';
@@ -95,7 +94,7 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
   );
 };
 
-const CameraEventClipComponent: NavigationFunctionComponent<
+export const CameraEventClip: NavigationFunctionComponent<
   ICameraEventClipProps
 > = ({eventId}) => {
   const apiUrl = useAppSelector(selectServerApiUrl);
@@ -106,8 +105,6 @@ const CameraEventClipComponent: NavigationFunctionComponent<
 
   return <VideoPlayer clipUrl={clipUrl} />;
 };
-
-export const CameraEventClip = componentWithRedux(CameraEventClipComponent);
 
 CameraEventClip.options = () => ({
   topBar: {

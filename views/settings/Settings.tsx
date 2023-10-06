@@ -7,7 +7,6 @@ import {Dropdown} from '../../components/forms/Dropdown';
 import {Input} from '../../components/forms/Input';
 import {Label} from '../../components/forms/Label';
 import {Section} from '../../components/forms/Section';
-import {componentWithRedux} from '../../helpers/redux';
 import {ISettings, saveSettings, selectSettings} from '../../store/settings';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {camerasListMenuItem, navigateToMenuItem} from '../menu/Menu';
@@ -57,7 +56,7 @@ const settingsValidationSchema = yup.object().shape({
   }),
 });
 
-const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
+export const Settings: NavigationFunctionComponent = ({componentId}) => {
   useMenu(componentId, 'settings');
   const formRef = useRef<FormikProps<ISettings>>(null);
   const currentSettings = useAppSelector(selectSettings);
@@ -222,8 +221,6 @@ const SettingsComponent: NavigationFunctionComponent = ({componentId}) => {
     </Formik>
   );
 };
-
-export const Settings = componentWithRedux(SettingsComponent);
 
 Settings.options = () => ({
   topBar: {
