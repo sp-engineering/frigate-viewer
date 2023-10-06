@@ -135,6 +135,6 @@ Author.options = () => ({
     title: {
       text: 'Author',
     },
-    rightButtons: [menuButton],
+    leftButtons: [menuButton],
   },
 });

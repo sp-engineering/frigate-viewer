@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {FlatList, View} from 'react-native';
-import {NavigationFunctionComponent} from 'react-native-navigation';
+import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {tap} from 'rxjs/operators';
 import {componentWithRedux} from '../../helpers/redux';
 import {get} from '../../helpers/rest';
@@ -98,6 +98,14 @@ const CameraEventsComponent: NavigationFunctionComponent<
 
   useEffect(() => {
     refresh();
+    setTimeout(() => {
+      Navigation.updateProps('FilterButton', {
+        count:
+          (filtersCameras.length || 0) +
+          (filtersLabels.length || 0) +
+          (filtersZones.length || 0),
+      });
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filtersCameras, filtersLabels, filtersZones]);
 
@@ -136,6 +144,7 @@ CameraEvents.options = ({cameraNames}) => ({
           title: {
             text: 'Events',
           },
-          rightButtons: [filterButton, menuButton],
+          leftButtons: [menuButton],
+          rightButtons: [filterButton],
         },
 });

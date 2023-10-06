@@ -19,19 +19,6 @@ export const useEventsFilters = (
         },
       },
     });
-    const sub = Navigation.events().registerNavigationButtonPressedListener(
-      event => {
-        if (event.buttonId === 'filter') {
-          Navigation.mergeOptions(componentId, {
-            sideMenu: {
-              right: {
-                visible: true,
-              },
-            },
-          });
-        }
-      },
-    );
     return () => {
       Navigation.mergeOptions(componentId, {
         sideMenu: {
@@ -40,13 +27,26 @@ export const useEventsFilters = (
           },
         },
       });
-      sub.remove();
     };
   }, [componentId]);
 };
 
 export const filterButton: OptionsTopBarButton = {
   id: 'filter',
-  text: 'Filter',
-  color: 'white',
+  component: {
+    id: 'FilterButton',
+    name: 'TopBarButton',
+    passProps: {
+      icon: 'filter',
+      onPress: () => {
+        Navigation.mergeOptions('Menu', {
+          sideMenu: {
+            right: {
+              visible: true,
+            },
+          },
+        });
+      },
+    },
+  },
 };

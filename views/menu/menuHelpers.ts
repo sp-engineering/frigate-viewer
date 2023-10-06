@@ -27,19 +27,6 @@ export const useMenu = (componentId: string, current?: MenuId) => {
         },
       },
     });
-    const sub = Navigation.events().registerNavigationButtonPressedListener(
-      event => {
-        if (event.buttonId === 'menu') {
-          Navigation.mergeOptions(componentId, {
-            sideMenu: {
-              left: {
-                visible: true,
-              },
-            },
-          });
-        }
-      },
-    );
     return () => {
       Navigation.mergeOptions(componentId, {
         sideMenu: {
@@ -48,13 +35,25 @@ export const useMenu = (componentId: string, current?: MenuId) => {
           },
         },
       });
-      sub.remove();
     };
   }, [componentId, current]);
 };
 
 export const menuButton: OptionsTopBarButton = {
   id: 'menu',
-  text: 'Menu',
-  color: 'white',
+  component: {
+    name: 'TopBarButton',
+    passProps: {
+      icon: 'menu',
+      onPress: () => {
+        Navigation.mergeOptions('Menu', {
+          sideMenu: {
+            left: {
+              visible: true,
+            },
+          },
+        });
+      },
+    },
+  },
 };

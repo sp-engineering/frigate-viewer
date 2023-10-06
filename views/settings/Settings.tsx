@@ -11,7 +11,7 @@ import {componentWithRedux} from '../../helpers/redux';
 import {ISettings, saveSettings, selectSettings} from '../../store/settings';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {camerasListMenuItem, navigateToMenuItem} from '../menu/Menu';
-import {useMenu} from '../menu/menuHelpers';
+import {menuButton, useMenu} from '../menu/menuHelpers';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -230,6 +230,7 @@ Settings.options = () => ({
     title: {
       text: 'Settings',
     },
+    leftButtons: [menuButton],
     rightButtons: [
       {
         id: 'save',

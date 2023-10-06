@@ -108,6 +108,6 @@ CamerasList.options = {
     title: {
       text: 'List of cameras',
     },
-    rightButtons: [menuButton],
+    leftButtons: [menuButton],
   },
 };

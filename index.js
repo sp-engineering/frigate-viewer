@@ -1,4 +1,5 @@
 import {Navigation} from 'react-native-navigation';
+import {TopBarButton} from './components/icons/TopBarButton';
 import {Author} from './views/author/Author';
 import {CameraEventClip} from './views/camera-event-clip/CameraEventClip';
 import {CameraEvents} from './views/camera-events/CameraEvents';
@@ -14,6 +15,7 @@ Navigation.registerComponent('Settings', () => Settings);
 Navigation.registerComponent('Author', () => Author);
 Navigation.registerComponent('Menu', () => Menu);
 Navigation.registerComponent('EventsFilters', () => EventsFilters);
+Navigation.registerComponent('TopBarButton', () => TopBarButton);
 
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setRoot({
