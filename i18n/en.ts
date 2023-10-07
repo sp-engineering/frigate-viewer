@@ -16,6 +16,7 @@ export default {
   'cameraEvents.action.delete': 'Delete',
   'cameraEvents.action.retain': 'Retain',
   'cameraEvents.action.unretain': 'Unretain',
+  'cameraEvents.toast.noClip': 'This event has no clip.',
   'eventsFilters.cameras.title': 'Cameras',
   'eventsFilters.labels.title': 'Labels',
   'eventsFilters.zones.title': 'Zones',

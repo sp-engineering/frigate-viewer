@@ -7,4 +7,5 @@ export const messages = makeMessages('cameraEvents', {
   'action.delete': 'Delete',
   'action.retain': 'Retain',
   'action.unretain': 'Unretain',
+  'toast.noClip': 'This event has no clip.',
 });

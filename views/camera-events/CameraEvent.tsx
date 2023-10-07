@@ -4,6 +4,7 @@ import {
   Dimensions,
   Image,
   StyleSheet,
+  ToastAndroid,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
 
 export const CameraEvent: FC<ICameraEventProps> = ({
   id,
+  has_clip,
   has_snapshot,
   start_time,
   end_time,
@@ -80,19 +82,27 @@ export const CameraEvent: FC<ICameraEventProps> = ({
   }, []);
 
   const showEventClip = useCallback(() => {
-    Navigation.showModal({
-      component: {
-        name: 'CameraEventClip',
-        passProps: {
-          eventId: id,
-        },
-        options: {
-          layout: {
-            orientation: ['landscape'],
+    if (has_clip) {
+      Navigation.showModal({
+        component: {
+          name: 'CameraEventClip',
+          passProps: {
+            eventId: id,
+          },
+          options: {
+            layout: {
+              orientation: ['landscape'],
+            },
           },
         },
-      },
-    });
+      });
+    } else {
+      ToastAndroid.showWithGravity(
+        intl.formatMessage(messages['toast.noClip']),
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+      );
+    }
   }, [id]);
 
   const onSnapshotLoad = useCallback(async (snapshot: string) => {
