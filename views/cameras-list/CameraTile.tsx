@@ -16,9 +16,7 @@ import {setFiltersLabels, setFiltersZones} from '../../store/events';
 import {ImagePreview} from './ImagePreview';
 import { get } from '../../helpers/rest';
 import { ICameraEvent } from '../camera-events/CameraEvent';
-import { EventSnapshot } from '../camera-events/EventSnapshot';
-import { EventTitle } from '../camera-events/EventTitle';
-import { EventLabels } from '../camera-events/EventLabels';
+import { LastEvent } from './LastEvent';
 
 const styles = StyleSheet.create({
   cameraTileTitle: {
@@ -32,17 +30,6 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     color: 'white',
     backgroundColor: '#00000040',
-  },
-  lastEventMetadata: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-  },
-  lastEventTitle: {
-    position: 'relative',
-  },
-  lastEventLabels: {
-    position: 'relative',
   },
 });
 
@@ -140,34 +127,11 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
 
   return (
     <View>
-      <Carousel initialPage={lastEvent ? 1 : 0}>
-        <View
-          style={{
-            width: `${100 / numColumns}%`,
-            height: previewHeight
-          }}>
-          {lastEvent && (
-            <>
-              <EventSnapshot
-                id={lastEvent.id}
-                hasSnapshot={lastEvent.has_snapshot} />
-              <View style={styles.lastEventMetadata}>
-                <EventLabels
-                  endTime={lastEvent.end_time}
-                  label={lastEvent.label}
-                  zones={lastEvent.zones}
-                  topScore={lastEvent.top_score}
-                  style={styles.lastEventLabels} />
-                <EventTitle
-                    startTime={lastEvent.start_time}
-                    endTime={lastEvent.end_time}
-                    retained={lastEvent.retain_indefinitely}
-                    style={styles.lastEventTitle}
-                  />
-              </View>
-            </>
-          )}
-        </View>
+      <Carousel initialPage={1}>
+        <LastEvent
+          event={lastEvent}
+          onPress={showCameraEvents}
+        />
         <ImagePreview
           imageUrl={lastImageSrc}
           onPress={showCameraEvents}
