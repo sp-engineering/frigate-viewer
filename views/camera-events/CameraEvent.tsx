@@ -20,6 +20,7 @@ import {useAppSelector} from '../../store/store';
 import {EventLabels} from './EventLabels';
 import {EventTitle} from './EventTitle';
 import {messages} from './messages';
+import { EventSnapshot } from './EventSnapshot';
 
 export interface ICameraEvent {
   id: string;
@@ -53,9 +54,6 @@ const styles = StyleSheet.create({
     paddingVertical: 1,
     paddingHorizontal: 2,
   },
-  cameraEventImage: {
-    flex: 1,
-  },
 });
 
 export const CameraEvent: FC<ICameraEventProps> = ({
@@ -70,7 +68,6 @@ export const CameraEvent: FC<ICameraEventProps> = ({
   onDelete,
   onSnapshotHeight,
 }) => {
-  const [snapshot, setSnapshot] = useState<string>();
   const [retained, setRetained] = useState(false);
   const apiUrl = useAppSelector(selectServerApiUrl);
   const snapshotHeight = useAppSelector(selectEventsSnapshotHeight);
@@ -81,13 +78,6 @@ export const CameraEvent: FC<ICameraEventProps> = ({
     setRetained(retain_indefinitely);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    const url = has_snapshot
-      ? `${apiUrl}/events/${id}/snapshot.jpg?bbox=1`
-      : `${apiUrl}/events/${id}/thumbnail.jpg`;
-    setSnapshot(url);
-  }, [id, has_snapshot, apiUrl]);
 
   const showEventClip = useCallback(() => {
     Navigation.showModal({
@@ -105,7 +95,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
     });
   }, [id]);
 
-  const onSnapshotLoad = useCallback(async () => {
+  const onSnapshotLoad = useCallback(async (snapshot: string) => {
     if (snapshot) {
       try {
         Image.getSize(snapshot, (width, height) => {
@@ -118,7 +108,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
         });
       } catch (err) {}
     }
-  }, [snapshot, numColumns, snapshotHeight, onSnapshotHeight]);
+  }, [numColumns, snapshotHeight, onSnapshotHeight]);
 
   const deleteDrawerItem: DrawerItemProps = useMemo(
     () => ({
@@ -172,16 +162,10 @@ export const CameraEvent: FC<ICameraEventProps> = ({
               height: snapshotHeight,
             },
           ]}>
-          {snapshot && (
-            <ZoomableImage
-              source={{uri: snapshot}}
-              style={styles.cameraEventImage}
-              fadeDuration={0}
-              resizeMode="contain"
-              resizeMethod="scale"
-              onLoad={onSnapshotLoad}
-            />
-          )}
+          <EventSnapshot
+            id={id}
+            hasSnapshot={has_snapshot}
+            onSnapshotLoad={onSnapshotLoad} />
           <EventTitle
             startTime={start_time}
             endTime={end_time}

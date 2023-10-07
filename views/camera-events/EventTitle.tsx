@@ -1,6 +1,6 @@
 import {format, formatDistance, formatRelative} from 'date-fns';
 import React, {FC, useMemo} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
 import {formatVideoTime, useDateLocale} from '../../helpers/locale';
 import {selectLocaleDatesDisplay} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
@@ -29,12 +29,14 @@ interface IEventTitleProps {
   startTime: number;
   endTime: number;
   retained: boolean;
+  style?: StyleProp<ViewStyle>;
 }
 
 export const EventTitle: FC<IEventTitleProps> = ({
   startTime,
   endTime,
   retained,
+  style,
 }) => {
   const dateLocale = useDateLocale();
   const datesDisplay = useAppSelector(selectLocaleDatesDisplay);
@@ -63,7 +65,7 @@ export const EventTitle: FC<IEventTitleProps> = ({
   );
 
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, style]}>
       <Text style={styles.timeText}>
         {startDate} {!isInProgress && <Text>({duration})</Text>}
       </Text>

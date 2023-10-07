@@ -1,6 +1,6 @@
 import React, {FC, useMemo} from 'react';
 import {useIntl} from 'react-intl';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
 import {messages} from './messages';
 
 const styles = StyleSheet.create({
@@ -40,6 +40,7 @@ interface IEventLabelsProps {
   label: string;
   zones: string[];
   topScore: number;
+  style?: StyleProp<ViewStyle>;
 }
 
 export const EventLabels: FC<IEventLabelsProps> = ({
@@ -47,13 +48,14 @@ export const EventLabels: FC<IEventLabelsProps> = ({
   label,
   zones,
   topScore,
+  style,
 }) => {
   const score = useMemo(() => `${Math.round(topScore * 100)}%`, [topScore]);
   const isInProgress = useMemo(() => !endTime, [endTime]);
   const intl = useIntl();
 
   return (
-    <View style={[styles.wrapper]}>
+    <View style={[styles.wrapper, style]}>
       <Text style={[styles.label]}>{label}</Text>
       {zones.map(zone => (
         <Text style={[styles.label, styles.zone]} key={zone}>

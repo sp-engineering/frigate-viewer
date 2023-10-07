@@ -14,6 +14,11 @@ import {
 import {CameraLabels} from './CameraLabels';
 import {setFiltersLabels, setFiltersZones} from '../../store/events';
 import {ImagePreview} from './ImagePreview';
+import { get } from '../../helpers/rest';
+import { ICameraEvent } from '../camera-events/CameraEvent';
+import { EventSnapshot } from '../camera-events/EventSnapshot';
+import { EventTitle } from '../camera-events/EventTitle';
+import { EventLabels } from '../camera-events/EventLabels';
 
 const styles = StyleSheet.create({
   cameraTileTitle: {
@@ -28,6 +33,17 @@ const styles = StyleSheet.create({
     color: 'white',
     backgroundColor: '#00000040',
   },
+  lastEventMetadata: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+  },
+  lastEventTitle: {
+    position: 'relative',
+  },
+  lastEventLabels: {
+    position: 'relative',
+  },
 });
 
 type CameraTileProps = PropsWithChildren<{
@@ -39,6 +55,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   const [lastImageSrc, setLastImageSrc] = useState<string | undefined>(
     undefined,
   );
+  const [lastEvent, setLastEvent] = useState<ICameraEvent>();
   const dispatch = useAppDispatch();
   const apiUrl = useAppSelector(selectServerApiUrl);
   const refreshFrequency = useAppSelector(selectCamerasRefreshFrequency);
@@ -46,10 +63,33 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   const numColumns = useAppSelector(selectCamerasNumColumns);
   let interval = useRef<NodeJS.Timer>();
 
+  const getLastImageUrl = useCallback(
+    () => `${apiUrl}/${cameraName}/latest.jpg?bbox=1&ts=${new Date().toISOString()}`,
+    [apiUrl],
+  );
+
+  const updateLastImageUrl = useCallback(async () => {
+    const lastImageUrl = getLastImageUrl();
+    await Image.prefetch(lastImageUrl);
+    setLastImageSrc(lastImageUrl);
+  }, [getLastImageUrl]);
+
+  const getLastEvent = useCallback(() => {
+    get<ICameraEvent[]>(`${apiUrl}/events`, {
+      cameras: cameraName,
+      limit: '1',
+      include_thumbnails: '0',
+    }).subscribe(data => {
+      if (data.length > 0) {
+        const event = data[0];
+        setLastEvent(event);
+      }
+    });
+  }, [cameraName]);
+
   useEffect(() => {
-    const getLastImageUrl = () =>
-      `${apiUrl}/${cameraName}/latest.jpg?bbox=1&ts=${new Date().toISOString()}`;
-    setLastImageSrc(getLastImageUrl());
+    updateLastImageUrl();
+    getLastEvent();
     const removeRefreshing = () => {
       if (interval.current) {
         clearInterval(interval.current);
@@ -57,9 +97,8 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
     };
     removeRefreshing();
     interval.current = setInterval(async () => {
-      const lastImageUrl = getLastImageUrl();
-      await Image.prefetch(lastImageUrl);
-      setLastImageSrc(lastImageUrl);
+      updateLastImageUrl();
+      getLastEvent();
     }, refreshFrequency * 1000);
     return removeRefreshing;
   }, [cameraName, setLastImageSrc, apiUrl, refreshFrequency]);
@@ -101,9 +140,33 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
 
   return (
     <View>
-      <Carousel initialPage={2}>
-        <View>
-          <Text>Last event</Text>
+      <Carousel initialPage={lastEvent ? 1 : 0}>
+        <View
+          style={{
+            width: `${100 / numColumns}%`,
+            height: previewHeight
+          }}>
+          {lastEvent && (
+            <>
+              <EventSnapshot
+                id={lastEvent.id}
+                hasSnapshot={lastEvent.has_snapshot} />
+              <View style={styles.lastEventMetadata}>
+                <EventLabels
+                  endTime={lastEvent.end_time}
+                  label={lastEvent.label}
+                  zones={lastEvent.zones}
+                  topScore={lastEvent.top_score}
+                  style={styles.lastEventLabels} />
+                <EventTitle
+                    startTime={lastEvent.start_time}
+                    endTime={lastEvent.end_time}
+                    retained={lastEvent.retain_indefinitely}
+                    style={styles.lastEventTitle}
+                  />
+              </View>
+            </>
+          )}
         </View>
         <ImagePreview
           imageUrl={lastImageSrc}
