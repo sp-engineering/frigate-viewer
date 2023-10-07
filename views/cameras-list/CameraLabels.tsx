@@ -1,9 +1,10 @@
 import React, {FC, useCallback} from 'react';
-import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {Colors} from 'react-native-ui-lib';
 import {selectAvailableLabels} from '../../store/events';
 import {selectCamerasPreviewHeight} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
   wrapper: {
