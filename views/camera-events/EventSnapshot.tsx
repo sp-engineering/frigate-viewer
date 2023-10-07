@@ -31,7 +31,7 @@ export const EventSnapshot: FC<IEventSnapshotProps> = ({id, hasSnapshot, onSnaps
     if (onSnapshotLoad && snapshot) {
       onSnapshotLoad(snapshot);
     }
-  }, [onSnapshotLoad]);
+  }, [onSnapshotLoad, snapshot]);
 
   return snapshot
     ? (
