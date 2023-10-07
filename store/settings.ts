@@ -1,11 +1,12 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from './store';
+import { NativeModules } from 'react-native';
 
 /**
  * STORE MODEL
  **/
 
-export type Region = 'enGB' | 'enUS' | 'pl';
+export type Region = 'en_GB' | 'en_US' | 'pl_PL';
 
 export interface ISettings {
   server: {
@@ -35,7 +36,7 @@ export const initialSettings: ISettings = {
     port: 5000,
   },
   locale: {
-    region: 'enGB',
+    region: NativeModules.I18nManager.localeIdentifier,
     datesDisplay: 'descriptive',
   },
   cameras: {

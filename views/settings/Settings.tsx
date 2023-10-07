@@ -186,7 +186,7 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
               error={errors.locale?.region}>
               <Dropdown
                 value={values.locale.region}
-                options={['enGB', 'enUS', 'pl'].map(code => ({
+                options={['en_GB', 'en_US', 'pl_PL'].map(code => ({
                   value: code,
                   label: intl.formatMessage(
                     messages[`locale.region.option.${code}` as MessageKey],

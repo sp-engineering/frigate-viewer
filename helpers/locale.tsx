@@ -13,9 +13,9 @@ import plLang from '../i18n/pl';
 export const useDateLocale = () => {
   const region = useAppSelector(selectLocaleRegion);
   const regionLocaleMap: Record<Region, Locale> = {
-    enGB,
-    enUS,
-    pl,
+    en_GB: enGB,
+    en_US: enGB,
+    pl_PL: pl,
   };
   const fallbackLocale = enGB;
   return regionLocaleMap[region] || fallbackLocale;
@@ -33,9 +33,9 @@ type Lang = Record<string, string>;
 type LangCode = 'en' | 'pl';
 
 const regionTranslationsMap: Record<Region, [LangCode, Lang]> = {
-  enGB: ['en', enLang],
-  enUS: ['en', enLang],
-  pl: ['pl', plLang],
+  en_GB: ['en', enLang],
+  en_US: ['en', enLang],
+  pl_PL: ['pl', plLang],
 };
 
 const fallbackLanguage = 'en';
