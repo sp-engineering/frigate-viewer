@@ -126,7 +126,9 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
         .subscribe(data => {
           setEvents(data);
           setRefreshing(false);
-          listRef.current?.scrollToIndex({index: 0});
+          if (data.length > 0) {
+            listRef.current?.scrollToIndex({index: 0});
+          }
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
