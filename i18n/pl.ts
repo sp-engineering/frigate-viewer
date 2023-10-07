@@ -49,4 +49,7 @@ export default {
   'settings.cameras.numberOfColumns.label': 'Liczba kolumn',
   'settings.events.header': 'Zdarzenia',
   'settings.events.numberOfColumns.label': 'Liczba kolumn',
+  'settings.events.photoPreference.label': 'Preferowane zdjęcie',
+  'settings.events.photoPreference.option.snapshot': 'Migawka',
+  'settings.events.photoPreference.option.thumbnail': 'Miniatura',
 };

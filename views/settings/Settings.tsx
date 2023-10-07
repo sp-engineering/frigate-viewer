@@ -88,6 +88,7 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
           .required(requiredError)
           .min(1, minError)
           .max(3, maxError),
+        photoPreference: yup.string().required(requiredError),
       }),
     });
   }, [intl]);
@@ -262,6 +263,29 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
                 value={values.events.numColumns}
                 options={[{value: 1}, {value: 2}, {value: 3}]}
                 onValueChange={v => setFieldValue('events.numColumns', v)}
+              />
+            </Label>
+            <Label
+              text={intl.formatMessage(messages['events.photoPreference.label'])}
+              touched={touched.events?.photoPreference}
+              error={errors.events?.photoPreference}>
+              <Dropdown
+                value={values.events.photoPreference}
+                options={[
+                  {
+                    value: 'snapshot',
+                    label: intl.formatMessage(
+                      messages['events.photoPreference.option.snapshot'],
+                    ),
+                  },
+                  {
+                    value: 'thumbnail',
+                    label: intl.formatMessage(
+                      messages['events.photoPreference.option.thumbnail'],
+                    ),
+                  },
+                ]}
+                onValueChange={handleChange('events.photoPreference')}
               />
             </Label>
           </Section>

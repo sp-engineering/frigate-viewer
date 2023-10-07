@@ -26,6 +26,9 @@ export const messages = makeMessages('settings', {
   'cameras.numberOfColumns.label': 'Number of columns',
   'events.header': 'Events',
   'events.numberOfColumns.label': 'Number of columns',
+  'events.photoPreference.label': 'Photo preference',
+  'events.photoPreference.option.snapshot': 'Snapshot',
+  'events.photoPreference.option.thumbnail': 'Thumbnail',
 });
 
 export type MessageKey = typeof messages extends Record<

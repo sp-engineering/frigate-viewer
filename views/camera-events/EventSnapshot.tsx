@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { ZoomableImage } from '../../components/ZoomableImage';
 import { StyleSheet } from 'react-native';
 import { useAppSelector } from '../../store/store';
-import { selectServerApiUrl } from '../../store/settings';
+import { selectEventsPhotoPreference, selectServerApiUrl } from '../../store/settings';
 
 const styles = StyleSheet.create({
   image: {
@@ -18,10 +18,11 @@ interface IEventSnapshotProps {
 
 export const EventSnapshot: FC<IEventSnapshotProps> = ({id, hasSnapshot, onSnapshotLoad}) => {
   const [snapshot, setSnapshot] = useState<string>();
+  const photoPreference = useAppSelector(selectEventsPhotoPreference);
   const apiUrl = useAppSelector(selectServerApiUrl);
 
   useEffect(() => {
-    const url = hasSnapshot
+    const url = hasSnapshot && photoPreference === 'snapshot'
       ? `${apiUrl}/events/${id}/snapshot.jpg?bbox=1`
       : `${apiUrl}/events/${id}/thumbnail.jpg`;
     setSnapshot(url);

@@ -49,4 +49,7 @@ export default {
   'settings.cameras.numberOfColumns.label': 'Number of columns',
   'settings.events.header': 'Events',
   'settings.events.numberOfColumns.label': 'Number of columns',
+  'settings.locale.photoPreference.label': 'Photo preference',
+  'settings.events.photoPreference.option.snapshot': 'Snapshot',
+  'settings.events.photoPreference.option.thumbnail': 'Thumbnail',
 };

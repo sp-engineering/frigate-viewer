@@ -26,6 +26,7 @@ export interface ISettings {
   events: {
     numColumns: number;
     snapshotHeight: number;
+    photoPreference: 'snapshot' | 'thumbnail';
   };
 }
 
@@ -47,6 +48,7 @@ export const initialSettings: ISettings = {
   events: {
     numColumns: 1,
     snapshotHeight: 222,
+    photoPreference: 'snapshot',
   },
 };
 
@@ -157,3 +159,6 @@ export const selectEventsNumColumns = (state: RootState) =>
 
 export const selectEventsSnapshotHeight = (state: RootState) =>
   selectEvents(state).snapshotHeight;
+
+export const selectEventsPhotoPreference = (state: RootState) =>
+  selectEvents(state).photoPreference;
