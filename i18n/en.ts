@@ -8,8 +8,6 @@ export default {
   'author.buyMeCoffee.buttonText': 'Buy me a coffee',
   'author.error.cantOpenLink': "Can't find any app to open this link.",
   'camerasList.topBar.title': 'List of cameras',
-  'camerasList.toast.noServerData':
-    'You need to provide frigate nvr server data.',
   'cameraEvents.topBar.general.title': 'Events',
   'cameraEvents.topBar.specificCamera.title': 'Events of {cameraName}',
   'cameraEvents.labels.inProgressLabel': 'In progress',
@@ -52,4 +50,6 @@ export default {
   'settings.locale.photoPreference.label': 'Photo preference',
   'settings.events.photoPreference.option.snapshot': 'Snapshot',
   'settings.events.photoPreference.option.thumbnail': 'Thumbnail',
+  'settings.toast.noServerData':
+    'You need to provide frigate nvr server data.',
 };

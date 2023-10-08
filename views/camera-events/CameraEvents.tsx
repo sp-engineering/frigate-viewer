@@ -22,6 +22,7 @@ import {
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {CameraEvent, ICameraEvent} from './CameraEvent';
 import {messages} from './messages';
+import { useNoServer } from '../settings/useNoServer';
 
 interface ICameraEventsProps {
   cameraNames?: string[];
@@ -31,6 +32,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   cameraNames,
   componentId,
 }) => {
+  useNoServer();
   useMenu(componentId, 'cameraEvents');
   useEventsFilters(componentId, cameraNames);
   const listRef = useRef<FlatList<ICameraEvent>>(null);
@@ -120,16 +122,18 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   }, []);
 
   useEffect(() => {
-    if (refreshing) {
-      get<ICameraEvent[]>(`${apiUrl}/events`, eventsQueryParams)
-        .pipe(tap(watchEndReached))
-        .subscribe(data => {
-          setEvents(data);
-          setRefreshing(false);
-          if (data.length > 0) {
-            listRef.current?.scrollToIndex({index: 0});
-          }
-        });
+    if (apiUrl !== undefined) {
+      if (refreshing) {
+        get<ICameraEvent[]>(`${apiUrl}/events`, eventsQueryParams)
+          .pipe(tap(watchEndReached))
+          .subscribe(data => {
+            setEvents(data);
+            setRefreshing(false);
+            if (data.length > 0) {
+              listRef.current?.scrollToIndex({index: 0});
+            }
+          });
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshing]);

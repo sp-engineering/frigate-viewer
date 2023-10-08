@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useIntl} from 'react-intl';
-import {FlatList, ToastAndroid} from 'react-native';
+import {FlatList} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {catchError, tap} from 'rxjs/operators';
 import {get} from '../../helpers/rest';
@@ -16,10 +16,10 @@ import {
   selectServerApiUrl,
 } from '../../store/settings';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {navigateToMenuItem, settingsMenuItem} from '../menu/Menu';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {CameraTile} from './CameraTile';
 import {messages} from './messages';
+import { useNoServer } from '../settings/useNoServer';
 
 interface IConfigResponse {
   cameras: Record<
@@ -35,6 +35,7 @@ interface IConfigResponse {
 
 export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
   useMenu(componentId, 'camerasList');
+  useNoServer();
   const [loading, setLoading] = useState(true);
   const apiUrl = useAppSelector(selectServerApiUrl);
   const cameras = useAppSelector(selectAvailableCameras);
@@ -88,17 +89,10 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
   }, [apiUrl, dispatch]);
 
   useEffect(() => {
-    if (apiUrl === undefined) {
-      navigateToMenuItem(settingsMenuItem)();
-      ToastAndroid.showWithGravity(
-        intl.formatMessage(messages['toast.noServerData']),
-        ToastAndroid.LONG,
-        ToastAndroid.TOP,
-      );
-    } else {
+    if (apiUrl !== undefined) {
       refresh();
     }
-  }, [refresh, apiUrl, intl]);
+  }, [refresh, apiUrl]);
 
   return (
     <FlatList

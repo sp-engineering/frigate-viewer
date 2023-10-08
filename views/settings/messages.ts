@@ -29,6 +29,7 @@ export const messages = makeMessages('settings', {
   'events.photoPreference.label': 'Photo preference',
   'events.photoPreference.option.snapshot': 'Snapshot',
   'events.photoPreference.option.thumbnail': 'Thumbnail',
+  'toast.noServerData': 'You need to provide frigate nvr server data.',
 });
 
 export type MessageKey = typeof messages extends Record<

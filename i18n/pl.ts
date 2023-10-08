@@ -9,7 +9,6 @@ export default {
   'author.error.cantOpenLink':
     'Nie można znaleźć żadnej aplikacji, aby otworzyć ten link.',
   'camerasList.topBar.title': 'Lista kamer',
-  'camerasList.toast.noServerData': 'Podaj dane serwera Frigate NVR.',
   'cameraEvents.topBar.general.title': 'Zdarzenia',
   'cameraEvents.topBar.specificCamera.title': 'Zdarzenia na {cameraName}',
   'cameraEvents.labels.inProgressLabel': 'W trakcie',
@@ -52,4 +51,5 @@ export default {
   'settings.events.photoPreference.label': 'Preferowane zdjęcie',
   'settings.events.photoPreference.option.snapshot': 'Migawka',
   'settings.events.photoPreference.option.thumbnail': 'Miniatura',
+  'settings.toast.noServerData': 'Podaj dane serwera Frigate NVR.',
 };
