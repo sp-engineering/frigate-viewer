@@ -4,7 +4,7 @@ import {Pressable, StyleSheet, Text, View, ViewProps} from 'react-native';
 import {messages} from './messages';
 
 const styles = StyleSheet.create({
-  buyMeCoffee: {
+  wrapper: {
     margin: 20,
     paddingTop: 20,
     borderColor: '#00000088',
@@ -12,15 +12,21 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  buyMeCoffeeText: {
+  nonProfitText: {
+    marginBottom: 10,
+    color: 'black',
+    textAlign: 'center',
+  },
+  text: {
     fontWeight: '500',
     color: 'black',
+    textAlign: 'center',
   },
-  buyMeCoffeeButtonInline: {
+  buttonInline: {
     marginVertical: 15,
     flexDirection: 'row',
   },
-  buyMeCoffeeButton: {
+  button: {
     flexDirection: 'row',
     gap: 5,
     paddingHorizontal: 10,
@@ -28,7 +34,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fd0',
     borderRadius: 5,
   },
-  buyMeCoffeeButtonText: {
+  buttonText: {
     color: 'black',
   },
 });
@@ -45,17 +51,20 @@ export const BuyMeACoffee: FC<IButMeACoffeeProps> = ({
   const intl = useIntl();
 
   return (
-    <View {...viewProps} style={[style, styles.buyMeCoffee]}>
-      <Text style={styles.buyMeCoffeeText}>
+    <View {...viewProps} style={[style, styles.wrapper]}>
+      <Text style={styles.nonProfitText}>
+        {intl.formatMessage(messages['buyMeCoffee.nonProfitLabel'])}
+      </Text>
+      <Text style={styles.text}>
         {intl.formatMessage(messages['buyMeCoffee.doYouLikeLabel'])}
       </Text>
-      <Text style={styles.buyMeCoffeeText}>
+      <Text style={styles.text}>
         {intl.formatMessage(messages['buyMeCoffee.sayThankYouLabel'])}
       </Text>
-      <View style={styles.buyMeCoffeeButtonInline}>
-        <Pressable style={styles.buyMeCoffeeButton} onPress={onPress}>
-          <Text style={styles.buyMeCoffeeButtonText}>☕</Text>
-          <Text style={styles.buyMeCoffeeButtonText}>
+      <View style={styles.buttonInline}>
+        <Pressable style={styles.button} onPress={onPress}>
+          <Text style={styles.buttonText}>☕</Text>
+          <Text style={styles.buttonText}>
             {intl.formatMessage(messages['buyMeCoffee.buttonText'])}
           </Text>
         </Pressable>

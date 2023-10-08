@@ -1,10 +1,7 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useIntl} from 'react-intl';
 import {
-  Alert,
   Image,
-  Linking,
-  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -13,6 +10,9 @@ import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {BuyMeACoffee} from './BuyMeACoffee';
 import {messages} from './messages';
+import { UsedLibs } from './UsedLibs';
+import { useOpenLink } from './useOpenLink';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -44,24 +44,17 @@ const styles = StyleSheet.create({
   },
   itemValue: {
     color: 'black',
+    textAlign: 'center',
+  },
+  repository: {
+    flexDirection: 'column',
   },
 });
 
 export const Author: NavigationFunctionComponent = ({componentId}) => {
   useMenu(componentId, 'author');
   const intl = useIntl();
-
-  const openLink = useCallback(
-    (url: string) => async () => {
-      const supported = await Linking.canOpenURL(url);
-      if (supported) {
-        await Linking.openURL(url);
-      } else {
-        Alert.alert("Can't find any app to open this link.");
-      }
-    },
-    [],
-  );
+  const openLink = useOpenLink();
 
   useEffect(() => {
     Navigation.mergeOptions(componentId, {
@@ -97,17 +90,21 @@ export const Author: NavigationFunctionComponent = ({componentId}) => {
             szymon@piwowarczyk.net
           </Text>
         </Text>
-        <Text style={styles.item}>
+        <View style={[styles.item, styles.repository]}>
+          <Text style={styles.itemValue}>
+            {intl.formatMessage(messages['info.opensourceLabel'])}
+          </Text>
           <Text
             style={[styles.itemValue, styles.link]}
-            onPress={openLink('https://github.com/piwko28')}>
+            onPress={openLink('https://github.com/sp-engineering')}>
             {intl.formatMessage(messages['info.githubLabel'])}
           </Text>
-        </Text>
+        </View>
       </View>
       <BuyMeACoffee
         onPress={openLink('https://www.buymeacoffee.com/sp.engineering')}
       />
+      <UsedLibs />
     </ScrollView>
   );
 };

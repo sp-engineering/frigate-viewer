@@ -2,10 +2,13 @@ export default {
   'author.topBar.title': 'Autor',
   'author.info.authorLabel': 'Autor',
   'author.info.contactLabel': 'Kontakt',
+  'author.info.opensourceLabel': 'To jest projekt otwarto-źródłowy.',
   'author.info.githubLabel': 'Zobacz na githubie',
+  'author.buyMeCoffee.nonProfitLabel': 'Ten projekt został stworzony w celu nauki i nie zamierzam czerpać korzyści ze sprzedaży licencji.',
   'author.buyMeCoffee.doYouLikeLabel': 'Lubisz tę aplikację',
   'author.buyMeCoffee.sayThankYouLabel': 'i chcesz podziękować?',
   'author.buyMeCoffee.buttonText': 'Kup mi kawę',
+  'author.usedLibs.header': 'Użyte biblioteki:',
   'author.error.cantOpenLink':
     'Nie można znaleźć żadnej aplikacji, aby otworzyć ten link.',
   'camerasList.topBar.title': 'Lista kamer',
