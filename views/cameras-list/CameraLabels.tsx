@@ -1,22 +1,18 @@
 import React, {FC, useCallback} from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text} from 'react-native';
 import {Colors} from 'react-native-ui-lib';
 import {selectAvailableLabels} from '../../store/events';
 import {selectCamerasPreviewHeight} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
-import {ScrollView} from 'react-native-gesture-handler';
+import {FlatList} from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
   wrapper: {
     width: '100%',
+    height: '100%',
     backgroundColor: Colors.green70,
-  },
-  labels: {
-    display: 'flex',
-    margin: 2,
+    padding: 2,
     marginTop: 35,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
   },
   label: {
     display: 'flex',
@@ -25,8 +21,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    width: 88,
-    height: 88,
+    flex: 1,
+    maxWidth: '24%',
+    height: 80,
     backgroundColor: Colors.green40,
   },
   labelText: {
@@ -64,19 +61,22 @@ export const CameraLabels: FC<ICameraLabelsProps> = ({onLabelPress}) => {
   );
 
   return (
-    <ScrollView style={[styles.wrapper, {height: previewHeight}]}>
-      <View style={styles.labels}>
-        {labels.map(label => (
-          <Pressable onPress={onPress(label)} key={label}>
-            <View style={styles.label}>
-              {labelEmoji[label] && (
-                <Text style={styles.iconEmoji}>{labelEmoji[label]}</Text>
-              )}
-              <Text style={styles.labelText}>{label}</Text>
-            </View>
+      <FlatList
+        data={labels}
+        numColumns={4}
+        renderItem={({item}) => (
+          <Pressable
+            style={styles.label}
+            onPress={onPress(item)}
+          >
+            {labelEmoji[item] && (
+              <Text style={styles.iconEmoji}>{labelEmoji[item]}</Text>
+            )}
+            <Text style={styles.labelText}>{item}</Text>
           </Pressable>
-        ))}
-      </View>
-    </ScrollView>
+        )}
+        keyExtractor={label => label}
+        style={[styles.wrapper, {height: previewHeight - 35}]}
+      ></FlatList>
   );
 };
