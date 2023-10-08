@@ -162,13 +162,19 @@ export const CameraEvent: FC<ICameraEventProps> = ({
   );
 
   return (
-    <Drawer leftItem={deleteDrawerItem} rightItems={[retainDrawerItem]}>
+    <Drawer
+      leftItem={deleteDrawerItem}
+      rightItems={[retainDrawerItem]}
+      style={{
+        width: `${100 / numColumns}%`,
+        height: snapshotHeight,
+      }}
+    >
       <TouchableWithoutFeedback onPress={showEventClip}>
         <View
           style={[
             styles.cameraEvent,
             {
-              width: `${100 / numColumns}%`,
               height: snapshotHeight,
             },
           ]}>

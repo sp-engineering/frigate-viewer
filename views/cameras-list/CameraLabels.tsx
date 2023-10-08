@@ -1,18 +1,18 @@
-import React, {FC, useCallback} from 'react';
+import React, {FC, useCallback, useMemo} from 'react';
 import {Pressable, StyleSheet, Text} from 'react-native';
 import {Colors} from 'react-native-ui-lib';
 import {selectAvailableLabels} from '../../store/events';
-import {selectCamerasPreviewHeight} from '../../store/settings';
+import {selectCamerasNumColumns, selectCamerasPreviewHeight} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
 import {FlatList} from 'react-native-gesture-handler';
 
-const styles = StyleSheet.create({
+const stylesFn = (numColumns: number) => StyleSheet.create({
   wrapper: {
     width: '100%',
     height: '100%',
     backgroundColor: Colors.green70,
     padding: 2,
-    marginTop: 35,
+    marginTop: 35 / numColumns,
   },
   label: {
     display: 'flex',
@@ -23,14 +23,15 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     flex: 1,
     maxWidth: '24%',
-    height: 80,
+    height: 80 / numColumns,
     backgroundColor: Colors.green40,
   },
   labelText: {
+    fontSize: 14 / numColumns,
     color: 'white',
   },
   iconEmoji: {
-    fontSize: 40,
+    fontSize: 40 / (numColumns * 1.5),
     color: 'white',
   },
 });
@@ -52,6 +53,9 @@ interface ICameraLabelsProps {
 export const CameraLabels: FC<ICameraLabelsProps> = ({onLabelPress}) => {
   const labels = useAppSelector(selectAvailableLabels);
   const previewHeight = useAppSelector(selectCamerasPreviewHeight);
+  const numColumns = useAppSelector(selectCamerasNumColumns);
+
+  const styles = useMemo(() => stylesFn(numColumns), [numColumns]);
 
   const onPress = useCallback(
     (label: string) => () => {
@@ -76,7 +80,7 @@ export const CameraLabels: FC<ICameraLabelsProps> = ({onLabelPress}) => {
           </Pressable>
         )}
         keyExtractor={label => label}
-        style={[styles.wrapper, {height: previewHeight - 35}]}
+        style={[styles.wrapper, {height: previewHeight - 35 / numColumns}]}
       ></FlatList>
   );
 };

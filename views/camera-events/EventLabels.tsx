@@ -3,7 +3,7 @@ import {useIntl} from 'react-intl';
 import {StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
 import {messages} from './messages';
 
-const styles = StyleSheet.create({
+const stylesFn = (numColumns: number) => StyleSheet.create({
   wrapper: {
     position: 'absolute',
     left: 2,
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     margin: 1,
     color: 'white',
     backgroundColor: 'blue',
-    fontSize: 10,
+    fontSize: 10 / (numColumns / 1.5),
     fontWeight: '600',
     opacity: 0.7,
   },
@@ -41,6 +41,7 @@ interface IEventLabelsProps {
   zones: string[];
   topScore: number;
   style?: StyleProp<ViewStyle>;
+  numColumns?: number;
 }
 
 export const EventLabels: FC<IEventLabelsProps> = ({
@@ -49,10 +50,13 @@ export const EventLabels: FC<IEventLabelsProps> = ({
   zones,
   topScore,
   style,
+  numColumns,
 }) => {
   const score = useMemo(() => `${Math.round(topScore * 100)}%`, [topScore]);
   const isInProgress = useMemo(() => !endTime, [endTime]);
   const intl = useIntl();
+
+  const styles = useMemo(() => stylesFn(numColumns || 1), [numColumns]);
 
   return (
     <View style={[styles.wrapper, style]}>

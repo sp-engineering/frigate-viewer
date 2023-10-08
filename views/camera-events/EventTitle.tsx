@@ -5,7 +5,7 @@ import {formatVideoTime, useDateLocale} from '../../helpers/locale';
 import {selectLocaleDatesDisplay} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
 
-const styles = StyleSheet.create({
+const stylesFn = (numColumns: number) => StyleSheet.create({
   wrapper: {
     position: 'absolute',
     display: 'flex',
@@ -15,11 +15,11 @@ const styles = StyleSheet.create({
     left: 2,
     top: 1,
     width: '100%',
-    padding: 5,
+    padding: 5 / numColumns,
     backgroundColor: '#00000040',
   },
   timeText: {
-    fontSize: 12,
+    fontSize: 12 / (numColumns / 1.5),
     fontWeight: '600',
     color: 'white',
   },
@@ -30,6 +30,7 @@ interface IEventTitleProps {
   endTime: number;
   retained: boolean;
   style?: StyleProp<ViewStyle>;
+  numColumns?: number;
 }
 
 export const EventTitle: FC<IEventTitleProps> = ({
@@ -37,6 +38,7 @@ export const EventTitle: FC<IEventTitleProps> = ({
   endTime,
   retained,
   style,
+  numColumns,
 }) => {
   const dateLocale = useDateLocale();
   const datesDisplay = useAppSelector(selectLocaleDatesDisplay);
@@ -63,6 +65,8 @@ export const EventTitle: FC<IEventTitleProps> = ({
         : formatVideoTime(Math.round(endTime * 1000 - startTime * 1000)),
     [startTime, endTime, dateLocale, datesDisplay],
   );
+
+  const styles = useMemo(() => stylesFn(numColumns || 1), [numColumns]);
 
   return (
     <View style={[styles.wrapper, style]}>

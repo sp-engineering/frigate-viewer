@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
+import React, {FC, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import {Navigation} from 'react-native-navigation';
@@ -18,15 +18,15 @@ import { get } from '../../helpers/rest';
 import { ICameraEvent } from '../camera-events/CameraEvent';
 import { LastEvent } from './LastEvent';
 
-const styles = StyleSheet.create({
+const stylesFn = (numColumns: number) => StyleSheet.create({
   cameraTileTitle: {
     position: 'absolute',
     left: 2,
     top: 1,
     width: '100%',
-    paddingVertical: 5,
-    paddingHorizontal: 14,
-    fontSize: 16,
+    paddingVertical: 5 / numColumns,
+    paddingHorizontal: 14 / numColumns,
+    fontSize: 16 / numColumns,
     fontWeight: '300',
     color: 'white',
     backgroundColor: '#00000040',
@@ -125,8 +125,12 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
     }
   }, [dispatch, lastImageSrc, numColumns, previewHeight]);
 
+  const styles = useMemo(() => stylesFn(numColumns), [numColumns]);
+
   return (
-    <View>
+    <View style={{
+      width: `${100 / numColumns}%`,
+    }}>
       <Carousel initialPage={1}>
         <LastEvent
           event={lastEvent}

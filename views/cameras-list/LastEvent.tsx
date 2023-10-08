@@ -40,7 +40,7 @@ export const LastEvent: FC<ILastEventProps> = ({event, onPress}) => {
     <TouchableWithoutFeedback onPress={onEventPress}>
       <View
         style={{
-          width: `${100 / numColumns}%`,
+          width: '100%',
           height: previewHeight
         }}>
         {event && (
@@ -54,13 +54,16 @@ export const LastEvent: FC<ILastEventProps> = ({event, onPress}) => {
                 label={event.label}
                 zones={event.zones}
                 topScore={event.top_score}
-                style={styles.eventLabels} />
+                style={styles.eventLabels}
+                numColumns={numColumns}
+              />
               <EventTitle
-                  startTime={event.start_time}
-                  endTime={event.end_time}
-                  retained={event.retain_indefinitely}
-                  style={styles.eventTitle}
-                />
+                startTime={event.start_time}
+                endTime={event.end_time}
+                retained={event.retain_indefinitely}
+                style={styles.eventTitle}
+                numColumns={numColumns}
+              />
             </View>
           </>
         )}

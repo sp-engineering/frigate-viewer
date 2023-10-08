@@ -37,7 +37,7 @@ export const ImagePreview: FC<IImagePreviewProps> = ({
       <View
         style={[
           styles.wrapper,
-          {width: `${100 / numColumns}%`, height: previewHeight},
+          {width: '100%', height: previewHeight},
         ]}>
         {imageUrl && (
           <ZoomableImage
