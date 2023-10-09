@@ -20,6 +20,7 @@ import {menuButton, useMenu} from '../menu/menuHelpers';
 import {CameraTile} from './CameraTile';
 import {messages} from './messages';
 import { useNoServer } from '../settings/useNoServer';
+import { Background } from '../../components/Background';
 
 interface IConfigResponse {
   cameras: Record<
@@ -95,15 +96,17 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
   }, [refresh, apiUrl]);
 
   return (
-    <FlatList
-      data={cameras}
-      renderItem={({item}) => (
-        <CameraTile cameraName={item} componentId={componentId} />
-      )}
-      keyExtractor={cameraName => cameraName}
-      refreshing={loading}
-      onRefresh={refresh}
-      numColumns={numColumns}
-    />
+    <Background>
+      <FlatList
+        data={cameras}
+        renderItem={({item}) => (
+          <CameraTile cameraName={item} componentId={componentId} />
+        )}
+        keyExtractor={cameraName => cameraName}
+        refreshing={loading}
+        onRefresh={refresh}
+        numColumns={numColumns}
+      />
+    </Background>
   );
 };

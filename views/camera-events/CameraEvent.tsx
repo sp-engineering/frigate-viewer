@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import {Colors, Drawer, DrawerItemProps} from 'react-native-ui-lib';
-import {ZoomableImage} from '../../components/ZoomableImage';
 import {del, post} from '../../helpers/rest';
 import {
   selectServerApiUrl,
@@ -54,6 +53,7 @@ const styles = StyleSheet.create({
   cameraEvent: {
     paddingVertical: 1,
     paddingHorizontal: 2,
+    backgroundColor: 'white',
   },
 });
 
