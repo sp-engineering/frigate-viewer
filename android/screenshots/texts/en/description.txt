@@ -1,0 +1,8 @@
+Do you own Frigate NVR server to store your camera events? This unofficial app will help you to browse events with viewing clips and manage them.
+
+Features:
+* Live preview of Frigate NVR cameras
+* List of events with filtering with cameras, labels and zones
+* Preview of snapshots and clips with zoom
+* Removing and retaining events
+* Preview of last event from the cameras
