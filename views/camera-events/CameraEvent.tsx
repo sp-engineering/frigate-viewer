@@ -186,12 +186,14 @@ export const CameraEvent: FC<ICameraEventProps> = ({
             startTime={start_time}
             endTime={end_time}
             retained={retained}
+            numColumns={numColumns}
           />
           <EventLabels
             endTime={end_time}
             label={label}
             zones={zones}
             topScore={top_score}
+            numColumns={numColumns}
           />
         </View>
       </TouchableWithoutFeedback>

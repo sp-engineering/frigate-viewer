@@ -40,7 +40,7 @@ export const EventSnapshot: FC<IEventSnapshotProps> = ({id, hasSnapshot, onSnaps
         source={{uri: snapshot}}
         style={styles.image}
         fadeDuration={0}
-        resizeMode="contain"
+        resizeMode="cover"
         resizeMethod="scale"
         onLoad={onLoad}
       />
