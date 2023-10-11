@@ -63,7 +63,7 @@ def enableSeparateBuildPerCPUArchitecture = false
 /**
  * Set this to true to Run Proguard on Release builds to minify the Java bytecode.
  */
-def enableProguardInReleaseBuilds = true
+def enableProguardInReleaseBuilds = false
 
 /**
  * The preferred build flavor of JavaScriptCore (JSC)
@@ -98,8 +98,8 @@ android {
         applicationId "com.frigateviewer"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.0.1"
     }
 
     splits {

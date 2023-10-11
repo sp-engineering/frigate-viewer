@@ -1,4 +1,5 @@
-import {from, Observable} from 'rxjs';
+import { ToastAndroid } from 'react-native';
+import {catchError, from, Observable} from 'rxjs';
 
 export const get = <T>(
   endpoint: string,
@@ -9,7 +10,10 @@ export const get = <T>(
     fetch(
       `${endpoint}${queryParams ? `?${new URLSearchParams(queryParams)}` : ''}`,
     ).then(res => (json === false ? res.text() : res.json())),
-  );
+  ).pipe(catchError((e) => {
+    ToastAndroid.show(e.message, ToastAndroid.LONG);
+    throw e;
+  }));
 };
 
 export const post = <T>(
