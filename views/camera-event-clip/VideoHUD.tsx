@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
 
 interface IVideoHUDProps extends ViewProps {
   paused: boolean;
+  currentTime?: number;
   duration?: number;
-  position?: number;
   onPaused?: (paused: boolean) => void;
   onSeek?: (pos: number) => void;
 }
@@ -92,13 +92,13 @@ const PlayIcon: FC = () => (
 
 export const VideoHUD: FC<IVideoHUDProps> = ({
   paused,
+  currentTime,
   duration,
-  position,
   onPaused,
   onSeek,
   children,
 }) => {
-  const [seekPos, setSeekPos] = useState<number>();
+  const [seekTime, setSeekTime] = useState<number>();
 
   const play = useCallback(() => {
     if (onPaused) {
@@ -140,38 +140,37 @@ export const VideoHUD: FC<IVideoHUDProps> = ({
       pause();
     })
     .onUpdate(event => {
-      if (position !== undefined) {
-        const distance = event.translationX - 50;
+      if (currentTime !== undefined && duration !== undefined) {
+        const position = currentTime / duration;
+        const distance = event.translationX;
         const minmax = (value: number, min: number, max: number) =>
           Math.max(min, Math.min(max, value));
         const desiredPos = minmax(position + distance / 200, 0, 1);
-        setSeekPos(desiredPos);
+        setSeekTime(desiredPos * duration);
       }
     })
     .onEnd(() => {
-      seek(((seekPos || 0) * (duration || 0)) / 10000);
+      seek(seekTime || 0);
       play();
-      setSeekPos(undefined);
+      setSeekTime(undefined);
     });
 
-  const seekTime = useMemo(
+  const formattedSeekTime = useMemo(
     () =>
-      seekPos !== undefined && duration !== undefined && position !== undefined
-        ? `${seekPos - position > 0 ? '+' : ''}${formatVideoTime(
-            duration * (seekPos - position),
-          )}`
+      seekTime !== undefined && duration !== undefined && currentTime !== undefined
+        ? `${seekTime > currentTime ? '+' : ''}${formatVideoTime(seekTime - currentTime)}`
         : undefined,
-    [seekPos, duration, position],
+    [seekTime, duration, currentTime],
   );
 
   const direction = useMemo(
     () =>
-      seekPos !== undefined && position !== undefined
-        ? seekPos < position
+      seekTime !== undefined && currentTime !== undefined
+        ? seekTime < currentTime
           ? -1
           : 1
         : 0,
-    [seekPos, position],
+    [seekTime, currentTime],
   );
 
   const gestures = Gesture.Exclusive(longPressGesture, tapGesture);
@@ -185,8 +184,8 @@ export const VideoHUD: FC<IVideoHUDProps> = ({
             {direction === -1 ? <BackwardIcon /> : <></>}
           </View>
           <View style={styles.center}>
-            {seekTime ? (
-              <Text style={styles.bigText}>{seekTime}</Text>
+            {formattedSeekTime ? (
+              <Text style={styles.bigText}>{formattedSeekTime}</Text>
             ) : (
               <View>
                 {paused && <PauseIcon />}

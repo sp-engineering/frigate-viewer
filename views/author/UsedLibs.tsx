@@ -6,6 +6,7 @@ import { useOpenLink } from './useOpenLink';
 
 const libs = [
   '@ant-design/icons-react-native',
+  '@lunarr/vlc-player',
   '@react-native-async-storage/async-storage',
   '@reduxjs/toolkit',
   'date-fns',
@@ -17,7 +18,6 @@ const libs = [
   'react-native-navigation',
   'react-native-reanimated',
   'react-native-ui-lib',
-  'react-native-vlc-media-player',
   'react-redux',
   'redux',
   'redux-persist',

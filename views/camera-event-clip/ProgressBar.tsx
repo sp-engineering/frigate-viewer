@@ -10,26 +10,25 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: '100%',
     padding: 1,
-    backgroundColor: 'black',
-    opacity: 0.7,
+    backgroundColor: '#00000055',
     flexDirection: 'row',
     alignItems: 'center',
   },
   playerBarText: {
     fontSize: 10,
     fontWeight: '600',
-    color: 'white',
+    color: '#ffffff',
   },
   playerProgressBar: {
     height: 3,
     flex: 1,
     marginVertical: 1,
     marginHorizontal: 8,
-    borderColor: 'white',
+    borderColor: '#ffffff',
     borderBottomWidth: 1,
   },
   playerProgressBarTrack: {
-    backgroundColor: 'white',
+    backgroundColor: '#ffffff',
     height: '100%',
   },
 });
@@ -38,14 +37,12 @@ interface IProgressBarProps {
   paused: boolean;
   currentTime: number;
   duration: number;
-  position: number;
 }
 
 export const ProgressBar: FC<IProgressBarProps> = ({
   paused,
   currentTime,
   duration,
-  position,
 }) => {
   const currentTimeStr = useMemo(
     () => formatVideoTime(currentTime),
@@ -54,7 +51,7 @@ export const ProgressBar: FC<IProgressBarProps> = ({
 
   const durationStr = useMemo(() => formatVideoTime(duration), [duration]);
 
-  const percentage = useMemo(() => `${position * 100}%`, [position]);
+  const percentage = useMemo(() => `${currentTime / duration * 100}%`, [currentTime, duration]);
 
   return (
     <View style={[styles.playerBar]}>

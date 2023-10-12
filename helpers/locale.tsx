@@ -23,7 +23,7 @@ export const useDateLocale = () => {
 
 export const formatVideoTime = (t: number) => {
   const sign = t < 0 ? '-' : '';
-  const time = Math.abs(Math.round(t / 1000));
+  const time = Math.abs(Math.round(t));
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
   return `${sign}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;

@@ -1,7 +1,7 @@
 import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {NavigationFunctionComponent} from 'react-native-navigation';
-import {ProgressInfo, VLCPlayer} from 'react-native-vlc-media-player';
+import VLCPlayer, { State } from '@lunarr/vlc-player';
 import {ZoomableView} from '../../components/ZoomableView';
 import {selectServerApiUrl} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
@@ -26,7 +26,7 @@ interface IVideoPlayerProps {
 const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
   const [paused, setPaused] = useState(false);
   const [stopped, setStopped] = useState(false);
-  const [progressInfo, setProgressInfo] = useState<ProgressInfo>();
+  const [progressInfo, setProgressInfo] = useState<State>();
   const player = useRef<VLCPlayer>(null);
 
   const resumeIfStopped = useCallback(() => {
@@ -44,7 +44,8 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
     [resumeIfStopped],
   );
 
-  const onProgress = useCallback((info: ProgressInfo) => {
+  const onProgress = useCallback((info: State) => {
+    console.log(info);
     setProgressInfo(info);
   }, []);
 
@@ -56,7 +57,8 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
     (pos: number) => {
       if (player.current) {
         resumeIfStopped();
-        player.current.seek(pos * 10);
+        console.log(pos);
+        player.current.seek(pos);
       }
     },
     [resumeIfStopped],
@@ -67,8 +69,8 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
       <ZoomableView>
         <VideoHUD
           paused={paused}
+          currentTime={progressInfo?.currentTime}
           duration={progressInfo?.duration}
-          position={progressInfo?.position}
           onPaused={onPaused}
           onSeek={seek}>
           <VLCPlayer
@@ -76,7 +78,6 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
             paused={paused}
             source={{uri: clipUrl}}
             style={[styles.player]}
-            resizeMode="contain"
             onProgress={onProgress}
             onStopped={onStopped}
           />
@@ -87,7 +88,6 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
           paused={paused}
           currentTime={progressInfo.currentTime}
           duration={progressInfo.duration}
-          position={progressInfo.position}
         />
       )}
     </View>
