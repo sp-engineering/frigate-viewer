@@ -66,7 +66,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
       cameras: cameraName,
       limit: '1',
       include_thumbnails: '0',
-    }).subscribe(data => {
+    }).then(data => {
       if (data.length > 0) {
         const event = data[0];
         setLastEvent(event);

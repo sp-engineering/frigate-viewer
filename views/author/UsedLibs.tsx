@@ -21,7 +21,6 @@ const libs = [
   'react-redux',
   'redux',
   'redux-persist',
-  'rxjs',
   'yup',
 ];
 

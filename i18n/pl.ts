@@ -12,8 +12,10 @@ export default {
   'author.error.cantOpenLink':
     'Nie można znaleźć żadnej aplikacji, aby otworzyć ten link.',
   'camerasList.topBar.title': 'Lista kamer',
+  'camerasList.noCameras': 'Brak kamer',
   'cameraEvents.topBar.general.title': 'Zdarzenia',
   'cameraEvents.topBar.specificCamera.title': 'Zdarzenia na {cameraName}',
+  'cameraEvents.noEvents': 'Brak zdarzeń',
   'cameraEvents.labels.inProgressLabel': 'W trakcie',
   'cameraEvents.action.delete': 'Usuń',
   'cameraEvents.action.retain': 'Zachowaj',

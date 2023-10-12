@@ -1,8 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useIntl} from 'react-intl';
-import {FlatList} from 'react-native';
+import {FlatList, StyleSheet, Text} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
-import {catchError, tap} from 'rxjs/operators';
 import {get} from '../../helpers/rest';
 import {
   selectAvailableCameras,
@@ -21,6 +20,14 @@ import {CameraTile} from './CameraTile';
 import {messages} from './messages';
 import { useNoServer } from '../settings/useNoServer';
 import { Background } from '../../components/Background';
+
+const styles = StyleSheet.create({
+  noCameras: {
+    padding: 20,
+    color: 'black',
+    textAlign: 'center',
+  },
+});
 
 interface IConfigResponse {
   cameras: Record<
@@ -62,29 +69,27 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
   const refresh = useCallback(() => {
     setLoading(true);
     get<IConfigResponse>(`${apiUrl}/config`)
-      .pipe(
-        tap(config => {
-          const availableCameras = Object.keys(config.cameras);
-          const availableLabels = config.objects.track;
-          const availableZones = availableCameras.reduce(
-            (zones, cameraName) => [
-              ...zones,
-              ...Object.keys(config.cameras[cameraName].zones).filter(
-                zoneName => !zones.includes(zoneName),
-              ),
-            ],
-            [] as string[],
-          );
-          dispatch(setAvailableCameras(availableCameras));
-          dispatch(setAvailableLabels(availableLabels));
-          dispatch(setAvailableZones(availableZones));
-        }),
-        catchError(() => {
-          dispatch(setAvailableCameras([]));
-          return [];
-        }),
-      )
-      .subscribe(() => {
+      .then(config => {
+        const availableCameras = Object.keys(config.cameras);
+        const availableLabels = config.objects.track;
+        const availableZones = availableCameras.reduce(
+          (zones, cameraName) => [
+            ...zones,
+            ...Object.keys(config.cameras[cameraName].zones).filter(
+              zoneName => !zones.includes(zoneName),
+            ),
+          ],
+          [] as string[],
+        );
+        dispatch(setAvailableCameras(availableCameras));
+        dispatch(setAvailableLabels(availableLabels));
+        dispatch(setAvailableZones(availableZones));
+      })
+      .catch(() => {
+        dispatch(setAvailableCameras([]));
+        return [];
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, [apiUrl, dispatch]);
@@ -97,6 +102,11 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
 
   return (
     <Background>
+      {!loading && cameras.length === 0 && (
+        <Text style={styles.noCameras}>
+          {intl.formatMessage(messages['noCameras'])}
+        </Text>
+      )}
       <FlatList
         data={cameras}
         renderItem={({item}) => (

@@ -125,7 +125,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
       text: intl.formatMessage(messages['action.delete']),
       background: Colors.red30,
       onPress: () => {
-        del(`${apiUrl}/events/${id}`, undefined, false).subscribe(() => {
+        del(`${apiUrl}/events/${id}`, undefined, false).then(() => {
           onDelete([id]);
         });
       },
@@ -140,7 +140,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
             text: intl.formatMessage(messages['action.unretain']),
             background: Colors.red40,
             onPress: () => {
-              del(`${apiUrl}/events/${id}/retain`, undefined, false).subscribe(
+              del(`${apiUrl}/events/${id}/retain`, undefined, false).then(
                 () => {
                   setRetained(false);
                 },
@@ -151,7 +151,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
             text: intl.formatMessage(messages['action.retain']),
             background: Colors.green30,
             onPress: () => {
-              post(`${apiUrl}/events/${id}/retain`, undefined, false).subscribe(
+              post(`${apiUrl}/events/${id}/retain`, undefined, false).then(
                 () => {
                   setRetained(true);
                 },

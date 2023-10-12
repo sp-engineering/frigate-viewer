@@ -1,8 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useIntl} from 'react-intl';
-import {FlatList, View} from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
-import {tap} from 'rxjs/operators';
 import {get} from '../../helpers/rest';
 import {
   selectFiltersCameras,
@@ -23,6 +22,15 @@ import {menuButton, useMenu} from '../menu/menuHelpers';
 import {CameraEvent, ICameraEvent} from './CameraEvent';
 import {messages} from './messages';
 import { useNoServer } from '../settings/useNoServer';
+import { Background } from '../../components/Background';
+
+const styles = StyleSheet.create({
+  noEvents: {
+    padding: 20,
+    color: 'black',
+    textAlign: 'center',
+  },
+});
 
 interface ICameraEventsProps {
   cameraNames?: string[];
@@ -125,13 +133,16 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
     if (apiUrl !== undefined) {
       if (refreshing) {
         get<ICameraEvent[]>(`${apiUrl}/events`, eventsQueryParams)
-          .pipe(tap(watchEndReached))
-          .subscribe(data => {
+          .then(data => {
+            watchEndReached(data);
             setEvents(data);
-            setRefreshing(false);
             if (data.length > 0) {
               listRef.current?.scrollToIndex({index: 0});
             }
+          })
+          .catch(() => {})
+          .finally(() => {
+            setRefreshing(false);
           });
       }
     }
@@ -141,8 +152,8 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   const loadMore = useCallback(() => {
     if (!endReached) {
       get<ICameraEvent[]>(`${apiUrl}/events`, eventsQueryParams)
-        .pipe(tap(watchEndReached))
-        .subscribe(data => {
+        .then(data => {
+          watchEndReached(data);
           setEvents([...events, ...data]);
         });
     }
@@ -171,7 +182,12 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   );
 
   return (
-    <View>
+    <Background>
+      {!refreshing && events.length === 0 && (
+        <Text style={styles.noEvents}>
+          {intl.formatMessage(messages['noEvents'])}
+        </Text>
+      )}
       <FlatList
         ref={listRef}
         data={events}
@@ -191,6 +207,6 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
         onEndReachedThreshold={0.5}
         numColumns={numColumns}
       />
-    </View>
+    </Background>
   );
 };
