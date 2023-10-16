@@ -1,7 +1,6 @@
 import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {useIntl} from 'react-intl';
 import {
-  Dimensions,
   Image,
   StyleSheet,
   ToastAndroid,
@@ -46,7 +45,7 @@ export interface ICameraEvent {
 interface ICameraEventProps extends ICameraEvent {
   componentId: string;
   onDelete: (id: string[]) => void;
-  onSnapshotHeight: (height: number) => void;
+  onSnapshotDimensions: (width: number, height: number) => void;
 }
 
 const styles = StyleSheet.create({
@@ -68,7 +67,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
   top_score,
   retain_indefinitely,
   onDelete,
-  onSnapshotHeight,
+  onSnapshotDimensions,
 }) => {
   const [retained, setRetained] = useState(false);
   const apiUrl = useAppSelector(selectServerApiUrl);
@@ -109,16 +108,11 @@ export const CameraEvent: FC<ICameraEventProps> = ({
     if (snapshot) {
       try {
         Image.getSize(snapshot, (width, height) => {
-          const proportion = height / width;
-          const windowWidth = Dimensions.get('window').width;
-          const newHeight = (windowWidth * proportion) / numColumns;
-          if (newHeight !== snapshotHeight) {
-            onSnapshotHeight(newHeight);
-          }
+          onSnapshotDimensions(width, height);
         });
       } catch (err) {}
     }
-  }, [numColumns, snapshotHeight, onSnapshotHeight]);
+  }, [numColumns, snapshotHeight, onSnapshotDimensions]);
 
   const deleteDrawerItem: DrawerItemProps = useMemo(
     () => ({

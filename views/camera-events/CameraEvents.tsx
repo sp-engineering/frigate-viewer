@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useIntl} from 'react-intl';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {get} from '../../helpers/rest';
 import {
@@ -10,6 +10,7 @@ import {
 } from '../../store/events';
 import {
   selectEventsNumColumns,
+  selectEventsSnapshotHeight,
   selectServerApiUrl,
   setEventSnapshotHeight,
 } from '../../store/settings';
@@ -23,6 +24,7 @@ import {CameraEvent, ICameraEvent} from './CameraEvent';
 import {messages} from './messages';
 import { useNoServer } from '../settings/useNoServer';
 import { Background } from '../../components/Background';
+import { useOrientation } from '../../helpers/screen';
 
 const styles = StyleSheet.create({
   noEvents: {
@@ -47,14 +49,16 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   const [refreshing, setRefreshing] = useState(true);
   const [events, setEvents] = useState<ICameraEvent[]>([]);
   const [endReached, setEndReached] = useState<boolean>(false);
-  const [snapshotHeight, setSnapshotHeight] = useState<number>();
+  const [snapshotDimensions, setSnapshotDimensions] = useState<[number, number]>();
   const dispatch = useAppDispatch();
   const apiUrl = useAppSelector(selectServerApiUrl);
   const numColumns = useAppSelector(selectEventsNumColumns);
+  const snapshotHeight = useAppSelector(selectEventsSnapshotHeight);
   const filtersCameras = useAppSelector(selectFiltersCameras);
   const filtersLabels = useAppSelector(selectFiltersLabels);
   const filtersZones = useAppSelector(selectFiltersZones);
   const intl = useIntl();
+  const orientation = useOrientation();
 
   const filterCount = useMemo(
     () =>
@@ -171,15 +175,27 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
     [events],
   );
 
-  const onSnapshotHeight = useCallback(
-    (height: number) => {
-      if (!snapshotHeight) {
-        setSnapshotHeight(height);
-        dispatch(setEventSnapshotHeight(height));
+  const onSnapshotDimensions = useCallback(
+    (width: number, height: number) => {
+      if (!snapshotDimensions) {
+        setSnapshotDimensions([width, height]);
       }
     },
-    [dispatch, snapshotHeight],
+    [snapshotDimensions],
   );
+
+  useEffect(() => {
+    console.log('orientation', orientation);
+    if (snapshotDimensions) {
+      const [width, height] = snapshotDimensions;
+      const proportion = height / width;
+      const windowWidth = Dimensions.get('window').width;
+      const newHeight = (windowWidth * proportion) / numColumns;
+      if (newHeight !== snapshotHeight) {
+        dispatch(setEventSnapshotHeight(newHeight));
+      }
+    }
+  }, [snapshotDimensions, numColumns, orientation]);
 
   return (
     <Background>
@@ -196,7 +212,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
             {...item}
             componentId={componentId}
             onDelete={onDelete}
-            onSnapshotHeight={onSnapshotHeight}
+            onSnapshotDimensions={onSnapshotDimensions}
           />
         )}
         keyExtractor={data => data.id}
