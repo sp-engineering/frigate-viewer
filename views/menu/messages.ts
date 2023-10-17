@@ -4,6 +4,7 @@ import {makeMessages} from '../../helpers/locale';
 export const messages = makeMessages('menu', {
   'item.camerasList.label': 'List of cameras',
   'item.cameraEvents.label': 'All events',
+  'item.retained.label': 'Retained',
   'item.settings.label': 'Settings',
   'item.author.label': 'Author',
 });

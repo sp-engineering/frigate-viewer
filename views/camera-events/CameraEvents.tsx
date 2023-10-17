@@ -6,6 +6,7 @@ import {get} from '../../helpers/rest';
 import {
   selectFiltersCameras,
   selectFiltersLabels,
+  selectFiltersRetained,
   selectFiltersZones,
 } from '../../store/events';
 import {
@@ -34,16 +35,19 @@ const styles = StyleSheet.create({
   },
 });
 
-interface ICameraEventsProps {
+export interface ICameraEventsProps {
   cameraNames?: string[];
+  retained?: boolean;
 }
 
 export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   cameraNames,
+  retained,
   componentId,
 }) => {
+  const isSpecificCamera = useMemo(() => cameraNames && cameraNames.length === 1, [cameraNames]);
   useNoServer();
-  useMenu(componentId, 'cameraEvents');
+  useMenu(componentId, !retained ? (isSpecificCamera ? 'camerasList' : 'cameraEvents') : 'retained');
   useEventsFilters(componentId, cameraNames);
   const listRef = useRef<FlatList<ICameraEvent>>(null);
   const [refreshing, setRefreshing] = useState(true);
@@ -57,6 +61,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   const filtersCameras = useAppSelector(selectFiltersCameras);
   const filtersLabels = useAppSelector(selectFiltersLabels);
   const filtersZones = useAppSelector(selectFiltersZones);
+  const filtersRetained = useAppSelector(selectFiltersRetained);
   const intl = useIntl();
   const orientation = useOrientation();
 
@@ -64,30 +69,41 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
     () =>
       (filtersCameras.length || 0) +
       (filtersLabels.length || 0) +
-      (filtersZones.length || 0),
+      (filtersZones.length || 0) +
+      (filtersRetained ? 1 : 0),
     [filtersCameras, filtersLabels, filtersZones],
   );
 
   useEffect(() => {
     Navigation.mergeOptions(componentId, {
       topBar:
-        cameraNames && cameraNames.length === 1
+        retained
           ? {
-              title: {
-                text: intl.formatMessage(
-                  messages['topBar.specificCamera.title'],
-                  {cameraName: cameraNames[0]},
-                ),
-              },
-              rightButtons: [filterButton(filterCount)],
-            }
-          : {
-              title: {
-                text: intl.formatMessage(messages['topBar.general.title']),
-              },
-              leftButtons: [menuButton],
-              rightButtons: [filterButton(filterCount)],
+            title: {
+              text: intl.formatMessage(
+                messages['topBar.retained.title']
+              ),
             },
+            leftButtons: [menuButton],
+            rightButtons: [filterButton(filterCount)],
+          }
+          : isSpecificCamera
+            ? {
+                title: {
+                  text: intl.formatMessage(
+                    messages['topBar.specificCamera.title'],
+                    {cameraName: cameraNames![0]},
+                  ),
+                },
+                rightButtons: [filterButton(filterCount)],
+              }
+            : {
+                title: {
+                  text: intl.formatMessage(messages['topBar.general.title']),
+                },
+                leftButtons: [menuButton],
+                rightButtons: [filterButton(filterCount)],
+              },
     });
   }, [componentId, intl, cameraNames, filterCount]);
 
@@ -109,6 +125,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
       ...(!refreshing && events.length > 0
         ? {before: `${events[events.length - 1].start_time}`}
         : {}),
+      favorites: retained || filtersRetained ? '1' : '0',
       limit: '100',
       include_thumbnails: '0',
     }),
@@ -118,6 +135,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
       filtersCameras,
       filtersLabels,
       filtersZones,
+      filtersRetained,
       refreshing,
     ],
   );
@@ -166,7 +184,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   useEffect(() => {
     refresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filtersCameras, filtersLabels, filtersZones]);
+  }, [filtersCameras, filtersLabels, filtersZones, filtersRetained]);
 
   const onDelete = useCallback(
     (deletedIds: string[]) => {
@@ -185,7 +203,6 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   );
 
   useEffect(() => {
-    console.log('orientation', orientation);
     if (snapshotDimensions) {
       const [width, height] = snapshotDimensions;
       const proportion = height / width;

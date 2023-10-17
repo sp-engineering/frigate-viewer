@@ -15,6 +15,7 @@ export interface IEventsState {
     cameras: string[];
     labels: string[];
     zones: string[];
+    retained: boolean;
   };
 }
 
@@ -28,6 +29,7 @@ export const initialState: IEventsState = {
     cameras: [],
     labels: [],
     zones: [],
+    retained: false,
   },
 };
 
@@ -57,6 +59,9 @@ export const eventsStore = createSlice({
     setFiltersZones: (state, action: PayloadAction<string[]>) => {
       state.filters.zones = action.payload;
     },
+    setFiltersRetained: (state, action: PayloadAction<boolean>) => {
+      state.filters.retained = action.payload;
+    },
   },
 });
 
@@ -71,6 +76,7 @@ export const {
   setFiltersCameras,
   setFiltersLabels,
   setFiltersZones,
+  setFiltersRetained
 } = eventsStore.actions;
 
 /**
@@ -105,3 +111,6 @@ export const selectFiltersLabels = (state: RootState) =>
 
 export const selectFiltersZones = (state: RootState) =>
   selectFilters(state).zones;
+
+export const selectFiltersRetained = (state: RootState) =>
+  selectFilters(state).retained;

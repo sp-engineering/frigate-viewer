@@ -45,7 +45,6 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
   );
 
   const onProgress = useCallback((info: State) => {
-    console.log(info);
     setProgressInfo(info);
   }, []);
 
@@ -57,7 +56,6 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
     (pos: number) => {
       if (player.current) {
         resumeIfStopped();
-        console.log(pos);
         player.current.seek(pos);
       }
     },

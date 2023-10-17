@@ -7,14 +7,18 @@ import {
   selectAvailableZones,
   selectFiltersCameras,
   selectFiltersLabels,
+  selectFiltersRetained,
   selectFiltersZones,
   setFiltersCameras,
   setFiltersLabels,
+  setFiltersRetained,
   setFiltersZones,
 } from '../../store/events';
 import {useAppSelector} from '../../store/store';
-import {Filters, IFilter} from './Filters';
+import {Filters, IFilter, SectionHeader} from './Filters';
 import {messages} from './messages';
+import { Section } from '../../components/forms/Section';
+import { FilterSwitch } from './FilterSwitch';
 
 interface IEventsFiltersProps {
   viewedCameraNames?: string[];
@@ -35,6 +39,7 @@ export const EventsFilters: FC<IEventsFiltersProps> = ({viewedCameraNames}) => {
   const filtersLabels = useAppSelector(selectFiltersLabels);
   const availableZones = useAppSelector(selectAvailableZones);
   const filtersZones = useAppSelector(selectFiltersZones);
+  const filtersRetained = useAppSelector(selectFiltersRetained);
   const intl = useIntl();
 
   const cameras: IFilter[] = useMemo(
@@ -85,6 +90,18 @@ export const EventsFilters: FC<IEventsFiltersProps> = ({viewedCameraNames}) => {
         items={zones}
         actionOnFilter={setFiltersZones}
       />
+      <Section
+        header={(
+          <SectionHeader
+            label={intl.formatMessage(messages['other.title'])} />
+        )}
+      >
+        <FilterSwitch
+          label={intl.formatMessage(messages['other.retained.label'])}
+          value={filtersRetained}
+          actionOnChange={setFiltersRetained}
+        />
+      </Section>
     </ScrollView>
   );
 };

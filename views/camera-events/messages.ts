@@ -2,6 +2,7 @@ import {makeMessages} from '../../helpers/locale';
 
 export const messages = makeMessages('cameraEvents', {
   'topBar.general.title': 'Events',
+  'topBar.retained.title': 'Retained',
   'topBar.specificCamera.title': 'Events of {cameraName}',
   'noEvents': 'No events',
   'labels.inProgressLabel': 'In progress',

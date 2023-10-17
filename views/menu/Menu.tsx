@@ -11,6 +11,7 @@ import {
 import {Navigation} from 'react-native-navigation';
 import {MenuId} from './menuHelpers';
 import {MessageKey, messages} from './messages';
+import { ICameraEventsProps } from '../camera-events/CameraEvents';
 
 interface IMenuProps {
   current: string;
@@ -47,12 +48,13 @@ const styles = StyleSheet.create({
   },
 });
 
-interface IMenuItem {
+interface IMenuItem<P = {}> {
   id: MenuId;
   icon: OutlineGlyphMapType;
   label?: string;
   view?: string;
   stack?: boolean;
+  passProps?: P;
 }
 
 export const camerasListMenuItem: IMenuItem = {
@@ -67,10 +69,14 @@ export const cameraEventsMenuItem: IMenuItem = {
   view: 'CameraEvents',
 };
 
-// export const retainedMenuItem: IMenuItem = {
-//   id: 'retained',
-//   icon: 'picture',
-// };
+export const retainedMenuItem: IMenuItem<ICameraEventsProps> = {
+  id: 'retained',
+  icon: 'star',
+  view: 'CameraEvents',
+  passProps: {
+    retained: true,
+  },
+};
 
 export const settingsMenuItem: IMenuItem = {
   id: 'settings',
@@ -85,12 +91,13 @@ export const authorMenuItem: IMenuItem = {
 };
 
 export const navigateToMenuItem =
-  ({view, stack}: IMenuItem) =>
+  ({view, stack, passProps}: IMenuItem) =>
   () => {
     if (view) {
       Navigation[stack ? 'push' : 'setStackRoot']('MainMenu', {
         component: {
           name: view,
+          passProps,
           options: {
             sideMenu: {
               left: {
@@ -110,6 +117,7 @@ export const Menu: FC<IMenuProps> = ({current}) => {
       [
         camerasListMenuItem,
         cameraEventsMenuItem,
+        retainedMenuItem,
         settingsMenuItem,
         authorMenuItem,
       ].map(item => ({

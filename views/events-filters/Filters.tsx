@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const SectionHeader: FC<{label: string}> = ({label}) => (
+export const SectionHeader: FC<{label: string}> = ({label}) => (
   <View style={styles.sectionHeader}>
     <Text style={styles.sectionHeaderText}>{label}</Text>
   </View>
