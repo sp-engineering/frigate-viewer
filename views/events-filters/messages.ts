@@ -4,6 +4,6 @@ export const messages = makeMessages('eventsFilters', {
   'cameras.title': 'Cameras',
   'labels.title': 'Labels',
   'zones.title': 'Zones',
-  'other.title': 'Other',
-  'other.retained.label': 'Retained',
+  'miscellaneous.title': 'Miscellaneous',
+  'miscellaneous.retained.label': 'Retained',
 });

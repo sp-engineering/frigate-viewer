@@ -6,7 +6,39 @@ import { NativeModules } from 'react-native';
  * STORE MODEL
  **/
 
-export type Region = 'en_GB' | 'en_US' | 'pl_PL';
+export type Region =
+  | 'de_AT'
+  | 'de_DE'
+  | 'de_LU'
+  | 'de_CH'
+  | 'en_AU'
+  | 'en_CA'
+  | 'en_GB'
+  | 'en_IE'
+  | 'en_NZ'
+  | 'en_US'
+  | 'es_AR'
+  | 'es_BO'
+  | 'es_CL'
+  | 'es_CO'
+  | 'es_CR'
+  | 'es_DO'
+  | 'es_EC'
+  | 'es_ES'
+  | 'es_GT'
+  | 'es_HN'
+  | 'es_MX'
+  | 'es_NI'
+  | 'es_PA'
+  | 'es_PE'
+  | 'es_PY'
+  | 'es_SV'
+  | 'es_UY'
+  | 'es_VE'
+  | 'fr_FR'
+  | 'fr_CA'
+  | 'fr_CH'
+  | 'pl_PL';
 
 export interface ISettings {
   server: {
@@ -51,6 +83,8 @@ export const initialSettings: ISettings = {
     photoPreference: 'snapshot',
   },
 };
+
+console.log(NativeModules.I18nManager.localeIdentifier);
 
 /**
  * REDUCERS

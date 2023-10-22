@@ -93,11 +93,11 @@ export const EventsFilters: FC<IEventsFiltersProps> = ({viewedCameraNames}) => {
       <Section
         header={(
           <SectionHeader
-            label={intl.formatMessage(messages['other.title'])} />
+            label={intl.formatMessage(messages['miscellaneous.title'])} />
         )}
       >
         <FilterSwitch
-          label={intl.formatMessage(messages['other.retained.label'])}
+          label={intl.formatMessage(messages['miscellaneous.retained.label'])}
           value={filtersRetained}
           actionOnChange={setFiltersRetained}
         />

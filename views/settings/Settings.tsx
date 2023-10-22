@@ -187,7 +187,40 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
               error={errors.locale?.region}>
               <Dropdown
                 value={values.locale.region}
-                options={['en_GB', 'en_US', 'pl_PL'].map(code => ({
+                options={[
+                  'es_AR', // Argentina
+                  'en_AU', // Australia
+                  'de_AT', // Austria
+                  'es_BO', // Bolivia
+                  'en_CA', // Canada
+                  'fr_CA', // Canada
+                  'es_CL', // Chile
+                  'es_CO', // Columbia
+                  'es_CR', // Costa Rica
+                  'es_DO', // Dominican Republic
+                  'es_EC', // Ecuador
+                  'fr_FR', // France
+                  'de_DE', // Germany
+                  'en_GB', // Great Britain
+                  'es_GT', // Guatemala
+                  'es_HN', // Honduras
+                  'en_IE', // Ireland
+                  'de_LU', // Luxembourg
+                  'es_MX', // Mexico
+                  'en_NZ', // New Zealand
+                  'es_NI', // Nicaragua
+                  'es_PA', // Panama
+                  'es_PY', // Paraguay
+                  'es_PE', // Peru
+                  'pl_PL', // Poland
+                  'es_SV', // El Salvador
+                  'es_ES', // Spain
+                  'de_CH', // Switzerland
+                  'fr_CH', // Switzerland
+                  'en_US', // United States
+                  'es_UY', // Uruguay
+                  'es_VE', // Venezuela
+                ].map(code => ({
                   value: code,
                   label: intl.formatMessage(
                     messages[`locale.region.option.${code}` as MessageKey],

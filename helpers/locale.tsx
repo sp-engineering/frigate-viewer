@@ -1,4 +1,4 @@
-import {enGB, enUS, pl} from 'date-fns/locale';
+import {enGB, enUS, pl, es, enAU, enCA, enIE, enNZ, fr, frCA, frCH, deAT, de} from 'date-fns/locale';
 import React, {useEffect, useState} from 'react';
 import {defineMessages, IntlProvider, MessageDescriptor} from 'react-intl';
 import {
@@ -7,15 +7,47 @@ import {
 } from 'react-native-navigation';
 import {Region, selectLocaleRegion} from '../store/settings';
 import {useAppSelector} from '../store/store';
+import deLang from '../i18n/de';
 import enLang from '../i18n/en';
+import esLang from '../i18n/es';
+import frLang from '../i18n/fr';
 import plLang from '../i18n/pl';
 
 export const useDateLocale = () => {
   const region = useAppSelector(selectLocaleRegion);
   const regionLocaleMap: Record<Region, Locale> = {
+    de_AT: deAT,
+    de_DE: de,
+    de_LU: de,
+    de_CH: de,
+    en_AU: enAU,
+    en_CA: enCA,
     en_GB: enGB,
-    en_US: enGB,
+    en_IE: enIE,
+    en_NZ: enNZ,
+    en_US: enUS,
+    es_AR: es,
+    es_BO: es,
+    es_CL: es,
+    es_CO: es,
+    es_CR: es,
+    es_DO: es,
+    es_EC: es,
+    es_ES: es,
+    es_GT: es,
+    es_HN: es,
+    es_MX: es,
+    es_NI: es,
+    es_PA: es,
+    es_PE: es,
+    es_PY: es,
+    es_SV: es,
+    es_UY: es,
+    es_VE: es,
     pl_PL: pl,
+    fr_FR: fr,
+    fr_CA: frCA,
+    fr_CH: frCH,
   };
   const fallbackLocale = enGB;
   return regionLocaleMap[region] || fallbackLocale;
@@ -30,12 +62,41 @@ export const formatVideoTime = (t: number) => {
 };
 
 type Lang = Record<string, string>;
-type LangCode = 'en' | 'pl';
+type LangCode = 'en' | 'pl' | 'es' | 'fr' | 'de';
 
 const regionTranslationsMap: Record<Region, [LangCode, Lang]> = {
+  de_AT: ['de', deLang],
+  de_DE: ['de', deLang],
+  de_LU: ['de', deLang],
+  de_CH: ['de', deLang],
+  en_AU: ['en', enLang],
+  en_CA: ['en', enLang],
   en_GB: ['en', enLang],
+  en_IE: ['en', enLang],
+  en_NZ: ['en', enLang],
   en_US: ['en', enLang],
   pl_PL: ['pl', plLang],
+  es_AR: ['es', esLang],
+  es_BO: ['es', esLang],
+  es_CL: ['es', esLang],
+  es_CO: ['es', esLang],
+  es_CR: ['es', esLang],
+  es_DO: ['es', esLang],
+  es_EC: ['es', esLang],
+  es_ES: ['es', esLang],
+  es_GT: ['es', esLang],
+  es_HN: ['es', esLang],
+  es_MX: ['es', esLang],
+  es_NI: ['es', esLang],
+  es_PA: ['es', esLang],
+  es_PE: ['es', esLang],
+  es_PY: ['es', esLang],
+  es_SV: ['es', esLang],
+  es_UY: ['es', esLang],
+  es_VE: ['es', esLang],
+  fr_FR: ['fr', frLang],
+  fr_CA: ['fr', frLang],
+  fr_CH: ['fr', frLang],
 };
 
 const fallbackLanguage = 'en';
