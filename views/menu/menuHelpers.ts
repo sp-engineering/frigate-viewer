@@ -6,6 +6,7 @@ export type MenuId =
   | 'cameraEvents'
   | 'retained'
   | 'settings'
+  | 'logs'
   | 'author';
 
 export const useSelectedMenuItem = (current?: MenuId) => {

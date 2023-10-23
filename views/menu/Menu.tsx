@@ -78,6 +78,12 @@ export const retainedMenuItem: IMenuItem<ICameraEventsProps> = {
   },
 };
 
+export const logsMenuItem: IMenuItem = {
+  id: 'logs',
+  icon: 'file-text',
+  view: 'Logs',
+};
+
 export const settingsMenuItem: IMenuItem = {
   id: 'settings',
   icon: 'tool',
@@ -118,6 +124,7 @@ export const Menu: FC<IMenuProps> = ({current}) => {
         camerasListMenuItem,
         cameraEventsMenuItem,
         retainedMenuItem,
+        logsMenuItem,
         settingsMenuItem,
         authorMenuItem,
       ].map(item => ({
