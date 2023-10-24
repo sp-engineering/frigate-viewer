@@ -78,6 +78,12 @@ export const retainedMenuItem: IMenuItem<ICameraEventsProps> = {
   },
 };
 
+export const storageMenuItem: IMenuItem = {
+  id: 'storage',
+  icon: 'pie-chart',
+  view: 'Storage',
+};
+
 export const logsMenuItem: IMenuItem = {
   id: 'logs',
   icon: 'file-text',
@@ -124,6 +130,7 @@ export const Menu: FC<IMenuProps> = ({current}) => {
         camerasListMenuItem,
         cameraEventsMenuItem,
         retainedMenuItem,
+        storageMenuItem,
         logsMenuItem,
         settingsMenuItem,
         authorMenuItem,

@@ -5,6 +5,7 @@ export const messages = makeMessages('menu', {
   'item.camerasList.label': 'List of cameras',
   'item.cameraEvents.label': 'All events',
   'item.retained.label': 'Retained',
+  'item.storage.label': 'Storage',
   'item.logs.label': 'Logs',
   'item.settings.label': 'Settings',
   'item.author.label': 'Author',

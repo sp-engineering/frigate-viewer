@@ -1,26 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { StyleSheet, Text } from 'react-native';
-import { Navigation, NavigationFunctionComponent, OptionsTopBarButton } from 'react-native-navigation';
+import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
 import { LoaderScreen, TabController, TabControllerItemProps, View } from 'react-native-ui-lib';
 import { messages } from './messages';
-import { menuButton } from '../menu/menuHelpers';
+import { menuButton, useMenu } from '../menu/menuHelpers';
 import { useAppSelector } from '../../store/store';
 import { selectServerApiUrl } from '../../store/settings';
 import { Log, LogPreview } from './LogPreview';
+import { refreshButton } from '../../helpers/buttonts';
 const { TabBar, TabPage } = TabController;
-
-const refreshButton: (onPress?: () => void) => OptionsTopBarButton = onPress => ({
-  id: 'refresh',
-  component: {
-    id: 'FilterButton',
-    name: 'TopBarButton',
-    passProps: {
-      icon: 'sync',
-      onPress,
-    },
-  },
-});
 
 const styles = StyleSheet.create({
   noLogs: {
@@ -31,6 +20,7 @@ const styles = StyleSheet.create({
 });
 
 export const Logs: NavigationFunctionComponent = ({componentId}) => {
+  useMenu(componentId, 'logs');
   const [logs, setLogs] = useState<Log[]>([]);
   const [loading, setLoading] = useState(true);
   const apiUrl = useAppSelector(selectServerApiUrl);
@@ -74,7 +64,7 @@ export const Logs: NavigationFunctionComponent = ({componentId}) => {
       setLogs(updatedLogs);
       setLoading(false);
     });
-  }, []);
+  }, [apiUrl]);
 
   useEffect(() => {
     refresh();

@@ -11,6 +11,7 @@ import {Settings} from './views/settings/Settings';
 import {withRedux} from './helpers/redux';
 import {withTranslations} from './helpers/locale';
 import { Logs } from './views/logs/Logs';
+import { Storage } from './views/storage/Storage';
 
 const registerComponent = (name, component, decorators = []) => {
   Navigation.registerComponent(
@@ -29,6 +30,7 @@ const viewDecorators = [gestureHandlerRootHOC, withTranslations, withRedux];
 registerComponent('CamerasList', CamerasList, viewDecorators);
 registerComponent('CameraEvents', CameraEvents, viewDecorators);
 registerComponent('CameraEventClip', CameraEventClip, viewDecorators);
+registerComponent('Storage', Storage, viewDecorators);
 registerComponent('Logs', Logs, viewDecorators);
 registerComponent('Settings', Settings, viewDecorators);
 registerComponent('Author', Author, viewDecorators);

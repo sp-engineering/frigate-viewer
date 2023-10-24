@@ -31,6 +31,7 @@ export default {
   'menu.item.camerasList.label': 'Liste der Kameras',
   'menu.item.cameraEvents.label': 'Alle Ereignisse',
   'menu.item.retained.label': 'Beibehalten',
+  'menu.item.storage.label': 'Speicher',
   'menu.item.logs.label': 'Protokolle',
   'menu.item.settings.label': 'Einstellungen',
   'menu.item.author.label': 'Autor',
@@ -93,4 +94,11 @@ export default {
   'settings.events.photoPreference.option.thumbnail': 'Miniaturansicht',
   'settings.toast.noServerData':
     'Sie müssen Frigate NVR-Serverdaten bereitstellen.',
+  'storage.topBar.title': 'Speicher',
+  'storage.location.header': 'Speicherort',
+  'storage.location.recordings': 'Clips & Aufzeichnungen',
+  'storage.location.cache': 'Cache',
+  'storage.location.shm': 'Gemeinsamen Speicher',
+  'storage.used.header': 'Verwendeten',
+  'storage.total.header': 'Gesamter',
 };
