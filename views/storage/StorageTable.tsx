@@ -1,6 +1,6 @@
 import { FC, useMemo } from 'react';
 import { StorageInfo, StorageShortPlace } from '../../helpers/interfaces';
-import { Cell, Col, Rows, Table, TableWrapper } from 'react-native-table-component';
+import { Cell, Col, Rows, Table, TableWrapper } from 'react-native-reanimated-table';
 import { useIntl } from 'react-intl';
 import { messages } from './messages';
 import { formatSize, tableStyles } from '../../helpers/table';

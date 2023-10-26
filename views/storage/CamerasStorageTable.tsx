@@ -1,6 +1,6 @@
 import { FC, useMemo } from 'react';
 import { CamerasStorage, } from '../../helpers/interfaces';
-import { Cell, Col, Rows, Table, TableWrapper } from 'react-native-table-component';
+import { Cell, Col, Rows, Table, TableWrapper } from 'react-native-reanimated-table';
 import { useIntl } from 'react-intl';
 import { messages } from './messages';
 import { formatBandwidth, formatSize, tableStyles } from '../../helpers/table';
