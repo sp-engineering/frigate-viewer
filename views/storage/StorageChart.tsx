@@ -88,6 +88,7 @@ export const StorageChart: FC<IStorageChartProps> = ({storage}) => {
           progressColor={point.color}
           startAngle={-angle}
           endAngle={angle}
+          key={index}
         />
       ))}
       <View>

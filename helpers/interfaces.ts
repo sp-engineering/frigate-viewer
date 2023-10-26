@@ -51,3 +51,11 @@ interface StatsInfo {
 }
 
 export type Stats = Record<string, CameraInfo> & StatsInfo;
+
+interface CameraStorageInfo {
+  bandwidth: number; // MB/h
+  usage: number; // MB
+  usage_percent: number; // 0-100
+}
+
+export type CamerasStorage = Record<string, CameraStorageInfo>;

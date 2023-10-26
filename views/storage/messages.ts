@@ -8,4 +8,6 @@ export const messages = makeMessages('storage', {
   'location.shm': 'Shared memory',
   'used.header': 'Used',
   'total.header': 'Total',
+  'camera.header': 'Camera',
+  'bandwidth.header': 'Bandwidth',
 });
