@@ -6,6 +6,7 @@ export type MenuId =
   | 'cameraEvents'
   | 'retained'
   | 'storage'
+  | 'system'
   | 'logs'
   | 'settings'
   | 'author';

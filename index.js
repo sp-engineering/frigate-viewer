@@ -12,6 +12,7 @@ import {withRedux} from './helpers/redux';
 import {withTranslations} from './helpers/locale';
 import { Logs } from './views/logs/Logs';
 import { Storage } from './views/storage/Storage';
+import { System } from './views/system/System';
 
 const registerComponent = (name, component, decorators = []) => {
   Navigation.registerComponent(
@@ -31,11 +32,12 @@ registerComponent('CamerasList', CamerasList, viewDecorators);
 registerComponent('CameraEvents', CameraEvents, viewDecorators);
 registerComponent('CameraEventClip', CameraEventClip, viewDecorators);
 registerComponent('Storage', Storage, viewDecorators);
+registerComponent('System', System, viewDecorators);
 registerComponent('Logs', Logs, viewDecorators);
 registerComponent('Settings', Settings, viewDecorators);
 registerComponent('Author', Author, viewDecorators);
 
-registerComponent('Menu', Menu, [withTranslations, withRedux]);
+registerComponent('Menu', Menu, [gestureHandlerRootHOC, withTranslations, withRedux]);
 registerComponent('EventsFilters', EventsFilters, [
   withTranslations,
   withRedux,

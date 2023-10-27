@@ -4,9 +4,14 @@ interface Detector {
   pid: number;
 }
 
+interface CpuUsage {
+  cpu: string; // `${0.0-100.0}`
+  mem: string; // `${0.0-100.0}`
+}
+
 interface GpuUsage {
-  gpu: string; // `${percent} %`
-  mem: string; // `${percent} %`
+  gpu: string; // `${0.0-100.0} %`
+  mem: string; // `${0.0-100.0} %`
 }
 
 export type StoragePlace =
@@ -24,7 +29,7 @@ export interface StorageInfo {
   mount_type: 'ext4' | 'zfs' | 'tmpfs' | 'overlay';
 }
 
-interface Service {
+export interface Service {
   last_updated?: number; // timestamp
   latest_version?: string; // latest frigate nvr version
   storage: Record<StoragePlace, StorageInfo>;
@@ -45,6 +50,7 @@ interface CameraInfo {
 }
 
 interface StatsInfo {
+  cpu_usages?: Record<number, CpuUsage>;
   detectors: Record<string, Detector>;
   gpu_usages?: Record<string, GpuUsage>;
   service: Service;

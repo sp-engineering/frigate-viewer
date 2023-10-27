@@ -48,7 +48,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   const refreshFrequency = useAppSelector(selectCamerasRefreshFrequency);
   const previewHeight = useAppSelector(selectCamerasPreviewHeight);
   const numColumns = useAppSelector(selectCamerasNumColumns);
-  let interval = useRef<NodeJS.Timer>();
+  const interval = useRef<NodeJS.Timer>();
 
   const getLastImageUrl = useCallback(
     () => `${apiUrl}/${cameraName}/latest.jpg?bbox=1&ts=${new Date().toISOString()}`,

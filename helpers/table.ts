@@ -33,6 +33,7 @@ export const tableStyles = StyleSheet.create({
   },
   data: {
     backgroundColor: 'white',
+    flex: 1,
   },
   dataText: {
     padding: 2,

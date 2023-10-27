@@ -12,6 +12,7 @@ import {Navigation} from 'react-native-navigation';
 import {MenuId} from './menuHelpers';
 import {MessageKey, messages} from './messages';
 import { ICameraEventsProps } from '../camera-events/CameraEvents';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface IMenuProps {
   current: string;
@@ -84,6 +85,12 @@ export const storageMenuItem: IMenuItem = {
   view: 'Storage',
 };
 
+export const systemMenuItem: IMenuItem = {
+  id: 'system',
+  icon: 'cloud-server',
+  view: 'System',
+};
+
 export const logsMenuItem: IMenuItem = {
   id: 'logs',
   icon: 'file-text',
@@ -131,6 +138,7 @@ export const Menu: FC<IMenuProps> = ({current}) => {
         cameraEventsMenuItem,
         retainedMenuItem,
         storageMenuItem,
+        systemMenuItem,
         logsMenuItem,
         settingsMenuItem,
         authorMenuItem,
@@ -146,7 +154,7 @@ export const Menu: FC<IMenuProps> = ({current}) => {
   const navigate = useCallback(navigateToMenuItem, []);
 
   return (
-    <View style={[styles.menuWrapper]}>
+    <ScrollView style={[styles.menuWrapper]}>
       <Image source={require('./logo.png')} style={styles.menuLogo} />
       {menuItems.map(item => (
         <TouchableNativeFeedback onPress={navigate(item)} key={item.id}>
@@ -160,6 +168,6 @@ export const Menu: FC<IMenuProps> = ({current}) => {
           </View>
         </TouchableNativeFeedback>
       ))}
-    </View>
+    </ScrollView>
   );
 };
