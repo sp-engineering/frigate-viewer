@@ -86,6 +86,8 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
           paused={paused}
           currentTime={progressInfo.currentTime}
           duration={progressInfo.duration}
+          onPausePress={onPaused}
+          onSeek={seek}
         />
       )}
     </View>
