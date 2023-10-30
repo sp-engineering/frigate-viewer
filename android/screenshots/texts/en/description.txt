@@ -6,3 +6,5 @@ Features:
 * Preview of snapshots and clips with zoom
 * Removing and retaining events
 * Preview of last event from the cameras
+* Storage and system info
+* Logs of the server

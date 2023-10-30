@@ -1,4 +1,4 @@
-Czy posiadasz własny serwer Frivate NVR do przechowywania zdarzeń z Twoich kamer? Ta nieoficjalna aplikacja pomoże Ci przeglądać zdarzenia i oglądać nagrania oraz zadządzać nimi.
+Czy posiadasz własny serwer Frigate NVR do przechowywania zdarzeń z Twoich kamer? Ta nieoficjalna aplikacja pomoże Ci przeglądać zdarzenia i oglądać nagrania oraz zadządzać nimi.
 
 Funkcjonalności:
 * Podgląd na żywo z kamer Frigate NVR
@@ -6,3 +6,5 @@ Funkcjonalności:
 * Przegląd migawek i nagrań z możliwością przybliżenia
 * Usuwanie i zachowywanie zdarzeń
 * Podgląd ostatniego zdarzenia z kamer
+* Informacje systemowe i o przechowywaniu plików
+* Dzienniki serwera
