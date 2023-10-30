@@ -40,7 +40,8 @@ export type Region =
   | 'fr_CH'
   | 'pl_PL'
   | 'pt_BR'
-  | 'pt_PT';
+  | 'pt_PT'
+  | 'uk_UA';
 
 export interface ISettings {
   server: {

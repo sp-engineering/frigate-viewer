@@ -83,6 +83,7 @@ export default {
   'settings.locale.region.option.pl_PL': 'Polen (polnisch)',
   'settings.locale.region.option.pt_PT': 'Portugal (portugiesisch)',
   'settings.locale.region.option.pt_BR': 'Brasilien (portugiesisch)',
+  'settings.locale.region.option.uk_UA': 'Ukraine (ukrainisch)',
   'settings.locale.datesDisplay.label': 'Datumsanzeige',
   'settings.locale.datesDisplay.option.descriptive': 'Beschreibenden',
   'settings.locale.datesDisplay.option.numeric': 'Numerisch',

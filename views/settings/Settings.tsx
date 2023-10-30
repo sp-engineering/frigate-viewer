@@ -220,6 +220,7 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
                   'de_CH', // Switzerland
                   'fr_CH', // Switzerland
                   'en_US', // United States
+                  'uk_UA', // Ukraine
                   'es_UY', // Uruguay
                   'es_VE', // Venezuela
                 ].map(code => ({
