@@ -43,7 +43,8 @@ export type Region =
   | 'pt_PT'
   | 'uk_UA'
   | 'it_CH'
-  | 'it_IT';
+  | 'it_IT'
+  | 'sv_SE';
 
 export interface ISettings {
   server: {

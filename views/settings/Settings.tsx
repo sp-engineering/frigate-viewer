@@ -218,6 +218,7 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
                   'pt_PT', // Portugal
                   'es_SV', // El Salvador
                   'es_ES', // Spain
+                  'sv_SE', // Sweden
                   'de_CH', // Switzerland
                   'fr_CH', // Switzerland
                   'it_CH', // Switzerland

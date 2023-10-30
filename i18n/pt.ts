@@ -86,6 +86,7 @@ export default {
   'settings.locale.region.option.uk_UA': 'Ucrânia (ucraniano)',
   'settings.locale.region.option.it_CH': 'Suíça (italiano)',
   'settings.locale.region.option.it_IT': 'Itália (italiano)',
+  'settings.locale.region.option.sv_SE': 'Suécia (sueco)',
   'settings.locale.datesDisplay.label': 'Visualização da data',
   'settings.locale.datesDisplay.option.descriptive': 'Descritivo',
   'settings.locale.datesDisplay.option.numeric': 'Numérico',

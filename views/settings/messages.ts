@@ -52,6 +52,7 @@ export const messages = makeMessages('settings', {
   'locale.region.option.uk_UA': 'Ukraine (Ukrainian)',
   'locale.region.option.it_CH': 'Switzerland (Italian)',
   'locale.region.option.it_IT': 'Italy (Italian)',
+  'locale.region.option.sv_SE': 'Sweden (Swedish)',
   'locale.datesDisplay.label': 'Dates display',
   'locale.datesDisplay.option.descriptive': 'Descriptive',
   'locale.datesDisplay.option.numeric': 'Numeric',
