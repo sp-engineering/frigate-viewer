@@ -84,6 +84,8 @@ export default {
   'settings.locale.region.option.pt_PT': 'Portugal (portugais)',
   'settings.locale.region.option.pt_BR': 'Brasil (portugais)',
   'settings.locale.region.option.uk_UA': 'Ukraine (ukrainien)',
+  'settings.locale.region.option.it_CH': 'Suisse (italien)',
+  'settings.locale.region.option.it_IT': 'Italie (italien)',
   'settings.locale.datesDisplay.label': 'Affichage des dates',
   'settings.locale.datesDisplay.option.descriptive': 'Descriptif',
   'settings.locale.datesDisplay.option.numeric': 'Numérique',

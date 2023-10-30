@@ -206,6 +206,7 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
                   'es_GT', // Guatemala
                   'es_HN', // Honduras
                   'en_IE', // Ireland
+                  'it_IT', // Italy
                   'de_LU', // Luxembourg
                   'es_MX', // Mexico
                   'en_NZ', // New Zealand
@@ -219,6 +220,7 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
                   'es_ES', // Spain
                   'de_CH', // Switzerland
                   'fr_CH', // Switzerland
+                  'it_CH', // Switzerland
                   'en_US', // United States
                   'uk_UA', // Ukraine
                   'es_UY', // Uruguay
