@@ -192,6 +192,7 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
                   'en_AU', // Australia
                   'de_AT', // Austria
                   'es_BO', // Bolivia
+                  'pt_BR', // Brazil
                   'en_CA', // Canada
                   'fr_CA', // Canada
                   'es_CL', // Chile
@@ -213,6 +214,7 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
                   'es_PY', // Paraguay
                   'es_PE', // Peru
                   'pl_PL', // Poland
+                  'pt_PT', // Portugal
                   'es_SV', // El Salvador
                   'es_ES', // Spain
                   'de_CH', // Switzerland

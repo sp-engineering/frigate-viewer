@@ -82,6 +82,8 @@ export default {
   'settings.locale.region.option.fr_CH': 'Szwajcaria (francuski)',
   'settings.locale.region.option.fr_FR': 'Francja (francuski)',
   'settings.locale.region.option.pl_PL': 'Polska (polski)',
+  'settings.locale.region.option.pt_PT': 'Portugalia (portugalski)',
+  'settings.locale.region.option.pt_BR': 'Brazylia (portugalski)',
   'settings.locale.datesDisplay.label': 'Wyświetlanie daty',
   'settings.locale.datesDisplay.option.descriptive': 'Opisowo',
   'settings.locale.datesDisplay.option.numeric': 'Numerycznie',

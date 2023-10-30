@@ -1,4 +1,4 @@
-import {enGB, enUS, pl, es, enAU, enCA, enIE, enNZ, fr, frCA, frCH, deAT, de} from 'date-fns/locale';
+import {enGB, enUS, pl, es, enAU, enCA, enIE, enNZ, fr, frCA, frCH, deAT, de, pt, ptBR} from 'date-fns/locale';
 import React, {useEffect, useState} from 'react';
 import {defineMessages, IntlProvider, MessageDescriptor} from 'react-intl';
 import {
@@ -12,6 +12,7 @@ import enLang from '../i18n/en';
 import esLang from '../i18n/es';
 import frLang from '../i18n/fr';
 import plLang from '../i18n/pl';
+import ptLang from '../i18n/pt';
 
 export const useDateLocale = () => {
   const region = useAppSelector(selectLocaleRegion);
@@ -48,6 +49,8 @@ export const useDateLocale = () => {
     fr_FR: fr,
     fr_CA: frCA,
     fr_CH: frCH,
+    pt_PT: pt,
+    pt_BR: ptBR,
   };
   const fallbackLocale = enGB;
   return regionLocaleMap[region] || fallbackLocale;
@@ -62,7 +65,7 @@ export const formatVideoTime = (t: number) => {
 };
 
 type Lang = Record<string, string>;
-type LangCode = 'en' | 'pl' | 'es' | 'fr' | 'de';
+type LangCode = 'en' | 'pl' | 'es' | 'fr' | 'de' | 'pt';
 
 const regionTranslationsMap: Record<Region, [LangCode, Lang]> = {
   de_AT: ['de', deLang],
@@ -97,6 +100,8 @@ const regionTranslationsMap: Record<Region, [LangCode, Lang]> = {
   fr_FR: ['fr', frLang],
   fr_CA: ['fr', frLang],
   fr_CH: ['fr', frLang],
+  pt_BR: ['pt', ptLang],
+  pt_PT: ['pt', ptLang],
 };
 
 const fallbackLanguage = 'en';
