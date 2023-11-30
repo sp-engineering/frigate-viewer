@@ -5,7 +5,7 @@ import { messages } from './messages';
 import { tableStyles } from '../../helpers/table';
 
 interface CameraProcessInfo {
-  fps: number;
+  fps?: number;
   fps_skipped?: number;
   cpu?: number;
   mem?: number;

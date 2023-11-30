@@ -119,25 +119,25 @@ export const System: NavigationFunctionComponent = ({componentId}) => {
       ? cameras.reduce(
         (result, cameraName) => {
           const cameraInfo = stats[cameraName];
-          const ffmpegUsage = stats.cpu_usages && cameraInfo.ffmpeg_pid ? stats.cpu_usages[cameraInfo.ffmpeg_pid] : undefined;
-          const captureUsage = stats.cpu_usages ? stats.cpu_usages[cameraInfo.capture_pid] : undefined;
-          const detectUsage = stats.cpu_usages ? stats.cpu_usages[cameraInfo.pid] : undefined;
+          const ffmpegUsage = stats.cpu_usages && cameraInfo?.ffmpeg_pid ? stats.cpu_usages[cameraInfo.ffmpeg_pid] : undefined;
+          const captureUsage = stats.cpu_usages && cameraInfo ? stats.cpu_usages[cameraInfo.capture_pid] : undefined;
+          const detectUsage = stats.cpu_usages && cameraInfo ? stats.cpu_usages[cameraInfo.pid] : undefined;
           return {
             ...result,
             [cameraName]: {
               ffmpeg: {
-                fps: cameraInfo.camera_fps,
+                fps: cameraInfo?.camera_fps,
                 cpu: ffmpegUsage ? parseFloat(ffmpegUsage.cpu) : undefined,
                 mem: ffmpegUsage ? parseFloat(ffmpegUsage.mem) : undefined,
               },
               capture: {
-                fps: cameraInfo.process_fps,
+                fps: cameraInfo?.process_fps,
                 cpu: captureUsage ? parseFloat(captureUsage.cpu) : undefined,
                 mem: captureUsage ? parseFloat(captureUsage.mem) : undefined,
               },
               detect: {
-                fps: cameraInfo.detection_fps,
-                fps_skipped: cameraInfo.skipped_fps,
+                fps: cameraInfo?.detection_fps,
+                fps_skipped: cameraInfo?.skipped_fps,
                 cpu: detectUsage ? parseFloat(detectUsage.cpu) : undefined,
                 mem: detectUsage ? parseFloat(detectUsage.mem) : undefined,
               },
