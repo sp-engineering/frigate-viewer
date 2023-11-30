@@ -69,6 +69,8 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
         protocol: yup.string().required(requiredError),
         host: yup.string().required(requiredError),
         port: yup.number().required(requiredError),
+        username: yup.string(),
+        password: yup.string(),
       }),
       locale: yup.object().shape({
         region: yup.string().required(requiredError),
@@ -125,6 +127,8 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
       formRef.current.setFieldValue('server.protocol', 'https');
       formRef.current.setFieldValue('server.host', 'demo.frigate.video');
       formRef.current.setFieldValue('server.port', 443);
+      formRef.current.setFieldValue('server.username', '');
+      formRef.current.setFieldValue('server.password', '');
     }
   }, []);
 
@@ -172,6 +176,29 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
                   setFieldValue('server.port', parseFloat(value) || null)
                 }
                 keyboardType="numeric"
+              />
+            </Label>
+            <Label
+              text={intl.formatMessage(messages['server.username.label'])}
+              touched={touched.server?.username}
+              error={errors.server?.username}>
+              <Input
+                value={values.server.username}
+                onBlur={handleBlur('username')}
+                onChangeText={handleChange('server.username')}
+                keyboardType="default"
+              />
+            </Label>
+            <Label
+              text={intl.formatMessage(messages['server.password.label'])}
+              touched={touched.server?.password}
+              error={errors.server?.password}>
+              <Input
+                value={values.server.password}
+                onBlur={handleBlur('password')}
+                onChangeText={handleChange('server.password')}
+                keyboardType="default"
+                secureTextEntry={true}
               />
             </Label>
             <Pressable onPress={fillDemoServer}>

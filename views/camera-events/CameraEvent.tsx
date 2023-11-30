@@ -14,6 +14,7 @@ import {
   selectServerApiUrl,
   selectEventsSnapshotHeight,
   selectEventsNumColumns,
+  selectServerCredentials,
 } from '../../store/settings';
 import {useAppSelector} from '../../store/store';
 import {EventLabels} from './EventLabels';
@@ -71,6 +72,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
 }) => {
   const [retained, setRetained] = useState(false);
   const apiUrl = useAppSelector(selectServerApiUrl);
+  const credentials = useAppSelector(selectServerCredentials);
   const snapshotHeight = useAppSelector(selectEventsSnapshotHeight);
   const numColumns = useAppSelector(selectEventsNumColumns);
   const intl = useIntl();
@@ -119,7 +121,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
       text: intl.formatMessage(messages['action.delete']),
       background: Colors.red30,
       onPress: () => {
-        del(`${apiUrl}/events/${id}`, undefined, false).then(() => {
+        del(`${apiUrl}/events/${id}`, credentials, undefined, false).then(() => {
           onDelete([id]);
         });
       },
@@ -134,7 +136,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
             text: intl.formatMessage(messages['action.unretain']),
             background: Colors.red40,
             onPress: () => {
-              del(`${apiUrl}/events/${id}/retain`, undefined, false).then(
+              del(`${apiUrl}/events/${id}/retain`, credentials, undefined, false).then(
                 () => {
                   setRetained(false);
                 },
@@ -145,7 +147,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
             text: intl.formatMessage(messages['action.retain']),
             background: Colors.green30,
             onPress: () => {
-              post(`${apiUrl}/events/${id}/retain`, undefined, false).then(
+              post(`${apiUrl}/events/${id}/retain`, credentials, undefined, false).then(
                 () => {
                   setRetained(true);
                 },

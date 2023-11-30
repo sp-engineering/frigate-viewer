@@ -9,6 +9,7 @@ import {
   selectCamerasPreviewHeight,
   selectCamerasRefreshFrequency,
   selectServerApiUrl,
+  selectServerCredentials,
   setCameraPreviewHeight,
 } from '../../store/settings';
 import {CameraLabels} from './CameraLabels';
@@ -45,6 +46,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   const [lastEvent, setLastEvent] = useState<ICameraEvent>();
   const dispatch = useAppDispatch();
   const apiUrl = useAppSelector(selectServerApiUrl);
+  const credentials = useAppSelector(selectServerCredentials);
   const refreshFrequency = useAppSelector(selectCamerasRefreshFrequency);
   const previewHeight = useAppSelector(selectCamerasPreviewHeight);
   const numColumns = useAppSelector(selectCamerasNumColumns);
@@ -62,7 +64,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   }, [getLastImageUrl]);
 
   const getLastEvent = useCallback(() => {
-    get<ICameraEvent[]>(`${apiUrl}/events`, {
+    get<ICameraEvent[]>(`${apiUrl}/events`, credentials, {
       cameras: cameraName,
       limit: '1',
       include_thumbnails: '0',

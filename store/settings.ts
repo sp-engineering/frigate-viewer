@@ -46,11 +46,17 @@ export type Region =
   | 'it_IT'
   | 'sv_SE';
 
+export interface Credentials {
+  username: string;
+  password: string;
+}
+
 export interface ISettings {
   server: {
     protocol: 'http' | 'https';
     host: string;
     port: number;
+    credentials: Credentials;
   };
   locale: {
     region: Region;
@@ -73,6 +79,10 @@ export const initialSettings: ISettings = {
     protocol: 'https',
     host: '',
     port: 5000,
+    credentials: {
+      username: '',
+      password: '',
+    },
   },
   locale: {
     region: NativeModules.I18nManager.localeIdentifier,
@@ -89,8 +99,6 @@ export const initialSettings: ISettings = {
     photoPreference: 'snapshot',
   },
 };
-
-console.log(NativeModules.I18nManager.localeIdentifier);
 
 /**
  * REDUCERS
@@ -164,6 +172,11 @@ export const selectServerApiUrl = (state: RootState) => {
   return protocol && host && port
     ? `${protocol}://${host}:${port}/api`
     : undefined;
+};
+
+export const selectServerCredentials = (state: RootState) => {
+  const {credentials} = selectServer(state);
+  return credentials.username !== '' && credentials.password !== '' ? credentials : null;
 };
 
 /* locale */

@@ -13,6 +13,7 @@ import {
   selectEventsNumColumns,
   selectEventsSnapshotHeight,
   selectServerApiUrl,
+  selectServerCredentials,
   setEventSnapshotHeight,
 } from '../../store/settings';
 import {useAppDispatch, useAppSelector} from '../../store/store';
@@ -56,6 +57,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   const [snapshotDimensions, setSnapshotDimensions] = useState<[number, number]>();
   const dispatch = useAppDispatch();
   const apiUrl = useAppSelector(selectServerApiUrl);
+  const credentials = useAppSelector(selectServerCredentials);
   const numColumns = useAppSelector(selectEventsNumColumns);
   const snapshotHeight = useAppSelector(selectEventsSnapshotHeight);
   const filtersCameras = useAppSelector(selectFiltersCameras);
@@ -154,7 +156,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   useEffect(() => {
     if (apiUrl !== undefined) {
       if (refreshing) {
-        get<ICameraEvent[]>(`${apiUrl}/events`, eventsQueryParams)
+        get<ICameraEvent[]>(`${apiUrl}/events`, credentials, eventsQueryParams)
           .then(data => {
             watchEndReached(data);
             setEvents(data);
@@ -173,7 +175,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
 
   const loadMore = useCallback(() => {
     if (!endReached) {
-      get<ICameraEvent[]>(`${apiUrl}/events`, eventsQueryParams)
+      get<ICameraEvent[]>(`${apiUrl}/events`, credentials, eventsQueryParams)
         .then(data => {
           watchEndReached(data);
           setEvents([...events, ...data]);

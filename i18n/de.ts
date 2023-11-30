@@ -46,6 +46,8 @@ export default {
   'settings.server.protocol.label': 'Protokoll',
   'settings.server.host.label': 'Host-Adresse',
   'settings.server.port.label': 'Port',
+  'settings.server.username.label': 'Benutzername',
+  'settings.server.password.label': 'Passwort',
   'settings.server.useDemoServerButton': 'Nutzen den Demo Server',
   'settings.locale.header': 'Gebietsschema',
   'settings.locale.region.label': 'Region',

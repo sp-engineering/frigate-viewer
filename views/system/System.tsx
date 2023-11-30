@@ -2,7 +2,7 @@ import { useIntl } from 'react-intl';
 import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
 import { Carousel, LoaderScreen, PageControlPosition, Text, View } from 'react-native-ui-lib';
 import { useAppSelector } from '../../store/store';
-import { selectServerApiUrl } from '../../store/settings';
+import { selectServerApiUrl, selectServerCredentials } from '../../store/settings';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { menuButton, useMenu } from '../menu/menuHelpers';
 import { messages } from './messages';
@@ -47,6 +47,7 @@ export const System: NavigationFunctionComponent = ({componentId}) => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const apiUrl = useAppSelector(selectServerApiUrl);
+  const credentials = useAppSelector(selectServerCredentials);
   const cameras = useAppSelector(selectAvailableCameras);
   const intl = useIntl();
   const interval = useRef<NodeJS.Timer>();
@@ -79,7 +80,7 @@ export const System: NavigationFunctionComponent = ({componentId}) => {
 
   const refresh = useCallback(() => {
     setLoading(true);
-    return get<Stats>(`${apiUrl}/stats`)
+    return get<Stats>(`${apiUrl}/stats`, credentials)
       .then(stats => {
         setStats(stats);
         setLoading(false);

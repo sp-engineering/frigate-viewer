@@ -13,6 +13,7 @@ import {
   fillGapsWithInitialData,
   selectCamerasNumColumns,
   selectServerApiUrl,
+  selectServerCredentials,
 } from '../../store/settings';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {menuButton, useMenu} from '../menu/menuHelpers';
@@ -46,6 +47,7 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
   useNoServer();
   const [loading, setLoading] = useState(true);
   const apiUrl = useAppSelector(selectServerApiUrl);
+  const credentials = useAppSelector(selectServerCredentials);
   const cameras = useAppSelector(selectAvailableCameras);
   const numColumns = useAppSelector(selectCamerasNumColumns);
   const dispatch = useAppDispatch();
@@ -68,7 +70,7 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
 
   const refresh = useCallback(() => {
     setLoading(true);
-    get<IConfigResponse>(`${apiUrl}/config`)
+    get<IConfigResponse>(`${apiUrl}/config`, credentials)
       .then(config => {
         const availableCameras = Object.keys(config.cameras);
         const availableLabels = config.objects.track;

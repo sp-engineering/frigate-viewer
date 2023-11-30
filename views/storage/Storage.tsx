@@ -2,7 +2,7 @@ import { useIntl } from 'react-intl';
 import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
 import { Carousel, LoaderScreen, PageControlPosition } from 'react-native-ui-lib';
 import { useAppSelector } from '../../store/store';
-import { selectServerApiUrl } from '../../store/settings';
+import { selectServerApiUrl, selectServerCredentials } from '../../store/settings';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { menuButton, useMenu } from '../menu/menuHelpers';
 import { messages } from './messages';
@@ -30,6 +30,7 @@ export const Storage: NavigationFunctionComponent = ({componentId}) => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const apiUrl = useAppSelector(selectServerApiUrl);
+  const credentials = useAppSelector(selectServerCredentials);
   const intl = useIntl();
 
   useEffect(() => {
@@ -51,8 +52,8 @@ export const Storage: NavigationFunctionComponent = ({componentId}) => {
   const refresh = useCallback(() => {
     setLoading(true);
     Promise.allSettled([
-      get<Stats>(`${apiUrl}/stats`),
-      get<CamerasStorage>(`${apiUrl}/recordings/storage`),
+      get<Stats>(`${apiUrl}/stats`, credentials),
+      get<CamerasStorage>(`${apiUrl}/recordings/storage`, credentials),
     ])
       .then(([stats, cameras]) => {
         if (stats.status === 'fulfilled') {
