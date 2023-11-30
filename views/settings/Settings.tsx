@@ -69,8 +69,10 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
         protocol: yup.string().required(requiredError),
         host: yup.string().required(requiredError),
         port: yup.number().required(requiredError),
-        username: yup.string(),
-        password: yup.string(),
+        credentials: yup.object().shape({
+          username: yup.string(),
+          password: yup.string(),
+        }),
       }),
       locale: yup.object().shape({
         region: yup.string().required(requiredError),
@@ -180,10 +182,10 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
             </Label>
             <Label
               text={intl.formatMessage(messages['server.username.label'])}
-              touched={touched.server?.username}
-              error={errors.server?.username}>
+              touched={touched.server?.credentials?.username}
+              error={errors.server?.credentials?.username}>
               <Input
-                value={values.server.username}
+                value={values.server.credentials?.username}
                 onBlur={handleBlur('username')}
                 onChangeText={handleChange('server.username')}
                 keyboardType="default"
@@ -191,10 +193,10 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
             </Label>
             <Label
               text={intl.formatMessage(messages['server.password.label'])}
-              touched={touched.server?.password}
-              error={errors.server?.password}>
+              touched={touched.server?.credentials?.password}
+              error={errors.server?.credentials?.password}>
               <Input
-                value={values.server.password}
+                value={values.server.credentials?.password}
                 onBlur={handleBlur('password')}
                 onChangeText={handleChange('server.password')}
                 keyboardType="default"
