@@ -5,6 +5,7 @@ export type MenuId =
   | 'camerasList'
   | 'cameraEvents'
   | 'retained'
+  | 'notifications'
   | 'storage'
   | 'system'
   | 'logs'
