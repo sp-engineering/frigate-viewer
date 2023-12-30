@@ -1,12 +1,16 @@
 import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {NavigationFunctionComponent} from 'react-native-navigation';
-import VLCPlayer, { State } from '@lunarr/vlc-player';
+import VLCPlayer, {State} from '@lunarr/vlc-player';
 import {ZoomableView} from '../../components/ZoomableView';
-import {selectServerApiUrl} from '../../store/settings';
+import {
+  selectServerApiUrl,
+  selectServerCredentials,
+} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
 import {ProgressBar} from './ProgressBar';
 import {VideoHUD} from './VideoHUD';
+import {authorizationHeader} from '../../helpers/rest';
 
 interface ICameraEventClipProps {
   eventId: string;
@@ -28,6 +32,7 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
   const [stopped, setStopped] = useState(false);
   const [progressInfo, setProgressInfo] = useState<State>();
   const player = useRef<VLCPlayer>(null);
+  const credentials = useAppSelector(selectServerCredentials);
 
   const resumeIfStopped = useCallback(() => {
     if (player.current && stopped) {
@@ -74,7 +79,7 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
           <VLCPlayer
             ref={player}
             paused={paused}
-            source={{uri: clipUrl}}
+            source={{uri: clipUrl, headers: authorizationHeader(credentials)}}
             style={[styles.player]}
             onProgress={onProgress}
             onStopped={onStopped}

@@ -129,8 +129,8 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
       formRef.current.setFieldValue('server.protocol', 'https');
       formRef.current.setFieldValue('server.host', 'demo.frigate.video');
       formRef.current.setFieldValue('server.port', 443);
-      formRef.current.setFieldValue('server.username', '');
-      formRef.current.setFieldValue('server.password', '');
+      formRef.current.setFieldValue('server.credentials.username', '');
+      formRef.current.setFieldValue('server.credentials.password', '');
     }
   }, []);
 
@@ -187,7 +187,7 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
               <Input
                 value={values.server.credentials?.username}
                 onBlur={handleBlur('username')}
-                onChangeText={handleChange('server.username')}
+                onChangeText={handleChange('server.credentials.username')}
                 keyboardType="default"
               />
             </Label>
@@ -198,7 +198,7 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
               <Input
                 value={values.server.credentials?.password}
                 onBlur={handleBlur('password')}
-                onChangeText={handleChange('server.password')}
+                onChangeText={handleChange('server.credentials.password')}
                 keyboardType="default"
                 secureTextEntry={true}
               />
@@ -334,7 +334,9 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
               />
             </Label>
             <Label
-              text={intl.formatMessage(messages['events.photoPreference.label'])}
+              text={intl.formatMessage(
+                messages['events.photoPreference.label'],
+              )}
               touched={touched.events?.photoPreference}
               error={errors.events?.photoPreference}>
               <Dropdown

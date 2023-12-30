@@ -1,8 +1,13 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { ZoomableImage } from '../../components/ZoomableImage';
-import { StyleSheet } from 'react-native';
-import { useAppSelector } from '../../store/store';
-import { selectEventsPhotoPreference, selectServerApiUrl } from '../../store/settings';
+import {FC, useCallback, useEffect, useState} from 'react';
+import {ZoomableImage} from '../../components/ZoomableImage';
+import {StyleSheet} from 'react-native';
+import {useAppSelector} from '../../store/store';
+import {
+  selectEventsPhotoPreference,
+  selectServerApiUrl,
+  selectServerCredentials,
+} from '../../store/settings';
+import {authorizationHeader} from '../../helpers/rest';
 
 const styles = StyleSheet.create({
   image: {
@@ -16,15 +21,21 @@ interface IEventSnapshotProps {
   onSnapshotLoad?: (url: string) => void;
 }
 
-export const EventSnapshot: FC<IEventSnapshotProps> = ({id, hasSnapshot, onSnapshotLoad}) => {
+export const EventSnapshot: FC<IEventSnapshotProps> = ({
+  id,
+  hasSnapshot,
+  onSnapshotLoad,
+}) => {
   const [snapshot, setSnapshot] = useState<string>();
   const photoPreference = useAppSelector(selectEventsPhotoPreference);
   const apiUrl = useAppSelector(selectServerApiUrl);
+  const credentials = useAppSelector(selectServerCredentials);
 
   useEffect(() => {
-    const url = hasSnapshot && photoPreference === 'snapshot'
-      ? `${apiUrl}/events/${id}/snapshot.jpg?bbox=1`
-      : `${apiUrl}/events/${id}/thumbnail.jpg`;
+    const url =
+      hasSnapshot && photoPreference === 'snapshot'
+        ? `${apiUrl}/events/${id}/snapshot.jpg?bbox=1`
+        : `${apiUrl}/events/${id}/thumbnail.jpg`;
     setSnapshot(url);
   }, [id, hasSnapshot, apiUrl]);
 
@@ -34,16 +45,16 @@ export const EventSnapshot: FC<IEventSnapshotProps> = ({id, hasSnapshot, onSnaps
     }
   }, [onSnapshotLoad, snapshot]);
 
-  return snapshot
-    ? (
-      <ZoomableImage
-        source={{uri: snapshot}}
-        style={styles.image}
-        fadeDuration={0}
-        resizeMode="cover"
-        resizeMethod="scale"
-        onLoad={onLoad}
-      />
-      )
-      : <></>;
+  return snapshot ? (
+    <ZoomableImage
+      source={{uri: snapshot, headers: authorizationHeader(credentials)}}
+      style={styles.image}
+      fadeDuration={0}
+      resizeMode="cover"
+      resizeMethod="scale"
+      onLoad={onLoad}
+    />
+  ) : (
+    <></>
+  );
 };

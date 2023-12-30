@@ -14,6 +14,7 @@ export const messages = makeMessages('settings', {
   'server.port.label': 'Port',
   'server.username.label': 'Username',
   'server.password.label': 'Password',
+  'server.useCredentials.label': 'Use credentials',
   'server.useDemoServerButton': 'Use demo server',
   'locale.header': 'Locale',
   'locale.region.label': 'Region',
