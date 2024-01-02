@@ -10,6 +10,7 @@ const libs = [
   '@lunarr/vlc-player',
   '@react-native-async-storage/async-storage',
   '@reduxjs/toolkit',
+  'buffer',
   'date-fns',
   'formik',
   'react',
@@ -53,10 +54,13 @@ export const UsedLibs: FC = () => {
   const openLink = useOpenLink();
   const intl = useIntl();
 
-  const openNpm = useCallback((lib: string) => {
-    const link = `https://npmjs.com/package/${lib}`;
-    return openLink(link);
-  }, [openLink]);
+  const openNpm = useCallback(
+    (lib: string) => {
+      const link = `https://npmjs.com/package/${lib}`;
+      return openLink(link);
+    },
+    [openLink],
+  );
 
   return (
     <View style={styles.wrapper}>
@@ -64,10 +68,7 @@ export const UsedLibs: FC = () => {
         {intl.formatMessage(messages['usedLibs.header'])}
       </Text>
       {libs.map((lib, index) => (
-        <Pressable
-          onPress={openNpm(lib)}
-          key={index}
-        >
+        <Pressable onPress={openNpm(lib)} key={index}>
           <Text style={styles.lib}>{lib}</Text>
         </Pressable>
       ))}

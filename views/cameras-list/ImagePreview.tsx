@@ -4,9 +4,10 @@ import {StyleSheet, View} from 'react-native';
 import {ZoomableImage} from '../../components/ZoomableImage';
 import {useAppSelector} from '../../store/store';
 import {
-  selectCamerasNumColumns,
   selectCamerasPreviewHeight,
+  selectServerCredentials,
 } from '../../store/settings';
+import {authorizationHeader} from '../../helpers/rest';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -29,19 +30,15 @@ export const ImagePreview: FC<IImagePreviewProps> = ({
   onPress,
   onPreviewLoad,
 }) => {
-  const numColumns = useAppSelector(selectCamerasNumColumns);
   const previewHeight = useAppSelector(selectCamerasPreviewHeight);
+  const credentials = useAppSelector(selectServerCredentials);
 
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-      <View
-        style={[
-          styles.wrapper,
-          {width: '100%', height: previewHeight},
-        ]}>
+      <View style={[styles.wrapper, {width: '100%', height: previewHeight}]}>
         {imageUrl && (
           <ZoomableImage
-            source={{uri: imageUrl}}
+            source={{uri: imageUrl, headers: authorizationHeader(credentials)}}
             style={styles.image}
             fadeDuration={0}
             resizeMode="contain"

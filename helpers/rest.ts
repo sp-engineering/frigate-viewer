@@ -1,5 +1,17 @@
-import { ToastAndroid } from 'react-native';
-import { Credentials } from '../store/settings';
+import {Buffer} from 'buffer';
+import {ToastAndroid} from 'react-native';
+import {Credentials} from '../store/settings';
+
+export const authorizationHeader: (credentials: Credentials | null) => {
+  Authorization?: string;
+} = credentials =>
+  credentials !== null
+    ? {
+        Authorization: `Basic ${Buffer.from(
+          `${credentials.username}:${credentials.password}`,
+        ).toString('base64')}`,
+      }
+    : {};
 
 export const get = async <T>(
   endpoint: string,
@@ -12,7 +24,7 @@ export const get = async <T>(
       `${endpoint}${queryParams ? `?${new URLSearchParams(queryParams)}` : ''}`,
       {
         headers: {
-          Authorization: credentials !== null ? `Basic ${Buffer.from(`${credentials.username}:${credentials.password}`).toString('base64')}` : undefined,
+          ...authorizationHeader(credentials),
         },
       },
     ).then(res => (json === false ? res.text() : res.json()));
@@ -35,7 +47,7 @@ export const post = async <T>(
       {
         method: 'post',
         headers: {
-          Authorization: credentials !== null ? `Basic ${Buffer.from(`${credentials.username}:${credentials.password}`).toString('base64')}` : undefined,
+          ...authorizationHeader(credentials),
         },
       },
     ).then(res => (json === false ? res.text() : res.json()));
@@ -58,7 +70,7 @@ export const del = async <T>(
       {
         method: 'delete',
         headers: {
-          Authorization: credentials !== null ? `Basic ${Buffer.from(`${credentials.username}:${credentials.password}`).toString('base64')}` : undefined,
+          ...authorizationHeader(credentials),
         },
       },
     ).then(res => (json === false ? res.text() : res.json()));

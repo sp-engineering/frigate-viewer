@@ -1,4 +1,11 @@
-import React, {FC, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import type {PropsWithChildren} from 'react';
 import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import {Navigation} from 'react-native-navigation';
@@ -15,25 +22,26 @@ import {
 import {CameraLabels} from './CameraLabels';
 import {setFiltersLabels, setFiltersZones} from '../../store/events';
 import {ImagePreview} from './ImagePreview';
-import { get } from '../../helpers/rest';
-import { ICameraEvent } from '../camera-events/CameraEvent';
-import { LastEvent } from './LastEvent';
+import {authorizationHeader, get} from '../../helpers/rest';
+import {ICameraEvent} from '../camera-events/CameraEvent';
+import {LastEvent} from './LastEvent';
 import { colors } from '../../store/colors';
 
-const stylesFn = (numColumns: number) => StyleSheet.create({
-  cameraTileTitle: {
-    position: 'absolute',
-    left: 2,
-    top: 1,
-    width: '100%',
-    paddingVertical: 5 / numColumns,
-    paddingHorizontal: 14 / numColumns,
-    fontSize: 16 / numColumns,
-    fontWeight: '300',
-    color: colors.text,
-    backgroundColor: '#00000040',
-  },
-});
+const stylesFn = (numColumns: number) =>
+  StyleSheet.create({
+    cameraTileTitle: {
+      position: 'absolute',
+      left: 2,
+      top: 1,
+      width: '100%',
+      paddingVertical: 5 / numColumns,
+      paddingHorizontal: 14 / numColumns,
+      fontSize: 16 / numColumns,
+      fontWeight: '300',
+      color: colors.text,
+      backgroundColor: '#00000040',
+    },
+  });
 
 type CameraTileProps = PropsWithChildren<{
   componentId: string;
@@ -54,14 +62,20 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   const interval = useRef<NodeJS.Timer>();
 
   const getLastImageUrl = useCallback(
-    () => `${apiUrl}/${cameraName}/latest.jpg?bbox=1&ts=${new Date().toISOString()}`,
+    () =>
+      `${apiUrl}/${cameraName}/latest.jpg?bbox=1&ts=${new Date().toISOString()}`,
     [apiUrl],
   );
 
   const updateLastImageUrl = useCallback(async () => {
     const lastImageUrl = getLastImageUrl();
-    await Image.prefetch(lastImageUrl);
-    setLastImageSrc(lastImageUrl);
+    Image.getSizeWithHeaders(
+      lastImageUrl,
+      authorizationHeader(credentials),
+      () => {
+        setLastImageSrc(lastImageUrl);
+      },
+    );
   }, [getLastImageUrl]);
 
   const getLastEvent = useCallback(() => {
@@ -131,14 +145,12 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   const styles = useMemo(() => stylesFn(numColumns), [numColumns]);
 
   return (
-    <View style={{
-      width: `${100 / numColumns}%`,
-    }}>
+    <View
+      style={{
+        width: `${100 / numColumns}%`,
+      }}>
       <Carousel initialPage={1}>
-        <LastEvent
-          event={lastEvent}
-          onPress={showCameraEvents}
-        />
+        <LastEvent event={lastEvent} onPress={showCameraEvents} />
         <ImagePreview
           imageUrl={lastImageSrc}
           onPress={showCameraEvents}

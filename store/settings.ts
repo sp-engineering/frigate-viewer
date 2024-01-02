@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from './store';
-import { NativeModules } from 'react-native';
+import {NativeModules} from 'react-native';
 
 /**
  * STORE MODEL
@@ -50,6 +50,21 @@ export interface Credentials {
   username: string;
   password: string;
 }
+
+export interface NotificationsFilter {
+  enabled: boolean;
+  cameras: string[];
+  labels: string[];
+  zones: string[];
+}
+
+export interface INotifications {
+  filters: NotificationsFilter[];
+}
+
+const initialNotifications: INotifications = {
+  filters: [],
+};
 
 export interface ISettings {
   dark: {
@@ -116,10 +131,25 @@ export const initialSettings: ISettings = {
  * REDUCERS
  **/
 
+const isTheSameNotificationsFilter =
+  (b: Partial<NotificationsFilter>) => (a: NotificationsFilter) => {
+    const camerasMatch =
+      a.cameras.length === b.cameras?.length &&
+      a.cameras.every((camera: string) => b.cameras?.includes(camera));
+    const labelsMatch =
+      a.labels.length === b.labels?.length &&
+      a.labels.every((label: string) => b.labels?.includes(label));
+    const zonesMatch =
+      a.zones.length === b.zones?.length &&
+      a.zones.every((zone: string) => b.zones?.includes(zone));
+    return camerasMatch && labelsMatch && zonesMatch;
+  };
+
 export const settingsStore = createSlice({
   name: 'settings',
   initialState: {
     v1: initialSettings,
+    notifications: initialNotifications,
   },
   reducers: {
     fillGapsWithInitialData: state => {
@@ -153,6 +183,31 @@ export const settingsStore = createSlice({
     setEventSnapshotHeight: (state, action: PayloadAction<number>) => {
       state.v1.events.snapshotHeight = action.payload;
     },
+    addNotificationsFilter: (
+      state,
+      action: PayloadAction<NotificationsFilter>,
+    ) => {
+      state.notifications.filters.push(action.payload);
+    },
+    removeNotificationsFilter: (
+      state,
+      action: PayloadAction<NotificationsFilter>,
+    ) => {
+      state.notifications.filters = state.notifications.filters.filter(
+        isTheSameNotificationsFilter(action.payload),
+      );
+    },
+    setNotificationsFilterEnabled: (
+      state,
+      action: PayloadAction<NotificationsFilter>,
+    ) => {
+      const filter = state.notifications.filters.find(
+        isTheSameNotificationsFilter(action.payload),
+      );
+      if (filter) {
+        filter.enabled = action.payload.enabled;
+      }
+    },
   },
 });
 
@@ -165,6 +220,9 @@ export const {
   saveSettings,
   setCameraPreviewHeight,
   setEventSnapshotHeight,
+  addNotificationsFilter,
+  removeNotificationsFilter,
+  setNotificationsFilterEnabled,
 } = settingsStore.actions;
 
 /**
@@ -188,7 +246,11 @@ export const selectServerApiUrl = (state: RootState) => {
 
 export const selectServerCredentials = (state: RootState) => {
   const {credentials} = selectServer(state);
-  return credentials.username !== '' && credentials.password !== '' ? credentials : null;
+  return credentials !== undefined &&
+    credentials.username !== '' &&
+    credentials.password !== ''
+    ? credentials
+    : null;
 };
 
 /* locale */
@@ -227,3 +289,20 @@ export const selectEventsSnapshotHeight = (state: RootState) =>
 
 export const selectEventsPhotoPreference = (state: RootState) =>
   selectEvents(state).photoPreference;
+
+/* notifications */
+
+export const selectNotifications = (state: RootState) =>
+  settingsState(state).notifications;
+
+export const selectNotificationsFilters = (state: RootState) =>
+  selectNotifications(state).filters;
+
+export const selectNotificationsFilter = (
+  state: RootState,
+  filter: Partial<NotificationsFilter>,
+) => {
+  return selectNotifications(state).filters.find(
+    isTheSameNotificationsFilter(filter),
+  );
+};
