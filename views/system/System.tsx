@@ -20,10 +20,13 @@ import { SectionTitle } from './SectionTitle';
 import { CpuUsageChart } from './CpuUsageChart';
 import { CameraInfoChart } from './CameraInfoChart';
 import { SystemInfo } from './SystemInfo';
+import { colors } from '../../store/colors';
 
 const styles = StyleSheet.create({
   wrapper: {
     margin: 20,
+    backgroundColor: colors.background,
+    color: colors.text,
   },
   cameraTableWrapper: {
     marginBottom: 10,

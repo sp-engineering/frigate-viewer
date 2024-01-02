@@ -6,6 +6,7 @@ export const messages = makeMessages('author', {
   'info.contactLabel': 'Contact',
   'info.opensourceLabel': 'This is open source project.',
   'info.githubLabel': 'See on github',
+  'info.specialThanks': 'Special thanks to:',
   'buyMeCoffee.nonProfitLabel': 'The project was created for learning purposes and I don\'t intend to profit from granting licences.',
   'buyMeCoffee.doYouLikeLabel': 'Do you like this application',
   'buyMeCoffee.sayThankYouLabel': 'and want to say "thank you"?',

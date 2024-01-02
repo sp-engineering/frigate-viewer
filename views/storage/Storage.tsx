@@ -16,10 +16,13 @@ import { StyleSheet } from 'react-native';
 import { refreshButton } from '../../helpers/buttonts';
 import { CamerasStorageChart } from './CamerasStorageChart';
 import { CamerasStorageTable } from './CamerasStorageTable';
+import { colors } from '../../store/colors';
 
 const styles = StyleSheet.create({
   wrapper: {
     margin: 20,
+    backgroundColor: colors.background,
+    color: colors.text,
   },
 });
 

@@ -3,6 +3,7 @@ import { useIntl } from 'react-intl';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { messages } from './messages';
 import { useOpenLink } from './useOpenLink';
+import { colors } from '../../store/colors';
 
 const libs = [
   '@ant-design/icons-react-native',
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 10,
-    color: 'black',
+    color: colors.text,
     fontWeight: 'bold',
   },
   lib: {

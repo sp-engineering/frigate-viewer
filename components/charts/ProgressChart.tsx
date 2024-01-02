@@ -2,12 +2,15 @@ import { FC, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { ProgressCircle } from 'react-native-svg-charts';
 import { Text, View } from 'react-native-ui-lib';
+import { colors } from '../../store/colors';
 
 const styles = StyleSheet.create({
   wrapper: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: colors.background,
+    color: colors.text,
   },
   circle: {
     position: 'absolute',
@@ -29,10 +32,12 @@ const styles = StyleSheet.create({
   legendLabel: {
     fontSize: 12,
     fontWeight: '600',
+    color: colors.text,
   },
   legendValue: {
     marginLeft: 2,
     fontSize: 12,
+    color: colors.text,
   },
 });
 

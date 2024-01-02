@@ -3,6 +3,7 @@ import { FC, useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import { Switch, SwitchProps, Text, View } from 'react-native-ui-lib';
 import { useAppDispatch } from '../../store/store';
+import { colors } from '../../store/colors';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     backgroundColor: 'white',
     borderBottomWidth: 1,
-    borderColor: 'black',
+    borderColor: colors.background,
   },
   label: {
   },

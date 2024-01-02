@@ -5,6 +5,7 @@ import {selectAvailableLabels} from '../../store/events';
 import {selectCamerasNumColumns, selectCamerasPreviewHeight} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
 import {FlatList} from 'react-native-gesture-handler';
+import { colors } from '../../store/colors';
 
 const stylesFn = (numColumns: number) => StyleSheet.create({
   wrapper: {
@@ -28,11 +29,11 @@ const stylesFn = (numColumns: number) => StyleSheet.create({
   },
   labelText: {
     fontSize: 14 / numColumns,
-    color: 'white',
+    color: colors.text,
   },
   iconEmoji: {
     fontSize: 40 / (numColumns * 1.5),
-    color: 'white',
+    color: colors.text,
   },
 });
 

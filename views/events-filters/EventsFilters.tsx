@@ -19,6 +19,7 @@ import {Filters, IFilter, SectionHeader} from './Filters';
 import {messages} from './messages';
 import { Section } from '../../components/forms/Section';
 import { FilterSwitch } from './FilterSwitch';
+import { colors, darkModeColors, lightModeColors } from '../../store/colors';
 
 interface IEventsFiltersProps {
   viewedCameraNames?: string[];
@@ -26,7 +27,8 @@ interface IEventsFiltersProps {
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
+    color: colors.text,
     width: '100%',
     height: '100%',
   },

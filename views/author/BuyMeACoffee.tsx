@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import {useIntl} from 'react-intl';
 import {Pressable, StyleSheet, Text, View, ViewProps} from 'react-native';
 import {messages} from './messages';
+import { colors } from '../../store/colors';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -14,12 +15,12 @@ const styles = StyleSheet.create({
   },
   nonProfitText: {
     marginBottom: 10,
-    color: 'black',
+    color: colors.text,
     textAlign: 'center',
   },
   text: {
     fontWeight: '500',
-    color: 'black',
+    color: colors.text,
     textAlign: 'center',
   },
   buttonInline: {
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   buttonText: {
-    color: 'black',
+    color: colors.text,
   },
 });
 

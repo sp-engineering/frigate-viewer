@@ -1,12 +1,14 @@
 import React, {FC} from 'react';
 import {StyleSheet, Text, TextInputProps, View} from 'react-native';
+import { colors } from '../../store/colors';
 
 const styles = StyleSheet.create({
   wrapper: {
     marginVertical: 10,
+    backgroundColor: colors.background,
   },
   text: {
-    color: 'black',
+    color: colors.text,
   },
   error: {
     color: 'red',

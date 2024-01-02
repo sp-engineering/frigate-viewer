@@ -9,13 +9,15 @@ import { useAppSelector } from '../../store/store';
 import { selectServerApiUrl } from '../../store/settings';
 import { Log, LogPreview } from './LogPreview';
 import { refreshButton } from '../../helpers/buttonts';
+import { colors } from '../../store/colors';
 const { TabBar, TabPage } = TabController;
 
 const styles = StyleSheet.create({
   noLogs: {
     padding: 20,
-    color: 'black',
     textAlign: 'center',
+    backgroundColor: colors.background,
+    color: colors.text,
   },
 });
 

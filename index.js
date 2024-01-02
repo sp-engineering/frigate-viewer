@@ -13,6 +13,8 @@ import {withTranslations} from './helpers/locale';
 import { Logs } from './views/logs/Logs';
 import { Storage } from './views/storage/Storage';
 import { System } from './views/system/System';
+import { colors } from './store/colors';
+
 
 const registerComponent = (name, component, decorators = []) => {
   Navigation.registerComponent(
@@ -89,17 +91,17 @@ Navigation.events().registerAppLaunchedListener(() => {
 
 Navigation.setDefaultOptions({
   statusBar: {
-    backgroundColor: 'black',
+    backgroundColor: colors.background,
   },
   topBar: {
     title: {
-      color: 'white',
+      color: colors.text,
     },
     backButton: {
-      color: 'white',
+      color: colors.text,
     },
     background: {
-      color: 'black',
+      color: colors.background,
     },
   },
 });

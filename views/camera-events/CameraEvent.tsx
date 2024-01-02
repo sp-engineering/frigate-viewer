@@ -21,6 +21,7 @@ import {EventLabels} from './EventLabels';
 import {EventTitle} from './EventTitle';
 import {messages} from './messages';
 import { EventSnapshot } from './EventSnapshot';
+import { colors } from '../../store/colors';
 
 export interface ICameraEvent {
   id: string;
@@ -53,7 +54,8 @@ const styles = StyleSheet.create({
   cameraEvent: {
     paddingVertical: 1,
     paddingHorizontal: 2,
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
+    color: colors.text,
   },
 });
 

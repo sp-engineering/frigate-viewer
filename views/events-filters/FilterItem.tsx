@@ -1,5 +1,6 @@
 import React, {FC, useCallback} from 'react';
 import {Pressable, StyleSheet, Text} from 'react-native';
+import { colors } from '../../store/colors';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -7,7 +8,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: 'white',
     borderBottomWidth: 1,
-    borderColor: 'black',
+    borderColor: colors.background,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
     color: 'green',
   },
   text: {
-    color: 'black',
+    color: colors.text,
   },
   selectedText: {
     fontWeight: '600',

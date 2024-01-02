@@ -27,12 +27,14 @@ import {messages} from './messages';
 import { useNoServer } from '../settings/useNoServer';
 import { Background } from '../../components/Background';
 import { useOrientation } from '../../helpers/screen';
+import { colors } from '../../store/colors';
 
 const styles = StyleSheet.create({
   noEvents: {
     padding: 20,
-    color: 'black',
     textAlign: 'center',
+    backgroundColor: colors.background,
+    color: colors.text,
   },
 });
 

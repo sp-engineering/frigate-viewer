@@ -13,12 +13,15 @@ import {messages} from './messages';
 import { UsedLibs } from './UsedLibs';
 import { useOpenLink } from './useOpenLink';
 import { ScrollView } from 'react-native-gesture-handler';
+import { colors } from '../../store/colors';
+import { SpecialThanks } from './SpecialThanks';
 
 const styles = StyleSheet.create({
   wrapper: {
     width: '100%',
     height: '100%',
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
+    color: colors.text,
   },
   authorInfo: {
     marginTop: 20,
@@ -40,10 +43,10 @@ const styles = StyleSheet.create({
   },
   itemLabel: {
     fontWeight: '500',
-    color: 'black',
+    color: colors.text,
   },
   itemValue: {
-    color: 'black',
+    color: colors.text,
     textAlign: 'center',
   },
   repository: {
@@ -99,6 +102,7 @@ export const Author: NavigationFunctionComponent = ({componentId}) => {
             onPress={openLink('https://github.com/sp-engineering')}>
             {intl.formatMessage(messages['info.githubLabel'])}
           </Text>
+          <SpecialThanks />
         </View>
       </View>
       <BuyMeACoffee

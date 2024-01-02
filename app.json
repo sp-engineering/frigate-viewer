@@ -1,4 +1,8 @@
 {
   "name": "FrigateViewer",
-  "displayName": "FrigateViewer"
+  "displayName": "Frigate Viewer",
+  "userInterfaceStyle": "automatic",
+  "packagerOpts": {
+    "config": "metro.config.js"
+  }
 }

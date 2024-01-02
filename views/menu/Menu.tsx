@@ -1,6 +1,6 @@
-import {IconOutline, OutlineGlyphMapType} from '@ant-design/icons-react-native';
-import React, {FC, useCallback, useMemo} from 'react';
-import {useIntl} from 'react-intl';
+import { IconOutline, OutlineGlyphMapType } from '@ant-design/icons-react-native';
+import React, { FC, useCallback, useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import {
   Image,
   StyleSheet,
@@ -8,11 +8,12 @@ import {
   TouchableNativeFeedback,
   View,
 } from 'react-native';
-import {Navigation} from 'react-native-navigation';
-import {MenuId} from './menuHelpers';
-import {MessageKey, messages} from './messages';
+import { Navigation } from 'react-native-navigation';
+import { MenuId } from './menuHelpers';
+import { MessageKey, messages } from './messages';
 import { ICameraEventsProps } from '../camera-events/CameraEvents';
 import { ScrollView } from 'react-native-gesture-handler';
+import { colors } from '../../store/colors';
 
 interface IMenuProps {
   current: string;
@@ -20,7 +21,8 @@ interface IMenuProps {
 
 const styles = StyleSheet.create({
   menuWrapper: {
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
+    color: colors.text,
     width: '100%',
     height: '100%',
   },
@@ -29,6 +31,7 @@ const styles = StyleSheet.create({
     height: 80,
     resizeMode: 'contain',
     marginHorizontal: 10,
+
   },
   menuItem: {
     paddingVertical: 10,
@@ -38,14 +41,16 @@ const styles = StyleSheet.create({
   },
   menuItemCurrent: {
     backgroundColor: '#f5f5f5',
+    color: colors.background
   },
   menuItemIcon: {
     fontSize: 20,
     marginRight: 20,
+    color: colors.text,
   },
   menuItemText: {
     fontSize: 20,
-    color: 'black',
+    color: colors.text,
   },
 });
 
@@ -110,26 +115,26 @@ export const authorMenuItem: IMenuItem = {
 };
 
 export const navigateToMenuItem =
-  ({view, stack, passProps}: IMenuItem) =>
-  () => {
-    if (view) {
-      Navigation[stack ? 'push' : 'setStackRoot']('MainMenu', {
-        component: {
-          name: view,
-          passProps,
-          options: {
-            sideMenu: {
-              left: {
-                visible: false,
+  ({ view, stack, passProps }: IMenuItem) =>
+    () => {
+      if (view) {
+        Navigation[stack ? 'push' : 'setStackRoot']('MainMenu', {
+          component: {
+            name: view,
+            passProps,
+            options: {
+              sideMenu: {
+                left: {
+                  visible: false,
+                },
               },
             },
           },
-        },
-      });
-    }
-  };
+        });
+      }
+    };
 
-export const Menu: FC<IMenuProps> = ({current}) => {
+export const Menu: FC<IMenuProps> = ({ current }) => {
   const intl = useIntl();
   const menuItems: IMenuItem[] = useMemo(
     () =>
@@ -155,7 +160,7 @@ export const Menu: FC<IMenuProps> = ({current}) => {
 
   return (
     <ScrollView style={[styles.menuWrapper]}>
-      <Image source={require('./logo.png')} style={styles.menuLogo} />
+      <Image source={colors.dark ? require('./logo_large_dark.png') : require('./logo_large_light.png')} style={styles.menuLogo} />
       {menuItems.map(item => (
         <TouchableNativeFeedback onPress={navigate(item)} key={item.id}>
           <View
@@ -163,8 +168,14 @@ export const Menu: FC<IMenuProps> = ({current}) => {
               styles.menuItem,
               item.id === current ? styles.menuItemCurrent : undefined,
             ]}>
-            <IconOutline name={item.icon} style={[styles.menuItemIcon]} />
-            <Text style={[styles.menuItemText]}>{item.label}</Text>
+            <IconOutline name={item.icon} style={[
+              styles.menuItemIcon,
+              item.id === current ? styles.menuItemCurrent : undefined,
+            ]} />
+            <Text style={[
+              styles.menuItemText,
+              item.id === current ? styles.menuItemCurrent : undefined,
+            ]}>{item.label}</Text>
           </View>
         </TouchableNativeFeedback>
       ))}

@@ -4,6 +4,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {Section} from '../../components/forms/Section';
 import {useAppDispatch} from '../../store/store';
 import {FilterItem} from './FilterItem';
+import { colors } from '../../store/colors';
 
 const styles = StyleSheet.create({
   sectionHeader: {
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
   sectionHeaderText: {
     fontSize: 18,
     fontWeight: '600',
-    color: 'black',
+    color: colors.text,
   },
 });
 

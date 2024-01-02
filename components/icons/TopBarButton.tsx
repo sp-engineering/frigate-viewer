@@ -1,13 +1,14 @@
 import {IconOutline, OutlineGlyphMapType} from '@ant-design/icons-react-native';
 import React, {FC, useCallback} from 'react';
 import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
+import { colors } from '../../store/colors';
 
 const styles = StyleSheet.create({
   button: {
     paddingHorizontal: 12,
     marginHorizontal: 4,
     paddingVertical: 14,
-    backgroundColor: 'black',
+    backgroundColor: colors.background,
   },
   bullet: {
     position: 'absolute',
@@ -19,12 +20,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
   bulletText: {
-    color: 'white',
+    color: colors.text,
     textAlign: 'center',
     lineHeight: 12,
     fontSize: 10,
     fontWeight: '700',
   },
+  IconOutline: {
+    color: colors.text,
+  }
 });
 
 interface ITopBarButtonProps {
@@ -47,7 +51,7 @@ export const TopBarButton: FC<ITopBarButtonProps> = ({
   return (
     <TouchableWithoutFeedback onPress={press}>
       <View style={styles.button}>
-        <IconOutline name={icon} color="white" size={20} />
+        <IconOutline name={icon} size={20} style={styles.IconOutline} />
         {count !== undefined && count !== 0 && (
           <View style={styles.bullet}>
             <Text style={styles.bulletText}>{`${count}`}</Text>
