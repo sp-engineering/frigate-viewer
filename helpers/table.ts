@@ -1,43 +1,50 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../store/colors';
+const colorPalette = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#C9CBCF', '#FF9F40'];
+export const staticColorPalette = colorPalette;
 
 export const tableStyles = StyleSheet.create({
   mainHeader: {
     flex: 2,
-    backgroundColor: '#ddd',
+    backgroundColor: colors.background,
+    color: colors.text,
   },
   mainHeaderText: {
+    backgroundColor: colors.background,
+    color: colors.text,
     padding: 2,
-    color: 'black',
     fontWeight: '600',
   },
   header: {
     flex: 1,
-    backgroundColor: '#ddd',
+    backgroundColor: colors.background,
   },
   headerText: {
+    color: colors.text,
     padding: 2,
-    color: 'black',
     textAlign: 'center',
     fontWeight: '600',
   },
   row: {
+    backgroundColor: colors.background,
+    color: colors.text,
     flexDirection: 'row',
   },
   dataHeader: {
-    backgroundColor: '#eee',
+    backgroundColor: colors.background,
     flex: 2,
   },
   dataHeaderText: {
     padding: 2,
-    color: 'black',
+    color: colors.text,
   },
   data: {
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
     flex: 1,
   },
   dataText: {
+    backgroundColor: colors.background,
     padding: 2,
-    color: 'black',
     textAlign: 'right',
   },
 });

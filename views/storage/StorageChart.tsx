@@ -3,6 +3,17 @@ import { StorageInfo, StorageShortPlace } from '../../helpers/interfaces';
 import { useIntl } from 'react-intl';
 import { messages } from './messages';
 import { ProgressChartData, ProgressChart } from '../../components/charts/ProgressChart';
+import { colors } from '../../store/colors';
+import { StyleSheet } from 'react-native';
+
+const styles = StyleSheet.create({
+  wrapper: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: colors.background,
+    color: colors.text,
+  },
+});
 
 interface IStorageChartProps {
   storage: Record<StorageShortPlace, StorageInfo>;

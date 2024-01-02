@@ -1,14 +1,17 @@
 import React, {FC} from 'react';
 import {StyleSheet, Text, TextInputProps, View} from 'react-native';
+import { colors } from '../../store/colors';
 
 const styles = StyleSheet.create({
   wrapper: {
     marginVertical: 10,
+    backgroundColor: colors.background,
+    color: colors.text,
   },
   header: {
     fontSize: 18,
     fontWeight: '600',
-    color: 'black',
+    color: colors.text,
   },
 });
 

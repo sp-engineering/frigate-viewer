@@ -4,6 +4,7 @@ import {StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
 import {formatVideoTime, useDateLocale} from '../../helpers/locale';
 import {selectLocaleDatesDisplay} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
+import { colors } from '../../store/colors';
 
 const stylesFn = (numColumns: number) => StyleSheet.create({
   wrapper: {
@@ -21,7 +22,7 @@ const stylesFn = (numColumns: number) => StyleSheet.create({
   timeText: {
     fontSize: 12 / (numColumns / 1.5),
     fontWeight: '600',
-    color: 'white',
+    color: colors.text,
   },
 });
 

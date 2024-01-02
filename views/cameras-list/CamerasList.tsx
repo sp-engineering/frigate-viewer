@@ -21,12 +21,14 @@ import {CameraTile} from './CameraTile';
 import {messages} from './messages';
 import { useNoServer } from '../settings/useNoServer';
 import { Background } from '../../components/Background';
+import { colors } from '../../store/colors';
 
 const styles = StyleSheet.create({
   noCameras: {
     padding: 20,
-    color: 'black',
     textAlign: 'center',
+    backgroundColor: colors.background,
+    color: colors.text,
   },
 });
 

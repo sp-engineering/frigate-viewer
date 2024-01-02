@@ -4,6 +4,7 @@ import {DimensionValue, LayoutChangeEvent, StyleSheet, Text, View} from 'react-n
 import {formatVideoTime} from '../../helpers/locale';
 import { Gesture, GestureDetector, TouchableHighlight } from 'react-native-gesture-handler';
 import Animated, { clamp, measure, runOnJS, useAnimatedRef, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { colors } from '../../store/colors';
 
 const styles = StyleSheet.create({
   playerBar: {
@@ -133,9 +134,9 @@ export const ProgressBar: FC<IProgressBarProps> = ({
     <View style={[styles.playerBar]}>
       <TouchableHighlight onPress={togglePause}>
         {paused ? (
-          <IconOutline name="pause" color="white" />
+          <IconOutline name="pause" color={colors.text} />
         ) : (
-          <IconOutline name="caret-right" color="white" />
+            <IconOutline name="caret-right" color={colors.text} />
         )}
       </TouchableHighlight>
       <Text style={[styles.playerBarText]}>{currentTimeStr}</Text>

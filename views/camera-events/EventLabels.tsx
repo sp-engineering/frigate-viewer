@@ -1,7 +1,8 @@
-import React, {FC, useMemo} from 'react';
-import {useIntl} from 'react-intl';
-import {StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
-import {messages} from './messages';
+import React, { FC, useMemo } from 'react';
+import { useIntl } from 'react-intl';
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { messages } from './messages';
+import { colors } from '../../store/colors';
 
 const stylesFn = (numColumns: number) => StyleSheet.create({
   wrapper: {
@@ -12,25 +13,27 @@ const stylesFn = (numColumns: number) => StyleSheet.create({
     padding: 2,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    backgroundColor: colors.background,
+    color: colors.text,
   },
   label: {
     paddingVertical: 1,
     paddingHorizontal: 2,
     margin: 1,
-    color: 'white',
+    color: colors.text,
     backgroundColor: 'blue',
     fontSize: 10 / (numColumns / 1.5),
     fontWeight: '600',
     opacity: 0.7,
   },
   zone: {
-    backgroundColor: 'black',
+    backgroundColor: colors.background,
   },
   score: {
     backgroundColor: 'gray',
   },
   inProgress: {
-    color: 'black',
+    color: colors.text,
     backgroundColor: 'gold',
   },
 });

@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react';
-import { randomColor } from '../../helpers/charts';
+import { getRandomColor } from '../../helpers/charts';
 import { CameraInfo } from './CameraTable';
 import { BarChart, Grid, YAxis } from 'react-native-svg-charts';
 import { Text, View } from 'react-native-ui-lib';
@@ -41,15 +41,15 @@ export const CameraInfoChart: FC<ICameraInfoChartProps> = ({cameraInfos}) => {
     () => [
       {
         data: Object.values(cameraInfos).map(info => info.ffmpeg.cpu!).filter(v => v !== undefined),
-        svg: { fill: randomColor() },
+        svg: { fill: getRandomColor() },
       },
       {
         data: Object.values(cameraInfos).map(info => info.capture.cpu!).filter(v => v !== undefined),
-        svg: { fill: randomColor() },
+        svg: { fill: getRandomColor() },
       },
       {
         data: Object.values(cameraInfos).map(info => info.detect.cpu!).filter(v => v !== undefined),
-        svg: { fill: randomColor() },
+        svg: { fill: getRandomColor() },
       },
     ],
     [cameraInfos],

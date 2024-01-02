@@ -25,6 +25,7 @@ import {ImagePreview} from './ImagePreview';
 import {authorizationHeader, get} from '../../helpers/rest';
 import {ICameraEvent} from '../camera-events/CameraEvent';
 import {LastEvent} from './LastEvent';
+import { colors } from '../../store/colors';
 
 const stylesFn = (numColumns: number) =>
   StyleSheet.create({
@@ -37,7 +38,7 @@ const stylesFn = (numColumns: number) =>
       paddingHorizontal: 14 / numColumns,
       fontSize: 16 / numColumns,
       fontWeight: '300',
-      color: 'white',
+      color: colors.text,
       backgroundColor: '#00000040',
     },
   });

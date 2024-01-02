@@ -11,6 +11,7 @@ import Animated, {
 import {StyleSheet, Text, View, ViewProps} from 'react-native';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import {formatVideoTime} from '../../helpers/locale';
+import { colors } from '../../store/colors';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
   },
   bigText: {
     fontSize: 60,
-    color: 'white',
+    color: colors.text,
     textShadowRadius: 20,
   },
 });
@@ -63,19 +64,19 @@ const Baunce = () => {
 
 const BackwardIcon: FC = () => (
   <Animated.View entering={LightSpeedInRight}>
-    <IconOutline style={styles.icon} name="backward" color="white" size={80} />
+    <IconOutline style={styles.icon} name="backward" color={colors.text} size={80} />
   </Animated.View>
 );
 
 const ForwardIcon: FC = () => (
   <Animated.View entering={LightSpeedInLeft}>
-    <IconOutline style={styles.icon} name="forward" color="white" size={80} />
+    <IconOutline style={styles.icon} name="forward" color={colors.text} size={80} />
   </Animated.View>
 );
 
 const PauseIcon: FC = () => (
   <Animated.View entering={Baunce}>
-    <IconOutline style={styles.icon} name="pause" color="white" size={80} />
+    <IconOutline style={styles.icon} name="pause" color={colors.text} size={80} />
   </Animated.View>
 );
 
@@ -84,7 +85,7 @@ const PlayIcon: FC = () => (
     <IconOutline
       style={styles.icon}
       name="caret-right"
-      color="white"
+      color={colors.text}
       size={80}
     />
   </Animated.View>

@@ -17,7 +17,7 @@ export const CamerasStorageTable: FC<ICamerasStorageTableProps> = ({camerasStora
   const data = useMemo(() => Object
     .values(camerasStorage)
     .map(cameraStorage => [
-      `${cameraStorage.usage_percent.toFixed(1)}%`,
+      `${(cameraStorage.usage_percent || 0).toFixed(1)}%`,
       formatSize(cameraStorage.usage),
       formatBandwidth(cameraStorage.bandwidth),
     ]), [camerasStorage]);

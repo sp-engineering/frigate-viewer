@@ -20,6 +20,7 @@ import {messages} from './messages';
 import { Section } from '../../components/forms/Section';
 import { FilterSwitch } from './FilterSwitch';
 import { addNotificationsFilter, removeNotificationsFilter, selectNotificationsFilter, setNotificationsFilterEnabled } from '../../store/settings';
+import { colors } from '../../store/colors';
 
 interface IEventsFiltersProps {
   viewedCameraNames?: string[];
@@ -27,7 +28,8 @@ interface IEventsFiltersProps {
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
+    color: colors.text,
     width: '100%',
     height: '100%',
   },

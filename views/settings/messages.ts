@@ -6,6 +6,8 @@ export const messages = makeMessages('settings', {
   'error.required': 'This field is required.',
   'error.min': 'Minimum value is {min}.',
   'error.max': 'Maximum value is {max}',
+  'dark.mode.header': 'Styling',
+  'dark.mode.label': 'Dark Mode Labelz',
   'action.save': 'Save',
   'action.cancel': 'Cancel',
   'server.header': 'Server',

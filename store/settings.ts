@@ -67,6 +67,12 @@ const initialNotifications: INotifications = {
 };
 
 export interface ISettings {
+  dark: {
+    mode: 'auto' | 'light' | 'dark';
+    default: 'auto';
+    header: 'Styling 1';
+    label: 'Dark Mode 1';
+  };
   server: {
     protocol: 'http' | 'https';
     host: string;
@@ -90,6 +96,12 @@ export interface ISettings {
 }
 
 export const initialSettings: ISettings = {
+  dark: {
+    mode: 'auto',
+    default: 'auto',
+    header: 'Styling 1',
+    label: 'Dark Mode 1'
+  },
   server: {
     protocol: 'https',
     host: '',
