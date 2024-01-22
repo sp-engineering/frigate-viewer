@@ -1,7 +1,7 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {FlatList, Modal, Pressable, StyleSheet, Text} from 'react-native';
 import {formsStyles} from './styles';
-import { colors } from '../../store/colors';
+import {colors} from '../../store/colors';
 
 interface IDropdownOption {
   value: any;
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderBottomWidth: 1,
     borderColor: colors.background,
-    backgroundColor: colors.text,
+    backgroundColor: colors.background,
   },
   itemSelected: {
     backgroundColor: '#ccd',

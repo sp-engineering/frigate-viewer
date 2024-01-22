@@ -67,12 +67,6 @@ const initialNotifications: INotifications = {
 };
 
 export interface ISettings {
-  dark: {
-    mode: 'auto' | 'light' | 'dark';
-    default: 'auto';
-    header: 'Styling 1';
-    label: 'Dark Mode 1';
-  };
   server: {
     protocol: 'http' | 'https';
     host: string;
@@ -93,15 +87,12 @@ export interface ISettings {
     snapshotHeight: number;
     photoPreference: 'snapshot' | 'thumbnail';
   };
+  appearence: {
+    theme: 'auto' | 'light' | 'dark';
+  };
 }
 
 export const initialSettings: ISettings = {
-  dark: {
-    mode: 'auto',
-    default: 'auto',
-    header: 'Styling 1',
-    label: 'Dark Mode 1'
-  },
   server: {
     protocol: 'https',
     host: '',
@@ -124,6 +115,9 @@ export const initialSettings: ISettings = {
     numColumns: 1,
     snapshotHeight: 222,
     photoPreference: 'snapshot',
+  },
+  appearence: {
+    theme: 'auto',
   },
 };
 

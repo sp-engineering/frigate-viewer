@@ -13,7 +13,7 @@ import {useAppDispatch, useAppSelector} from '../../store/store';
 import {camerasListMenuItem, navigateToMenuItem} from '../menu/Menu';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {MessageKey, messages} from './messages';
-import { colors } from '../../store/colors';
+import {colors} from '../../store/colors';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -96,6 +96,9 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
           .max(3, maxError),
         photoPreference: yup.string().required(requiredError),
       }),
+      appearence: yup.object().shape({
+        theme: yup.string().required(requiredError),
+      }),
     });
   }, [intl]);
 
@@ -129,7 +132,6 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
   const fillDemoServer = useCallback(() => {
     if (formRef.current) {
       formRef.current.setFieldValue('server.protocol', 'https');
-      formRef.current.setFieldValue('dark.mode', 'auto');
       formRef.current.setFieldValue('server.host', 'demo.frigate.video');
       formRef.current.setFieldValue('server.port', 443);
       formRef.current.setFieldValue('server.credentials.username', '');
@@ -145,19 +147,6 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
       innerRef={formRef}>
       {({values, handleBlur, handleChange, setFieldValue, errors, touched}) => (
         <ScrollView style={styles.wrapper}>
-          <Section header={intl.formatMessage(messages['dark.mode.header'])}>
-            <Label
-              text={intl.formatMessage(messages['dark.mode.label'])}
-              touched={touched.dark?.mode}
-              error={errors.dark?.mode}
-              required={true}>
-              <Dropdown
-                value={values.dark.mode}
-                options={[{ value: 'auto' }, { value: 'dark' }, { value: 'light' }]}
-                onValueChange={handleChange('dark.mode')}
-              />
-            </Label>
-          </Section>
           <Section header={intl.formatMessage(messages['server.header'])}>
             <Label
               text={intl.formatMessage(messages['server.protocol.label'])}
@@ -372,6 +361,38 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
                   },
                 ]}
                 onValueChange={handleChange('events.photoPreference')}
+              />
+            </Label>
+          </Section>
+          <Section header={intl.formatMessage(messages['appearence.header'])}>
+            <Label
+              text={intl.formatMessage(messages['appearence.theme.label'])}
+              touched={touched.appearence?.theme}
+              error={errors.appearence?.theme}
+              required={true}>
+              <Dropdown
+                value={values.appearence.theme}
+                options={[
+                  {
+                    label: intl.formatMessage(
+                      messages['appearence.theme.option.auto'],
+                    ),
+                    value: 'auto',
+                  },
+                  {
+                    label: intl.formatMessage(
+                      messages['appearence.theme.option.light'],
+                    ),
+                    value: 'light',
+                  },
+                  {
+                    label: intl.formatMessage(
+                      messages['appearence.theme.option.dark'],
+                    ),
+                    value: 'dark',
+                  },
+                ]}
+                onValueChange={handleChange('appearence.theme')}
               />
             </Label>
           </Section>

@@ -11,11 +11,11 @@ import {Menu} from './views/menu/Menu';
 import {Settings} from './views/settings/Settings';
 import {withRedux} from './helpers/redux';
 import {withTranslations} from './helpers/locale';
-import { Logs } from './views/logs/Logs';
-import { Storage } from './views/storage/Storage';
-import { System } from './views/system/System';
-import { colors } from './store/colors';
-
+import {Logs} from './views/logs/Logs';
+import {Storage} from './views/storage/Storage';
+import {System} from './views/system/System';
+import {colors} from './store/colors';
+import {Appearance} from 'react-native';
 
 const registerComponent = (name, component, decorators = []) => {
   Navigation.registerComponent(
@@ -31,6 +31,8 @@ const registerComponent = (name, component, decorators = []) => {
 
 const viewDecorators = [gestureHandlerRootHOC, withTranslations, withRedux];
 
+Appearance.setColorScheme(null);
+
 registerComponent('CamerasList', CamerasList, viewDecorators);
 registerComponent('CameraEvents', CameraEvents, viewDecorators);
 registerComponent('CameraEventClip', CameraEventClip, viewDecorators);
@@ -41,7 +43,11 @@ registerComponent('Logs', Logs, viewDecorators);
 registerComponent('Settings', Settings, viewDecorators);
 registerComponent('Author', Author, viewDecorators);
 
-registerComponent('Menu', Menu, [gestureHandlerRootHOC, withTranslations, withRedux]);
+registerComponent('Menu', Menu, [
+  gestureHandlerRootHOC,
+  withTranslations,
+  withRedux,
+]);
 registerComponent('EventsFilters', EventsFilters, [
   withTranslations,
   withRedux,
