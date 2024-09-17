@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
+import React, {FC, useMemo} from 'react';
 import {useIntl} from 'react-intl';
 import {ScrollView, StyleSheet} from 'react-native';
 import {
@@ -14,12 +14,11 @@ import {
   setFiltersRetained,
   setFiltersZones,
 } from '../../store/events';
-import {useAppDispatch, useAppSelector} from '../../store/store';
+import {useAppSelector} from '../../store/store';
 import {Filters, IFilter, SectionHeader} from './Filters';
 import {messages} from './messages';
 import { Section } from '../../components/forms/Section';
 import { FilterSwitch } from './FilterSwitch';
-import { addNotificationsFilter, removeNotificationsFilter, selectNotificationsFilter, setNotificationsFilterEnabled } from '../../store/settings';
 
 interface IEventsFiltersProps {
   viewedCameraNames?: string[];
@@ -41,20 +40,7 @@ export const EventsFilters: FC<IEventsFiltersProps> = ({viewedCameraNames}) => {
   const availableZones = useAppSelector(selectAvailableZones);
   const filtersZones = useAppSelector(selectFiltersZones);
   const filtersRetained = useAppSelector(selectFiltersRetained);
-  const [notify, setNofity] = useState(false);
-  const existingNotificationsFilter = useAppSelector(state => selectNotificationsFilter(state, {
-    cameras: cameras?.filter(s => s).map(s => s.name),
-    labels: labels?.filter(s => s).map(s => s.name),
-    zones: zones?.filter(s => s).map(s => s.name),
-  }));
-  const dispatch = useAppDispatch();
   const intl = useIntl();
-
-  useEffect(() => {
-    if (existingNotificationsFilter) {
-      setNofity(existingNotificationsFilter.enabled);
-    }
-  }, [existingNotificationsFilter]);
 
   const cameras: IFilter[] = useMemo(
     () =>
@@ -86,26 +72,6 @@ export const EventsFilters: FC<IEventsFiltersProps> = ({viewedCameraNames}) => {
     [availableZones, filtersZones],
   );
 
-  const notifyChange = useCallback((value: boolean) => {
-    if (existingNotificationsFilter) {
-      if (existingNotificationsFilter.enabled) {
-        dispatch(removeNotificationsFilter(existingNotificationsFilter));
-      } else {
-        dispatch(setNotificationsFilterEnabled({
-          ...existingNotificationsFilter,
-          enabled: true,
-        }));
-      }
-    } else {
-      dispatch(addNotificationsFilter({
-        enabled: true,
-        cameras: cameras.filter(s => s).map(s => s.name),
-        labels: labels.filter(s => s).map(s => s.name),
-        zones: zones.filter(s => s).map(s => s.name),
-      }));
-    }
-  }, [notify, cameras, labels, zones]);
-
   return (
     <ScrollView style={[styles.wrapper]}>
       <Filters
@@ -134,11 +100,6 @@ export const EventsFilters: FC<IEventsFiltersProps> = ({viewedCameraNames}) => {
           label={intl.formatMessage(messages['miscellaneous.retained.label'])}
           value={filtersRetained}
           actionOnChange={setFiltersRetained}
-        />
-        <FilterSwitch
-          label={intl.formatMessage(messages['miscellaneous.notify.label'])}
-          value={notify}
-          onChange={notifyChange}
         />
       </Section>
     </ScrollView>

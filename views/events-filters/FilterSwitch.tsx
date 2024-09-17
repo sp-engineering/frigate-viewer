@@ -22,11 +22,10 @@ const styles = StyleSheet.create({
 
 interface IFilterSwitchProps extends SwitchProps {
   label?: string | JSX.Element;
-  onChange?: (value: boolean) => void;
   actionOnChange?: ActionCreatorWithPayload<boolean>;
 }
 
-export const FilterSwitch: FC<IFilterSwitchProps> = ({label, onChange, actionOnChange, ...switchProps}) => {
+export const FilterSwitch: FC<IFilterSwitchProps> = ({label, actionOnChange, ...switchProps}) => {
   const dispatch = useAppDispatch();
 
   const onValueChange = useCallback(
@@ -34,11 +33,8 @@ export const FilterSwitch: FC<IFilterSwitchProps> = ({label, onChange, actionOnC
       if (actionOnChange) {
         dispatch(actionOnChange(value));
       }
-      if (onChange) {
-        onChange(value);
-      }
     },
-    [dispatch, onChange, actionOnChange],
+    [dispatch, actionOnChange],
   );
 
   return (

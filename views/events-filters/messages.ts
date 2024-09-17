@@ -6,5 +6,4 @@ export const messages = makeMessages('eventsFilters', {
   'zones.title': 'Zones',
   'miscellaneous.title': 'Miscellaneous',
   'miscellaneous.retained.label': 'Retained',
-  'miscellaneous.notify.label': 'Notify about events',
 });
