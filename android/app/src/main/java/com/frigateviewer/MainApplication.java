@@ -8,6 +8,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.reactnativenavigation.react.NavigationReactNativeHost;
+import com.facebook.react.flipper.ReactNativeFlipper;
 import com.facebook.soloader.SoLoader;
 import java.util.List;
 
