@@ -1,7 +1,7 @@
-import { FC } from 'react';
-import { StyleSheet } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
-import { Text } from 'react-native-ui-lib';
+import {FC} from 'react';
+import {StyleSheet} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
+import {Text} from 'react-native-ui-lib';
 
 export interface Log {
   name: string;
@@ -11,6 +11,7 @@ export interface Log {
 const styles = StyleSheet.create({
   wrapper: {
     padding: 16,
+    backgroundColor: 'white',
   },
   line: {
     color: 'black',
