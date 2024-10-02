@@ -4,12 +4,14 @@ export default {
   'author.info.contactLabel': 'Kontakt',
   'author.info.opensourceLabel': 'Diese App ist ein Open Source Projekt',
   'author.info.githubLabel': 'Auf GitHub sehen',
-  'author.buyMeCoffee.nonProfitLabel': 'Das Projekt wurde zu Lernzwecken erstellt und ich habe nicht die Absicht, von der Erteilung von Lizenzen zu profitieren.',
+  'author.buyMeCoffee.nonProfitLabel':
+    'Das Projekt wurde zu Lernzwecken erstellt und ich habe nicht die Absicht, von der Erteilung von Lizenzen zu profitieren.',
   'author.buyMeCoffee.doYouLikeLabel': 'Mögen Sie diese Anwendung',
   'author.buyMeCoffee.sayThankYouLabel': 'und wollen "Danke" sagen?',
   'author.buyMeCoffee.buttonText': 'Kauf mir einen Kaffee',
   'author.usedLibs.header': 'Liste der verwendeten Bibliotheken:',
-  'author.error.cantOpenLink': "Ich kann keine App finden, um diesen Link zu öffnen.",
+  'author.error.cantOpenLink':
+    'Ich kann keine App finden, um diesen Link zu öffnen.',
   'camerasList.topBar.title': 'Liste der Kameras',
   'camerasList.noCameras': 'Keine Kameras',
   'cameraEvents.topBar.general.title': 'Ereignisse',
@@ -46,6 +48,7 @@ export default {
   'settings.server.protocol.label': 'Protokoll',
   'settings.server.host.label': 'Host-Adresse',
   'settings.server.port.label': 'Port',
+  'settings.server.path.label': 'Pfed',
   'settings.server.username.label': 'Benutzername',
   'settings.server.password.label': 'Passwort',
   'settings.server.useDemoServerButton': 'Nutzen den Demo Server',
@@ -95,6 +98,9 @@ export default {
   'settings.cameras.header': 'Kameras',
   'settings.cameras.imageRefreshFrequency.label':
     'Grafik ausgetauscht (sekunden)',
+  'settings.cameras.liveView.label': 'Live-Ansicht',
+  'cameras.liveView.disclaimer':
+    'Beachten Sie, dass die Aktualisierungsfrequenz von Ihrer Netzwerklatenz abhängt',
   'settings.cameras.numberOfColumns.label': 'Anzahl der Spalten',
   'settings.events.header': 'Ereignisse',
   'settings.events.numberOfColumns.label': 'Anzahl der Spalten',

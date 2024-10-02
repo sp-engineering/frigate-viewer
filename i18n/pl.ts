@@ -4,7 +4,8 @@ export default {
   'author.info.contactLabel': 'Kontakt',
   'author.info.opensourceLabel': 'To jest projekt otwarto-źródłowy.',
   'author.info.githubLabel': 'Zobacz na githubie',
-  'author.buyMeCoffee.nonProfitLabel': 'Ten projekt został stworzony w celu nauki i nie zamierzam czerpać korzyści ze sprzedaży licencji.',
+  'author.buyMeCoffee.nonProfitLabel':
+    'Ten projekt został stworzony w celu nauki i nie zamierzam czerpać korzyści ze sprzedaży licencji.',
   'author.buyMeCoffee.doYouLikeLabel': 'Lubisz tę aplikację',
   'author.buyMeCoffee.sayThankYouLabel': 'i chcesz podziękować?',
   'author.buyMeCoffee.buttonText': 'Kup mi kawę',
@@ -47,6 +48,7 @@ export default {
   'settings.server.protocol.label': 'Protokół',
   'settings.server.host.label': 'Host',
   'settings.server.port.label': 'Port',
+  'settings.server.path.label': 'Ścieżka',
   'settings.server.username.label': 'Nazwa użytkownika',
   'settings.server.password.label': 'Hasło',
   'settings.server.useDemoServerButton': 'Użyj serwera demonstracyjnego',
@@ -96,6 +98,9 @@ export default {
   'settings.cameras.header': 'Kamery',
   'settings.cameras.imageRefreshFrequency.label':
     'Częstotliwość odświeżania obrazu (sekundy)',
+  'settings.cameras.liveView.label': 'Podgląd na żywo',
+  'cameras.liveView.disclaimer':
+    'Weź pod uwagę, że częstotliwość odświeżania zależy od opóźnień w twojej sieci',
   'settings.cameras.numberOfColumns.label': 'Liczba kolumn',
   'settings.events.header': 'Zdarzenia',
   'settings.events.numberOfColumns.label': 'Liczba kolumn',

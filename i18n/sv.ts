@@ -4,12 +4,14 @@ export default {
   'author.info.contactLabel': 'Kontakt',
   'author.info.opensourceLabel': 'Projektet är öppen källkod.',
   'author.info.githubLabel': 'Se på github',
-  'author.buyMeCoffee.nonProfitLabel': 'Projektet skapades för inlärningsändamål och jag har inte för avsikt att dra nytta av att bevilja licenser.',
+  'author.buyMeCoffee.nonProfitLabel':
+    'Projektet skapades för inlärningsändamål och jag har inte för avsikt att dra nytta av att bevilja licenser.',
   'author.buyMeCoffee.doYouLikeLabel': 'Gillar du den här applikationen',
   'author.buyMeCoffee.sayThankYouLabel': 'och vill säga ”tack”?',
   'author.buyMeCoffee.buttonText': 'Köp mig en kaffe',
   'author.usedLibs.header': 'Lista över använda bibliotek:',
-  'author.error.cantOpenLink': "Det går inte att hitta någon app för att öppna den här länken.",
+  'author.error.cantOpenLink':
+    'Det går inte att hitta någon app för att öppna den här länken.',
   'camerasList.topBar.title': 'Lista över kameror',
   'camerasList.noCameras': 'Inga kameror',
   'cameraEvents.topBar.general.title': 'Händelser',
@@ -46,6 +48,7 @@ export default {
   'settings.server.protocol.label': 'Protokoll',
   'settings.server.host.label': 'Värd',
   'settings.server.port.label': 'Port',
+  'settings.server.path.label': 'Väg',
   'settings.server.username.label': 'Användarnamn',
   'settings.server.password.label': 'Lösenord',
   'settings.server.useDemoServerButton': 'Använd demoserver',
@@ -95,6 +98,9 @@ export default {
   'settings.cameras.header': 'Kameror',
   'settings.cameras.imageRefreshFrequency.label':
     'Uppdateringsfrekvens för bilder (sekunder)',
+  'settings.cameras.liveView.label': 'Livevisning',
+  'cameras.liveView.disclaimer':
+    'Tänk på att uppdateringsfrekvensen beror på nätverkets latens',
   'settings.cameras.numberOfColumns.label': 'Antal kolumner',
   'settings.events.header': 'Händelser',
   'settings.events.numberOfColumns.label': 'Antal kolumner',

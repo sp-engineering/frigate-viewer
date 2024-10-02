@@ -4,12 +4,14 @@ export default {
   'author.info.contactLabel': 'Contatto',
   'author.info.opensourceLabel': 'Questo progetto è open source.',
   'author.info.githubLabel': 'Vedi su Github',
-  'author.buyMeCoffee.nonProfitLabel': 'Il progetto è stato creato per scopi di apprendimento e non intendo trarre profitto dalla concessione di licenze.',
+  'author.buyMeCoffee.nonProfitLabel':
+    'Il progetto è stato creato per scopi di apprendimento e non intendo trarre profitto dalla concessione di licenze.',
   'author.buyMeCoffee.doYouLikeLabel': 'Ti piace questa applicazione',
   'author.buyMeCoffee.sayThankYouLabel': 'e vuoi dire "grazie"?',
   'author.buyMeCoffee.buttonText': 'Comprami un caffè',
   'author.usedLibs.header': 'Elenco delle biblioteche usate:',
-  'author.error.cantOpenLink': "Non riesco a trovare alcuna applicazione per aprire questo link.",
+  'author.error.cantOpenLink':
+    'Non riesco a trovare alcuna applicazione per aprire questo link.',
   'camerasList.topBar.title': 'Elenco delle telecamere',
   'camerasList.noCameras': 'Niente telecamere',
   'cameraEvents.topBar.general.title': 'Eventi',
@@ -46,6 +48,7 @@ export default {
   'settings.server.protocol.label': 'Protocollo',
   'settings.server.host.label': 'Host',
   'settings.server.port.label': 'Porto',
+  'settings.server.path.label': 'Percorso',
   'settings.server.username.label': 'Nome utente',
   'settings.server.password.label': 'Password',
   'settings.server.useDemoServerButton': 'Utilizzare server demo',
@@ -94,7 +97,10 @@ export default {
   'settings.locale.datesDisplay.option.numeric': 'Numerico',
   'settings.cameras.header': 'Telecamere',
   'settings.cameras.imageRefreshFrequency.label':
-    'Frequenza di aggiornamento dell\'immagine (secondi)',
+    "Frequenza di aggiornamento dell'immagine (secondi)",
+  'settings.cameras.liveView.label': 'Vista dal vivo',
+  'cameras.liveView.disclaimer':
+    'Tieni presente che la frequenza di aggiornamento dipende dalla latenza della tua rete',
   'settings.cameras.numberOfColumns.label': 'Numero di colonne',
   'settings.events.header': 'Eventi',
   'settings.events.numberOfColumns.label': 'Numero di colonne',

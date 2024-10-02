@@ -4,12 +4,14 @@ export default {
   'author.info.contactLabel': 'Contact',
   'author.info.opensourceLabel': 'Ce projet est open source.',
   'author.info.githubLabel': 'Voir sur github',
-  'author.buyMeCoffee.nonProfitLabel': 'Le projet a été créé à des fins d’apprentissage et je n’ai pas l’intention de profiter de l’octroi de licences.',
+  'author.buyMeCoffee.nonProfitLabel':
+    'Le projet a été créé à des fins d’apprentissage et je n’ai pas l’intention de profiter de l’octroi de licences.',
   'author.buyMeCoffee.doYouLikeLabel': 'Vous aimez cette application',
   'author.buyMeCoffee.sayThankYouLabel': 'et voulez dire "merci"?',
   'author.buyMeCoffee.buttonText': 'Achète-moi un café',
   'author.usedLibs.header': 'Liste des bibliothèques utilisées:',
-  'author.error.cantOpenLink': 'Impossible de trouver une application pour ouvrir ce lien.',
+  'author.error.cantOpenLink':
+    'Impossible de trouver une application pour ouvrir ce lien.',
   'camerasList.topBar.title': 'Liste des caméras',
   'camerasList.noCameras': 'Pas de caméras',
   'cameraEvents.topBar.general.title': 'Événements',
@@ -46,6 +48,7 @@ export default {
   'settings.server.protocol.label': 'Protocole',
   'settings.server.host.label': 'Hôte',
   'settings.server.port.label': 'Port',
+  'settings.server.path.label': 'Chemin',
   'settings.server.username.label': 'Nom d’utilisateur',
   'settings.server.password.label': 'Mot de passe',
   'settings.server.useDemoServerButton': 'Utilisez le serveur démo',
@@ -95,6 +98,9 @@ export default {
   'settings.cameras.header': 'Caméras',
   'settings.cameras.imageRefreshFrequency.label':
     'Fréquence d’actualisation des images (secondes)',
+  'settings.cameras.liveView.label': 'Vue en direct',
+  'cameras.liveView.disclaimer':
+    'Gardez à l’esprit que la fréquence de rafraîchissement dépend de la latence de votre réseau',
   'settings.cameras.numberOfColumns.label': 'Nombre de colonnes',
   'settings.events.header': 'Événements',
   'settings.events.numberOfColumns.label': 'Nombre de colonnes',
@@ -115,7 +121,8 @@ export default {
   'system.topBar.title': 'Système',
   'system.info.data_updated': 'Les données actualisées en',
   'system.info.current_version': 'La version en cours est la {version}',
-  'system.info.latest_version': 'Une mise à jour est disponible pour la {version}',
+  'system.info.latest_version':
+    'Une mise à jour est disponible pour la {version}',
   'system.info.uptime': 'Temps de disponibilité',
   'system.detectors.title': 'Détecteurs',
   'system.detectors.detector.header': 'Détecteur',

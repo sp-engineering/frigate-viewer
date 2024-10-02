@@ -4,12 +4,14 @@ export default {
   'author.info.contactLabel': 'Contacto',
   'author.info.opensourceLabel': 'Este proyecto es de código abierto.',
   'author.info.githubLabel': 'Ver en github',
-  'author.buyMeCoffee.nonProfitLabel': 'El proyecto fue creado con fines de aprendizaje y no tengo la intención de beneficiarse de la concesión de licencias.',
+  'author.buyMeCoffee.nonProfitLabel':
+    'El proyecto fue creado con fines de aprendizaje y no tengo la intención de beneficiarse de la concesión de licencias.',
   'author.buyMeCoffee.doYouLikeLabel': '¿Te gusta esta aplicación',
   'author.buyMeCoffee.sayThankYouLabel': 'y quieres decir "gracias"?',
   'author.buyMeCoffee.buttonText': 'Comprarme un café',
   'author.usedLibs.header': 'Lista de bibliotecas usadas:',
-  'author.error.cantOpenLink': "No se puede encontrar ninguna aplicación para abrir este enlace.",
+  'author.error.cantOpenLink':
+    'No se puede encontrar ninguna aplicación para abrir este enlace.',
   'camerasList.topBar.title': 'Lista de cámaras',
   'camerasList.noCameras': 'Sin cámaras',
   'cameraEvents.topBar.general.title': 'Eventos',
@@ -46,6 +48,7 @@ export default {
   'settings.server.protocol.label': 'Protocolo',
   'settings.server.host.label': 'Host',
   'settings.server.port.label': 'Puerto',
+  'settings.server.path.label': 'Ruta',
   'settings.server.username.label': 'Nombre de usuario',
   'settings.server.password.label': 'Contraseña',
   'settings.server.useDemoServerButton': 'Usar el servidor de demostración',
@@ -95,6 +98,9 @@ export default {
   'settings.cameras.header': 'Cámaras',
   'settings.cameras.imageRefreshFrequency.label':
     'Frecuencia de actualización de la imagen (segundos)',
+  'settings.cameras.liveView.label': 'Vista en vivo',
+  'cameras.liveView.disclaimer':
+    'Tenga en cuenta que la frecuencia de actualización depende de la latencia de su red',
   'settings.cameras.numberOfColumns.label': 'Número de columnas',
   'settings.events.header': 'Eventos',
   'settings.events.numberOfColumns.label': 'Número de columnas',
@@ -115,7 +121,8 @@ export default {
   'system.topBar.title': 'Sistema',
   'system.info.data_updated': 'Datos actualizados',
   'system.info.current_version': 'La versión actual es {version}',
-  'system.info.latest_version': 'Una actualización está disponible en la versión {version}',
+  'system.info.latest_version':
+    'Una actualización está disponible en la versión {version}',
   'system.info.uptime': 'Tiempo de funcionamiento',
   'system.detectors.title': 'Detectores',
   'system.detectors.detector.header': 'Detector',
