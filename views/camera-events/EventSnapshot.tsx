@@ -1,6 +1,10 @@
-import {FC, useCallback, useEffect, useState} from 'react';
+import {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {ZoomableImage} from '../../components/ZoomableImage';
-import {StyleSheet} from 'react-native';
+import {
+  ImageLoadEventData,
+  NativeSyntheticEvent,
+  StyleSheet,
+} from 'react-native';
 import {useAppSelector} from '../../store/store';
 import {
   selectEventsPhotoPreference,
@@ -39,11 +43,11 @@ export const EventSnapshot: FC<IEventSnapshotProps> = ({
     setSnapshot(url);
   }, [id, hasSnapshot, apiUrl]);
 
-  const onLoad = useCallback(() => {
+  const onLoad = (event: NativeSyntheticEvent<ImageLoadEventData>) => {
     if (onSnapshotLoad && snapshot) {
       onSnapshotLoad(snapshot);
     }
-  }, [onSnapshotLoad, snapshot]);
+  };
 
   return snapshot ? (
     <ZoomableImage

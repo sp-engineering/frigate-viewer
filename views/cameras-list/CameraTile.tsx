@@ -12,6 +12,7 @@ import {Navigation} from 'react-native-navigation';
 import {Carousel} from 'react-native-ui-lib';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
+  selectCamerasLiveView,
   selectCamerasNumColumns,
   selectCamerasPreviewHeight,
   selectCamerasRefreshFrequency,
@@ -57,8 +58,9 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   const credentials = useAppSelector(selectServerCredentials);
   const refreshFrequency = useAppSelector(selectCamerasRefreshFrequency);
   const previewHeight = useAppSelector(selectCamerasPreviewHeight);
+  const liveView = useAppSelector(selectCamerasLiveView);
   const numColumns = useAppSelector(selectCamerasNumColumns);
-  const interval = useRef<NodeJS.Timer>();
+  const interval = useRef<NodeJS.Timeout>();
 
   const getLastImageUrl = useCallback(
     () =>
@@ -127,6 +129,9 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   );
 
   const onPreviewLoad = useCallback(async () => {
+    if (liveView) {
+      updateLastImageUrl();
+    }
     if (lastImageSrc) {
       try {
         Image.getSize(lastImageSrc, (width, height) => {

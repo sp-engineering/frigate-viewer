@@ -61,6 +61,9 @@ export const messages = makeMessages('settings', {
   'locale.datesDisplay.option.numeric': 'Numeric',
   'cameras.header': 'Cameras',
   'cameras.imageRefreshFrequency.label': 'Image refresh frequency (seconds)',
+  'cameras.liveView.label': 'Live view',
+  'cameras.liveView.disclaimer':
+    'Keep in mind that refresh frequency depends on your network latency',
   'cameras.numberOfColumns.label': 'Number of columns',
   'events.header': 'Events',
   'events.numberOfColumns.label': 'Number of columns',

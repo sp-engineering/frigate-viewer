@@ -3,37 +3,38 @@ import {useIntl} from 'react-intl';
 import {StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
 import {messages} from './messages';
 
-const stylesFn = (numColumns: number) => StyleSheet.create({
-  wrapper: {
-    position: 'absolute',
-    left: 2,
-    bottom: 1,
-    width: '100%',
-    padding: 2,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  label: {
-    paddingVertical: 1,
-    paddingHorizontal: 2,
-    margin: 1,
-    color: 'white',
-    backgroundColor: 'blue',
-    fontSize: 10 / (numColumns / 1.5),
-    fontWeight: '600',
-    opacity: 0.7,
-  },
-  zone: {
-    backgroundColor: 'black',
-  },
-  score: {
-    backgroundColor: 'gray',
-  },
-  inProgress: {
-    color: 'black',
-    backgroundColor: 'gold',
-  },
-});
+const stylesFn = (numColumns: number) =>
+  StyleSheet.create({
+    wrapper: {
+      position: 'absolute',
+      left: 2,
+      bottom: 1,
+      width: '100%',
+      padding: 2,
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+    },
+    label: {
+      paddingVertical: 1,
+      paddingHorizontal: 2,
+      margin: 1,
+      color: 'white',
+      backgroundColor: 'blue',
+      fontSize: 10 / (numColumns / 1.5),
+      fontWeight: '600',
+      opacity: 0.7,
+    },
+    zone: {
+      backgroundColor: 'black',
+    },
+    score: {
+      backgroundColor: 'gray',
+    },
+    inProgress: {
+      color: 'black',
+      backgroundColor: 'gold',
+    },
+  });
 
 interface IEventLabelsProps {
   endTime: number;
@@ -52,7 +53,9 @@ export const EventLabels: FC<IEventLabelsProps> = ({
   style,
   numColumns,
 }) => {
-  const score = useMemo(() => `${Math.round(topScore * 100)}%`, [topScore]);
+  const score = useMemo(() => {
+    return `${Math.round(topScore * 100)}%`;
+  }, [topScore]);
   const isInProgress = useMemo(() => !endTime, [endTime]);
   const intl = useIntl();
 

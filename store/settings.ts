@@ -64,6 +64,7 @@ export interface ISettings {
   };
   cameras: {
     refreshFrequency: number;
+    liveView: boolean;
     numColumns: number;
     previewHeight: number;
   };
@@ -90,6 +91,7 @@ export const initialSettings: ISettings = {
   },
   cameras: {
     refreshFrequency: 10,
+    liveView: false,
     numColumns: 1,
     previewHeight: 222,
   },
@@ -200,6 +202,9 @@ export const selectCameras = (state: RootState) =>
 
 export const selectCamerasRefreshFrequency = (state: RootState) =>
   selectCameras(state).refreshFrequency;
+
+export const selectCamerasLiveView = (state: RootState) =>
+  selectCameras(state).liveView;
 
 export const selectCamerasNumColumns = (state: RootState) =>
   selectCameras(state).numColumns;

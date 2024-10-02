@@ -13,6 +13,7 @@ import {useAppDispatch, useAppSelector} from '../../store/store';
 import {camerasListMenuItem, navigateToMenuItem} from '../menu/Menu';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {MessageKey, messages} from './messages';
+import {Switch} from 'react-native-ui-lib';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -306,6 +307,18 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
                 }
                 keyboardType="numeric"
               />
+            </Label>
+            <Label
+              text={intl.formatMessage(messages['cameras.liveView.label'])}>
+              <Switch
+                value={values.cameras.liveView}
+                onValueChange={value =>
+                  setFieldValue('cameras.liveView', value)
+                }
+              />
+              <Text>
+                {intl.formatMessage(messages['cameras.liveView.disclaimer'])}
+              </Text>
             </Label>
             <Label
               text={intl.formatMessage(

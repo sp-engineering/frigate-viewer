@@ -4,7 +4,8 @@ export default {
   'author.info.contactLabel': 'Contact',
   'author.info.opensourceLabel': 'This project is open source.',
   'author.info.githubLabel': 'See on github',
-  'author.buyMeCoffee.nonProfitLabel': 'The project was created for learning purposes and I don\'t intend to profit from granting licences.',
+  'author.buyMeCoffee.nonProfitLabel':
+    "The project was created for learning purposes and I don't intend to profit from granting licences.",
   'author.buyMeCoffee.doYouLikeLabel': 'Do you like this application',
   'author.buyMeCoffee.sayThankYouLabel': 'and want to say "thank you"?',
   'author.buyMeCoffee.buttonText': 'Buy me a coffee',
@@ -95,14 +96,16 @@ export default {
   'settings.cameras.header': 'Cameras',
   'settings.cameras.imageRefreshFrequency.label':
     'Image refresh frequency (seconds)',
+  'settings.cameras.liveView.label': 'Live view',
+  'cameras.liveView.disclaimer':
+    'Keep in mind that refresh frequency depends on your network latency',
   'settings.cameras.numberOfColumns.label': 'Number of columns',
   'settings.events.header': 'Events',
   'settings.events.numberOfColumns.label': 'Number of columns',
   'settings.events.photoPreference.label': 'Photo preference',
   'settings.events.photoPreference.option.snapshot': 'Snapshot',
   'settings.events.photoPreference.option.thumbnail': 'Thumbnail',
-  'settings.toast.noServerData':
-    'You need to provide Frigate NVR server data.',
+  'settings.toast.noServerData': 'You need to provide Frigate NVR server data.',
   'storage.topBar.title': 'Storage',
   'storage.location.header': 'Location',
   'storage.location.recordings': 'Clips & Recordings',
