@@ -56,7 +56,9 @@ interface StatsInfo {
   service: Service;
 }
 
-export type Stats = Record<string, CameraInfo | undefined> & StatsInfo;
+export type Stats = {
+  cameras: Record<string, CameraInfo | undefined>;
+} & StatsInfo;
 
 interface CameraStorageInfo {
   bandwidth: number; // MB/h
