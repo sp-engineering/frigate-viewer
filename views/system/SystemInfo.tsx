@@ -1,11 +1,11 @@
-import { FC, useMemo } from 'react';
-import { StyleSheet } from 'react-native';
-import { Text, View } from 'react-native-ui-lib';
-import { messages } from './messages';
-import { useIntl } from 'react-intl';
-import { formatDistance, formatRelative } from 'date-fns';
-import { useDateLocale } from '../../helpers/locale';
-import { Service } from '../../helpers/interfaces';
+import {FC, useMemo} from 'react';
+import {StyleSheet} from 'react-native';
+import {Text, View} from 'react-native-ui-lib';
+import {messages} from './messages';
+import {useIntl} from 'react-intl';
+import {formatDistance, formatRelative} from 'date-fns';
+import {useDateLocale} from '../../helpers/locale';
+import {Service} from '../../helpers/interfaces';
 
 const styles = StyleSheet.create({
   info: {
@@ -38,46 +38,62 @@ export const SystemInfo: FC<ISystemInfoProps> = ({service}) => {
   const intl = useIntl();
 
   const isUpdateAvailable = useMemo(
-    () => service.latest_version !== undefined && service.version !== service.latest_version,
+    () =>
+      service.latest_version !== undefined &&
+      service.version !== service.latest_version,
     [service],
   );
 
   const dataUpdatedTime = useMemo(
-    () => service.last_updated
-      ? formatRelative(new Date(service.last_updated * 1000), new Date(), {
-          locale: dateLocale,
-        })
-      : '-',
+    () =>
+      service.last_updated
+        ? formatRelative(new Date(service.last_updated * 1000), new Date(), {
+            locale: dateLocale,
+          })
+        : '-',
     [service],
   );
 
   const uptime = useMemo(
-    () => formatDistance(new Date(new Date().getTime() - service.uptime * 1000), new Date(), {
-      includeSeconds: true,
-      locale: dateLocale,
-    }),
+    () =>
+      formatDistance(
+        new Date(new Date().getTime() - service.uptime * 1000),
+        new Date(),
+        {
+          includeSeconds: true,
+          locale: dateLocale,
+        },
+      ),
     [service],
   );
 
   return (
     <View style={styles.info}>
       <View style={styles.infoRow}>
-        <Text style={styles.textLabel}>{intl.formatMessage(messages['info.data_updated'])}: </Text>
+        <Text style={styles.textLabel}>
+          {intl.formatMessage(messages['info.data_updated'])}:{' '}
+        </Text>
         <Text>{dataUpdatedTime}</Text>
       </View>
       <View style={styles.infoRow}>
-        <Text style={styles.textLabel}>{intl.formatMessage(messages['info.uptime'])}: </Text>
+        <Text style={styles.textLabel}>
+          {intl.formatMessage(messages['info.uptime'])}:{' '}
+        </Text>
         <Text>{uptime}</Text>
       </View>
       <View style={[styles.infoRow, styles.version]}>
         <Text>
-          {intl.formatMessage(messages['info.current_version'], {version: service.version})}
+          {intl.formatMessage(messages['info.current_version'], {
+            version: service.version,
+          })}
         </Text>
       </View>
       {isUpdateAvailable && (
         <View style={styles.infoRow}>
           <Text style={styles.updateAvailable}>
-            {intl.formatMessage(messages['info.latest_version'], {version: service.latest_version})}
+            {intl.formatMessage(messages['info.latest_version'], {
+              version: service.latest_version,
+            })}
           </Text>
         </View>
       )}
