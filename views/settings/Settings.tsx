@@ -182,6 +182,17 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
               />
             </Label>
             <Label
+              text={intl.formatMessage(messages['server.path.label'])}
+              touched={touched.server?.path}
+              error={errors.server?.path}>
+              <Input
+                value={values.server.path}
+                onBlur={handleBlur('path')}
+                onChangeText={handleChange('server.path')}
+                keyboardType="default"
+              />
+            </Label>
+            <Label
               text={intl.formatMessage(messages['server.username.label'])}
               touched={touched.server?.credentials?.username}
               error={errors.server?.credentials?.username}>

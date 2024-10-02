@@ -56,6 +56,7 @@ export interface ISettings {
     protocol: 'http' | 'https';
     host: string;
     port: number;
+    path: string;
     credentials: Credentials;
   };
   locale: {
@@ -80,6 +81,7 @@ export const initialSettings: ISettings = {
     protocol: 'https',
     host: '',
     port: 5000,
+    path: '',
     credentials: {
       username: '',
       password: '',
@@ -170,9 +172,15 @@ export const selectSettings = (state: RootState) => settingsState(state).v1;
 export const selectServer = (state: RootState) => selectSettings(state).server;
 
 export const selectServerApiUrl = (state: RootState) => {
-  const {protocol, host, port} = selectServer(state);
+  const {protocol, host, port, path} = selectServer(state);
+  const pathPart = path
+    ? `${path
+        .split('/')
+        .filter(p => p !== '')
+        .join('/')}/`
+    : '';
   return protocol && host && port
-    ? `${protocol}://${host}:${port}/api`
+    ? `${protocol}://${host}:${port}/${pathPart}api`
     : undefined;
 };
 

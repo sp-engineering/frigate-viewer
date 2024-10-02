@@ -12,6 +12,7 @@ export const messages = makeMessages('settings', {
   'server.protocol.label': 'Protocol',
   'server.host.label': 'Host',
   'server.port.label': 'Port',
+  'server.path.label': 'Path',
   'server.username.label': 'Username',
   'server.password.label': 'Password',
   'server.useCredentials.label': 'Use credentials',
