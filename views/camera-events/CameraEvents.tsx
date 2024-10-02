@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Text,
   ToastAndroid,
-  View,
 } from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {get} from '../../helpers/rest';

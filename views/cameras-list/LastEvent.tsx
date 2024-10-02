@@ -1,11 +1,14 @@
-import { FC, useCallback } from 'react';
-import { ICameraEvent } from '../camera-events/CameraEvent';
-import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import { EventSnapshot } from '../camera-events/EventSnapshot';
-import { EventLabels } from '../camera-events/EventLabels';
-import { EventTitle } from '../camera-events/EventTitle';
-import { useAppSelector } from '../../store/store';
-import { selectCamerasNumColumns, selectCamerasPreviewHeight } from '../../store/settings';
+import {FC, useCallback} from 'react';
+import {ICameraEvent} from '../camera-events/CameraEvent';
+import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import {EventSnapshot} from '../camera-events/EventSnapshot';
+import {EventLabels} from '../camera-events/EventLabels';
+import {EventTitle} from '../camera-events/EventTitle';
+import {useAppSelector} from '../../store/store';
+import {
+  selectCamerasNumColumns,
+  selectCamerasPreviewHeight,
+} from '../../store/settings';
 
 const styles = StyleSheet.create({
   eventMetadata: {
@@ -22,11 +25,12 @@ const styles = StyleSheet.create({
 });
 
 interface ILastEventProps {
+  height?: number;
   event?: ICameraEvent;
   onPress?: () => void;
 }
 
-export const LastEvent: FC<ILastEventProps> = ({event, onPress}) => {
+export const LastEvent: FC<ILastEventProps> = ({height, event, onPress}) => {
   const previewHeight = useAppSelector(selectCamerasPreviewHeight);
   const numColumns = useAppSelector(selectCamerasNumColumns);
 
@@ -41,19 +45,17 @@ export const LastEvent: FC<ILastEventProps> = ({event, onPress}) => {
       <View
         style={{
           width: '100%',
-          height: previewHeight
+          height: height || previewHeight,
         }}>
         {event && (
           <>
-            <EventSnapshot
-              id={event.id}
-              hasSnapshot={event.has_snapshot} />
+            <EventSnapshot id={event.id} hasSnapshot={event.has_snapshot} />
             <View style={styles.eventMetadata}>
               <EventLabels
                 endTime={event.end_time}
                 label={event.label}
                 zones={event.zones}
-                topScore={event.top_score}
+                topScore={event.data.top_score}
                 style={styles.eventLabels}
                 numColumns={numColumns}
               />

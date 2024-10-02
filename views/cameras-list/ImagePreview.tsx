@@ -20,12 +20,14 @@ const styles = StyleSheet.create({
 });
 
 interface IImagePreviewProps {
+  height?: number;
   imageUrl?: string;
   onPress?: () => void;
   onPreviewLoad?: () => void;
 }
 
 export const ImagePreview: FC<IImagePreviewProps> = ({
+  height,
   imageUrl,
   onPress,
   onPreviewLoad,
@@ -35,7 +37,11 @@ export const ImagePreview: FC<IImagePreviewProps> = ({
 
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-      <View style={[styles.wrapper, {width: '100%', height: previewHeight}]}>
+      <View
+        style={[
+          styles.wrapper,
+          {width: '100%', height: height || previewHeight},
+        ]}>
         {imageUrl && (
           <ZoomableImage
             source={{uri: imageUrl, headers: authorizationHeader(credentials)}}

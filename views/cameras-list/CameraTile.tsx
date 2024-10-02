@@ -58,17 +58,15 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   const credentials = useAppSelector(selectServerCredentials);
   const refreshFrequency = useAppSelector(selectCamerasRefreshFrequency);
   const previewHeight = useAppSelector(selectCamerasPreviewHeight);
+  const [cameraHeight, setCameraHeight] = useState<number>();
   const liveView = useAppSelector(selectCamerasLiveView);
   const numColumns = useAppSelector(selectCamerasNumColumns);
   const interval = useRef<NodeJS.Timeout>();
 
-  const getLastImageUrl = useCallback(
-    () =>
-      `${apiUrl}/${cameraName}/latest.jpg?bbox=1&ts=${new Date().toISOString()}`,
-    [apiUrl],
-  );
+  const getLastImageUrl = () =>
+    `${apiUrl}/${cameraName}/latest.jpg?bbox=1&ts=${new Date().toISOString()}`;
 
-  const updateLastImageUrl = useCallback(async () => {
+  const updateLastImageUrl = async () => {
     const lastImageUrl = getLastImageUrl();
     Image.getSizeWithHeaders(
       lastImageUrl,
@@ -77,9 +75,9 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
         setLastImageSrc(lastImageUrl);
       },
     );
-  }, [getLastImageUrl]);
+  };
 
-  const getLastEvent = useCallback(() => {
+  const getLastEvent = () => {
     get<ICameraEvent[]>(`${apiUrl}/events`, credentials, {
       cameras: cameraName,
       limit: '1',
@@ -90,7 +88,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
         setLastEvent(event);
       }
     });
-  }, [cameraName]);
+  };
 
   useEffect(() => {
     updateLastImageUrl();
@@ -108,7 +106,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
     return removeRefreshing;
   }, [cameraName, setLastImageSrc, apiUrl, refreshFrequency]);
 
-  const showCameraEvents = useCallback(() => {
+  const showCameraEvents = () => {
     Navigation.push(componentId, {
       component: {
         name: 'CameraEvents',
@@ -117,18 +115,15 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
         },
       },
     });
-  }, [cameraName, componentId]);
+  };
 
-  const showCameraEventsWithLabel = useCallback(
-    (label: string) => {
-      dispatch(setFiltersLabels([label]));
-      dispatch(setFiltersZones([]));
-      showCameraEvents();
-    },
-    [dispatch, showCameraEvents],
-  );
+  const showCameraEventsWithLabel = (label: string) => {
+    dispatch(setFiltersLabels([label]));
+    dispatch(setFiltersZones([]));
+    showCameraEvents();
+  };
 
-  const onPreviewLoad = useCallback(async () => {
+  const onPreviewLoad = async () => {
     if (liveView) {
       updateLastImageUrl();
     }
@@ -138,13 +133,14 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
           const proportion = height / width;
           const windowWidth = Dimensions.get('window').width;
           const newHeight = (windowWidth * proportion) / numColumns;
+          setCameraHeight(newHeight);
           if (newHeight !== previewHeight) {
             dispatch(setCameraPreviewHeight(newHeight));
           }
         });
       } catch (err) {}
     }
-  }, [dispatch, lastImageSrc, numColumns, previewHeight]);
+  };
 
   const styles = useMemo(() => stylesFn(numColumns), [numColumns]);
 
@@ -154,13 +150,21 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
         width: `${100 / numColumns}%`,
       }}>
       <Carousel initialPage={1}>
-        <LastEvent event={lastEvent} onPress={showCameraEvents} />
+        <LastEvent
+          height={cameraHeight}
+          event={lastEvent}
+          onPress={showCameraEvents}
+        />
         <ImagePreview
+          height={cameraHeight}
           imageUrl={lastImageSrc}
           onPress={showCameraEvents}
           onPreviewLoad={onPreviewLoad}
         />
-        <CameraLabels onLabelPress={showCameraEventsWithLabel} />
+        <CameraLabels
+          height={cameraHeight}
+          onLabelPress={showCameraEventsWithLabel}
+        />
       </Carousel>
       <Text style={[styles.cameraTileTitle]}>{cameraName}</Text>
     </View>
