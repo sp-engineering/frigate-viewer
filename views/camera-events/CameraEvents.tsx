@@ -1,6 +1,13 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useIntl} from 'react-intl';
-import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  View,
+} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {get} from '../../helpers/rest';
 import {
@@ -24,9 +31,9 @@ import {
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {CameraEvent, ICameraEvent} from './CameraEvent';
 import {messages} from './messages';
-import { useNoServer } from '../settings/useNoServer';
-import { Background } from '../../components/Background';
-import { useOrientation } from '../../helpers/screen';
+import {useNoServer} from '../settings/useNoServer';
+import {Background} from '../../components/Background';
+import {useOrientation} from '../../helpers/screen';
 
 const styles = StyleSheet.create({
   noEvents: {
@@ -46,15 +53,26 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   retained,
   componentId,
 }) => {
-  const isSpecificCamera = useMemo(() => cameraNames && cameraNames.length === 1, [cameraNames]);
+  const isSpecificCamera = useMemo(
+    () => cameraNames && cameraNames.length === 1,
+    [cameraNames],
+  );
   useNoServer();
-  useMenu(componentId, !retained ? (isSpecificCamera ? 'camerasList' : 'cameraEvents') : 'retained');
+  useMenu(
+    componentId,
+    !retained
+      ? isSpecificCamera
+        ? 'camerasList'
+        : 'cameraEvents'
+      : 'retained',
+  );
   useEventsFilters(componentId, cameraNames);
   const listRef = useRef<FlatList<ICameraEvent>>(null);
   const [refreshing, setRefreshing] = useState(true);
   const [events, setEvents] = useState<ICameraEvent[]>([]);
   const [endReached, setEndReached] = useState<boolean>(false);
-  const [snapshotDimensions, setSnapshotDimensions] = useState<[number, number]>();
+  const [snapshotDimensions, setSnapshotDimensions] =
+    useState<[number, number]>();
   const dispatch = useAppDispatch();
   const apiUrl = useAppSelector(selectServerApiUrl);
   const credentials = useAppSelector(selectServerCredentials);
@@ -65,7 +83,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   const filtersZones = useAppSelector(selectFiltersZones);
   const filtersRetained = useAppSelector(selectFiltersRetained);
   const intl = useIntl();
-  const orientation = useOrientation();
+  const {orientation, setComponentId} = useOrientation();
 
   const filterCount = useMemo(
     () =>
@@ -78,34 +96,31 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
 
   useEffect(() => {
     Navigation.mergeOptions(componentId, {
-      topBar:
-        retained
-          ? {
+      topBar: retained
+        ? {
             title: {
-              text: intl.formatMessage(
-                messages['topBar.retained.title']
-              ),
+              text: intl.formatMessage(messages['topBar.retained.title']),
             },
             leftButtons: [menuButton],
             rightButtons: [filterButton(filterCount)],
           }
-          : isSpecificCamera
-            ? {
-                title: {
-                  text: intl.formatMessage(
-                    messages['topBar.specificCamera.title'],
-                    {cameraName: cameraNames![0]},
-                  ),
-                },
-                rightButtons: [filterButton(filterCount)],
-              }
-            : {
-                title: {
-                  text: intl.formatMessage(messages['topBar.general.title']),
-                },
-                leftButtons: [menuButton],
-                rightButtons: [filterButton(filterCount)],
-              },
+        : isSpecificCamera
+        ? {
+            title: {
+              text: intl.formatMessage(
+                messages['topBar.specificCamera.title'],
+                {cameraName: cameraNames![0]},
+              ),
+            },
+            rightButtons: [filterButton(filterCount)],
+          }
+        : {
+            title: {
+              text: intl.formatMessage(messages['topBar.general.title']),
+            },
+            leftButtons: [menuButton],
+            rightButtons: [filterButton(filterCount)],
+          },
     });
   }, [componentId, intl, cameraNames, filterCount]);
 
@@ -175,11 +190,14 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
 
   const loadMore = useCallback(() => {
     if (!endReached) {
-      get<ICameraEvent[]>(`${apiUrl}/events`, credentials, eventsQueryParams)
-        .then(data => {
-          watchEndReached(data);
-          setEvents([...events, ...data]);
-        });
+      get<ICameraEvent[]>(
+        `${apiUrl}/events`,
+        credentials,
+        eventsQueryParams,
+      ).then(data => {
+        watchEndReached(data);
+        setEvents([...events, ...data]);
+      });
     }
   }, [apiUrl, endReached, events, eventsQueryParams, watchEndReached]);
 
@@ -195,14 +213,11 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
     [events],
   );
 
-  const onSnapshotDimensions = useCallback(
-    (width: number, height: number) => {
-      if (!snapshotDimensions) {
-        setSnapshotDimensions([width, height]);
-      }
-    },
-    [snapshotDimensions],
-  );
+  const onSnapshotDimensions = (width: number, height: number) => {
+    if (!snapshotDimensions) {
+      setSnapshotDimensions([width, height]);
+    }
+  };
 
   useEffect(() => {
     if (snapshotDimensions) {
@@ -215,6 +230,32 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
       }
     }
   }, [snapshotDimensions, numColumns, orientation]);
+
+  const showEventClip = (event: ICameraEvent) => {
+    if (event.has_clip) {
+      Navigation.showModal({
+        component: {
+          name: 'CameraEventClip',
+          passProps: {
+            eventId: event.id,
+          },
+          options: {
+            layout: {
+              orientation: ['landscape'],
+            },
+          },
+        },
+      }).then(componentId => {
+        setComponentId(componentId);
+      });
+    } else {
+      ToastAndroid.showWithGravity(
+        intl.formatMessage(messages['toast.noClip']),
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+      );
+    }
+  };
 
   return (
     <Background>
@@ -232,6 +273,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
             componentId={componentId}
             onDelete={onDelete}
             onSnapshotDimensions={onSnapshotDimensions}
+            onEventPress={showEventClip}
           />
         )}
         keyExtractor={data => data.id}

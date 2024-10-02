@@ -1,13 +1,6 @@
 import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {useIntl} from 'react-intl';
-import {
-  Image,
-  StyleSheet,
-  ToastAndroid,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
-import {Navigation} from 'react-native-navigation';
+import {Image, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 import {Colors, Drawer, DrawerItemProps} from 'react-native-ui-lib';
 import {del, post} from '../../helpers/rest';
 import {
@@ -20,7 +13,7 @@ import {useAppSelector} from '../../store/store';
 import {EventLabels} from './EventLabels';
 import {EventTitle} from './EventTitle';
 import {messages} from './messages';
-import { EventSnapshot } from './EventSnapshot';
+import {EventSnapshot} from './EventSnapshot';
 
 export interface ICameraEvent {
   id: string;
@@ -36,7 +29,9 @@ export interface ICameraEvent {
   label: string;
   sub_label: string | null;
   plus_id: string | null;
-  top_score: number; // float [0,1]
+  data: {
+    top_score: number; // float [0,1]
+  };
   false_positive: null;
   ratio: null;
   region: null;
@@ -47,6 +42,7 @@ interface ICameraEventProps extends ICameraEvent {
   componentId: string;
   onDelete: (id: string[]) => void;
   onSnapshotDimensions: (width: number, height: number) => void;
+  onEventPress: (event: ICameraEvent) => void;
 }
 
 const styles = StyleSheet.create({
@@ -57,19 +53,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export const CameraEvent: FC<ICameraEventProps> = ({
-  id,
-  has_clip,
-  has_snapshot,
-  start_time,
-  end_time,
-  label,
-  zones,
-  top_score,
-  retain_indefinitely,
-  onDelete,
-  onSnapshotDimensions,
-}) => {
+export const CameraEvent: FC<ICameraEventProps> = props => {
+  const {onDelete, onSnapshotDimensions, onEventPress, ...event} = props;
+  const {
+    id,
+    has_snapshot,
+    start_time,
+    end_time,
+    label,
+    zones,
+    data,
+    retain_indefinitely,
+  } = event;
   const [retained, setRetained] = useState(false);
   const apiUrl = useAppSelector(selectServerApiUrl);
   const credentials = useAppSelector(selectServerCredentials);
@@ -82,48 +77,29 @@ export const CameraEvent: FC<ICameraEventProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const showEventClip = useCallback(() => {
-    if (has_clip) {
-      Navigation.showModal({
-        component: {
-          name: 'CameraEventClip',
-          passProps: {
-            eventId: id,
-          },
-          options: {
-            layout: {
-              orientation: ['landscape'],
-            },
-          },
-        },
-      });
-    } else {
-      ToastAndroid.showWithGravity(
-        intl.formatMessage(messages['toast.noClip']),
-        ToastAndroid.LONG,
-        ToastAndroid.TOP,
-      );
-    }
-  }, [id]);
-
-  const onSnapshotLoad = useCallback(async (snapshot: string) => {
-    if (snapshot) {
-      try {
-        Image.getSize(snapshot, (width, height) => {
-          onSnapshotDimensions(width, height);
-        });
-      } catch (err) {}
-    }
-  }, [numColumns, snapshotHeight, onSnapshotDimensions]);
+  const onSnapshotLoad = useCallback(
+    async (snapshot: string) => {
+      if (snapshot) {
+        try {
+          Image.getSize(snapshot, (width, height) => {
+            onSnapshotDimensions(width, height);
+          });
+        } catch (err) {}
+      }
+    },
+    [numColumns, snapshotHeight, onSnapshotDimensions],
+  );
 
   const deleteDrawerItem: DrawerItemProps = useMemo(
     () => ({
       text: intl.formatMessage(messages['action.delete']),
       background: Colors.red30,
       onPress: () => {
-        del(`${apiUrl}/events/${id}`, credentials, undefined, false).then(() => {
-          onDelete([id]);
-        });
+        del(`${apiUrl}/events/${id}`, credentials, undefined, false).then(
+          () => {
+            onDelete([id]);
+          },
+        );
       },
     }),
     [apiUrl, id, intl, onDelete],
@@ -136,22 +112,28 @@ export const CameraEvent: FC<ICameraEventProps> = ({
             text: intl.formatMessage(messages['action.unretain']),
             background: Colors.red40,
             onPress: () => {
-              del(`${apiUrl}/events/${id}/retain`, credentials, undefined, false).then(
-                () => {
-                  setRetained(false);
-                },
-              );
+              del(
+                `${apiUrl}/events/${id}/retain`,
+                credentials,
+                undefined,
+                false,
+              ).then(() => {
+                setRetained(false);
+              });
             },
           }
         : {
             text: intl.formatMessage(messages['action.retain']),
             background: Colors.green30,
             onPress: () => {
-              post(`${apiUrl}/events/${id}/retain`, credentials, undefined, false).then(
-                () => {
-                  setRetained(true);
-                },
-              );
+              post(
+                `${apiUrl}/events/${id}/retain`,
+                credentials,
+                undefined,
+                false,
+              ).then(() => {
+                setRetained(true);
+              });
             },
           },
     [apiUrl, id, intl, retained],
@@ -164,9 +146,8 @@ export const CameraEvent: FC<ICameraEventProps> = ({
       style={{
         width: `${100 / numColumns}%`,
         height: snapshotHeight,
-      }}
-    >
-      <TouchableWithoutFeedback onPress={showEventClip}>
+      }}>
+      <TouchableWithoutFeedback onPress={() => onEventPress(event)}>
         <View
           style={[
             styles.cameraEvent,
@@ -177,7 +158,8 @@ export const CameraEvent: FC<ICameraEventProps> = ({
           <EventSnapshot
             id={id}
             hasSnapshot={has_snapshot}
-            onSnapshotLoad={onSnapshotLoad} />
+            onSnapshotLoad={onSnapshotLoad}
+          />
           <EventTitle
             startTime={start_time}
             endTime={end_time}
@@ -188,7 +170,7 @@ export const CameraEvent: FC<ICameraEventProps> = ({
             endTime={end_time}
             label={label}
             zones={zones}
-            topScore={top_score}
+            topScore={data.top_score}
             numColumns={numColumns}
           />
         </View>
