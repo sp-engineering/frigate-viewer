@@ -33,7 +33,7 @@ export const CpuUsageChart: FC<ICpuUsageChartProps> = ({detectors, gpus}) => {
   const chartData: [ProgressChartData[], ProgressChartData[]] = useMemo(() => {
     const data = [
       ...gpus.map((gpu, gpuIndex) => ({
-        label: gpu.name,
+        label: gpu.name.substring(0, 12),
         cpu: gpu.gpu / 100,
         mem: gpu.mem / 100,
         color: getColor(gpuIndex),
@@ -41,7 +41,7 @@ export const CpuUsageChart: FC<ICpuUsageChartProps> = ({detectors, gpus}) => {
       ...detectors
         .filter(d => d.cpu !== undefined)
         .map((detector, detectorIndex) => ({
-          label: detector.name,
+          label: detector.name.substring(0, 12),
           cpu: (detector.cpu || 0) / 100,
           mem: (detector.mem || 0) / 100,
           color: getColor(gpus.length + detectorIndex),
