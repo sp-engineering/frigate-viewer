@@ -25,6 +25,7 @@ const libs = [
   'react-redux',
   'redux',
   'redux-persist',
+  'rn-fetch-blob',
   'yup',
 ];
 
