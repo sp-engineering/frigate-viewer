@@ -1,6 +1,6 @@
 import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {useIntl} from 'react-intl';
-import {Image, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import {Image, TouchableWithoutFeedback, View} from 'react-native';
 import {Colors, Drawer, DrawerItemProps} from 'react-native-ui-lib';
 import {del, post} from '../../helpers/rest';
 import {
@@ -14,6 +14,7 @@ import {EventLabels} from './EventLabels';
 import {EventTitle} from './EventTitle';
 import {messages} from './messages';
 import {EventSnapshot} from './EventSnapshot';
+import {useStyles} from '../../helpers/colors';
 
 export interface ICameraEvent {
   id: string;
@@ -45,15 +46,15 @@ interface ICameraEventProps extends ICameraEvent {
   onEventPress: (event: ICameraEvent) => void;
 }
 
-const styles = StyleSheet.create({
-  cameraEvent: {
-    paddingVertical: 1,
-    paddingHorizontal: 2,
-    backgroundColor: 'white',
-  },
-});
-
 export const CameraEvent: FC<ICameraEventProps> = props => {
+  const styles = useStyles(({colorScheme}) => ({
+    cameraEvent: {
+      paddingVertical: 1,
+      paddingHorizontal: 2,
+      backgroundColor: colorScheme.background,
+    },
+  }));
+
   const {onDelete, onSnapshotDimensions, onEventPress, ...event} = props;
   const {
     id,

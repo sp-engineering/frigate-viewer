@@ -63,6 +63,9 @@ export interface ISettings {
     region: Region;
     datesDisplay: 'descriptive' | 'numeric';
   };
+  app: {
+    colorScheme: 'auto' | 'light' | 'dark';
+  };
   cameras: {
     refreshFrequency: number;
     liveView: boolean;
@@ -86,6 +89,9 @@ export const initialSettings: ISettings = {
       username: '',
       password: '',
     },
+  },
+  app: {
+    colorScheme: 'auto',
   },
   locale: {
     region: NativeModules.I18nManager.localeIdentifier,
@@ -202,6 +208,11 @@ export const selectLocaleRegion = (state: RootState) =>
 
 export const selectLocaleDatesDisplay = (state: RootState) =>
   selectLocale(state).datesDisplay;
+
+export const selectApp = (state: RootState) => selectSettings(state).app;
+
+export const selectAppColorScheme = (state: RootState) =>
+  selectApp(state).colorScheme;
 
 /* cameras */
 

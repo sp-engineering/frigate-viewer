@@ -94,6 +94,11 @@ export default {
   'settings.locale.datesDisplay.label': 'Dates display',
   'settings.locale.datesDisplay.option.descriptive': 'Descriptive',
   'settings.locale.datesDisplay.option.numeric': 'Numeric',
+  'settings.app.header': 'Application',
+  'settings.app.colorScheme.label': 'Color scheme',
+  'settings.app.colorScheme.option.auto': 'Auto',
+  'settings.app.colorScheme.option.light': 'Light',
+  'settings.app.colorScheme.option.dark': 'Dark',
   'settings.cameras.header': 'Cameras',
   'settings.cameras.imageRefreshFrequency.label':
     'Image refresh frequency (seconds)',

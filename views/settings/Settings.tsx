@@ -300,6 +300,38 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
               />
             </Label>
           </Section>
+          <Section header={intl.formatMessage(messages['app.header'])}>
+            <Label
+              text={intl.formatMessage(messages['app.colorScheme.label'])}
+              touched={touched.app?.colorScheme}
+              error={errors.app?.colorScheme}
+              required={true}>
+              <Dropdown
+                value={values.app.colorScheme}
+                options={[
+                  {
+                    value: 'auto',
+                    label: intl.formatMessage(
+                      messages['app.colorScheme.option.auto'],
+                    ),
+                  },
+                  {
+                    value: 'light',
+                    label: intl.formatMessage(
+                      messages['app.colorScheme.option.light'],
+                    ),
+                  },
+                  {
+                    value: 'dark',
+                    label: intl.formatMessage(
+                      messages['app.colorScheme.option.dark'],
+                    ),
+                  },
+                ]}
+                onValueChange={handleChange('app.colorScheme')}
+              />
+            </Label>
+          </Section>
           <Section header={intl.formatMessage(messages['cameras.header'])}>
             <Label
               text={intl.formatMessage(

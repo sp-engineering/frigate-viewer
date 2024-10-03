@@ -1,5 +1,5 @@
 import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import {NavigationFunctionComponent} from 'react-native-navigation';
 import VLCPlayer, {State} from '@lunarr/vlc-player';
 import {ZoomableView} from '../../components/ZoomableView';
@@ -11,23 +11,27 @@ import {useAppSelector} from '../../store/store';
 import {ProgressBar} from './ProgressBar';
 import {VideoHUD} from './VideoHUD';
 import {authorizationHeader} from '../../helpers/rest';
+import {useStyles} from '../../helpers/colors';
 
 interface ICameraEventClipProps {
   eventId: string;
 }
-
-const styles = StyleSheet.create({
-  player: {
-    width: '100%',
-    height: '100%',
-  },
-});
 
 interface IVideoPlayerProps {
   clipUrl: string;
 }
 
 const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
+  const styles = useStyles(({colorScheme}) => ({
+    wrapper: {
+      backgroundColor: colorScheme.background,
+    },
+    player: {
+      width: '100%',
+      height: '100%',
+    },
+  }));
+
   const [paused, setPaused] = useState(false);
   const [stopped, setStopped] = useState(false);
   const [progressInfo, setProgressInfo] = useState<State>();
@@ -68,7 +72,7 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
   );
 
   return (
-    <View>
+    <View style={styles.wrapper}>
       <ZoomableView>
         <VideoHUD
           paused={paused}

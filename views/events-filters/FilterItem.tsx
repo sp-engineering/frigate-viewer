@@ -1,31 +1,6 @@
 import React, {FC, useCallback} from 'react';
-import {Pressable, StyleSheet, Text} from 'react-native';
-
-const styles = StyleSheet.create({
-  wrapper: {
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    backgroundColor: 'white',
-    borderBottomWidth: 1,
-    borderColor: 'black',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  checkmark: {
-    width: 18,
-    fontSize: 10,
-    color: 'green',
-  },
-  text: {
-    color: 'black',
-  },
-  selectedText: {
-    fontWeight: '600',
-  },
-  disabledText: {
-    color: '#888',
-  },
-});
+import {Pressable, Text} from 'react-native';
+import {useStyles} from '../../helpers/colors';
 
 interface IFilterItemProps {
   label: string;
@@ -40,6 +15,32 @@ export const FilterItem: FC<IFilterItemProps> = ({
   disabled,
   onPress,
 }) => {
+  const styles = useStyles(({colorScheme}) => ({
+    wrapper: {
+      paddingVertical: 10,
+      paddingHorizontal: 10,
+      backgroundColor: colorScheme.background,
+      borderBottomWidth: 1,
+      borderColor: colorScheme.border,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    checkmark: {
+      width: 18,
+      fontSize: 10,
+      color: colorScheme.text,
+    },
+    text: {
+      color: colorScheme.text,
+    },
+    selectedText: {
+      fontWeight: '600',
+    },
+    disabledText: {
+      color: colorScheme.disabled,
+    },
+  }));
+
   const onItemPress = useCallback(() => {
     if (onPress && !disabled) {
       onPress(label);

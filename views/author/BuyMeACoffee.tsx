@@ -1,43 +1,8 @@
 import React, {FC} from 'react';
 import {useIntl} from 'react-intl';
-import {Pressable, StyleSheet, Text, View, ViewProps} from 'react-native';
+import {Pressable, Text, View, ViewProps} from 'react-native';
 import {messages} from './messages';
-
-const styles = StyleSheet.create({
-  wrapper: {
-    margin: 20,
-    paddingTop: 20,
-    borderColor: '#00000088',
-    borderTopWidth: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  nonProfitText: {
-    marginBottom: 10,
-    color: 'black',
-    textAlign: 'center',
-  },
-  text: {
-    fontWeight: '500',
-    color: 'black',
-    textAlign: 'center',
-  },
-  buttonInline: {
-    marginVertical: 15,
-    flexDirection: 'row',
-  },
-  button: {
-    flexDirection: 'row',
-    gap: 5,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    backgroundColor: '#fd0',
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: 'black',
-  },
-});
+import {useStyles} from '../../helpers/colors';
 
 interface IButMeACoffeeProps extends ViewProps {
   onPress: () => void;
@@ -49,6 +14,42 @@ export const BuyMeACoffee: FC<IButMeACoffeeProps> = ({
   ...viewProps
 }) => {
   const intl = useIntl();
+
+  const styles = useStyles(({colorScheme}) => ({
+    wrapper: {
+      margin: 20,
+      paddingTop: 20,
+      borderColor: colorScheme.border,
+      borderTopWidth: 1,
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+    nonProfitText: {
+      marginBottom: 10,
+      color: colorScheme.text,
+      textAlign: 'center',
+    },
+    text: {
+      fontWeight: '500',
+      color: colorScheme.text,
+      textAlign: 'center',
+    },
+    buttonInline: {
+      marginVertical: 15,
+      flexDirection: 'row',
+    },
+    button: {
+      flexDirection: 'row',
+      gap: 5,
+      paddingHorizontal: 10,
+      paddingVertical: 10,
+      backgroundColor: '#fd0',
+      borderRadius: 5,
+    },
+    buttonText: {
+      color: 'black',
+    },
+  }));
 
   return (
     <View {...viewProps} style={[style, styles.wrapper]}>
