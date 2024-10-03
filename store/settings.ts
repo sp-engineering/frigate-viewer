@@ -73,6 +73,7 @@ export interface ISettings {
     numColumns: number;
     snapshotHeight: number;
     photoPreference: 'snapshot' | 'thumbnail';
+    lockLandscapePlaybackOrientation: boolean;
   };
 }
 
@@ -101,6 +102,7 @@ export const initialSettings: ISettings = {
     numColumns: 1,
     snapshotHeight: 222,
     photoPreference: 'snapshot',
+    lockLandscapePlaybackOrientation: false,
   },
 };
 
@@ -232,3 +234,7 @@ export const selectEventsSnapshotHeight = (state: RootState) =>
 
 export const selectEventsPhotoPreference = (state: RootState) =>
   selectEvents(state).photoPreference;
+
+export const selectEventsLockLandscapePlaybackOrientation = (
+  state: RootState,
+) => selectEvents(state).lockLandscapePlaybackOrientation;

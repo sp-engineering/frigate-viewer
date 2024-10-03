@@ -107,6 +107,8 @@ export default {
   'settings.events.photoPreference.label': 'Перевага фото',
   'settings.events.photoPreference.option.snapshot': 'Знімок',
   'settings.events.photoPreference.option.thumbnail': 'Мініатюра',
+  'settings.events.lockLandscapePlaybackOrientation.label':
+    'Заблокувати відтворення в альбомній орієнтації',
   'settings.toast.noServerData':
     'Вам потрібно надати дані сервера Frigate NVR.',
   'storage.topBar.title': 'Зберігання',

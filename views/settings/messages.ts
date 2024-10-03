@@ -71,6 +71,8 @@ export const messages = makeMessages('settings', {
   'events.photoPreference.label': 'Photo preference',
   'events.photoPreference.option.snapshot': 'Snapshot',
   'events.photoPreference.option.thumbnail': 'Thumbnail',
+  'events.lockLandscapePlaybackOrientation.label':
+    'Lock playback in landscape orientation',
   'toast.noServerData': 'You need to provide frigate nvr server data.',
 });
 

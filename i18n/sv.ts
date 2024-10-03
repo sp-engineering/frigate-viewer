@@ -107,6 +107,8 @@ export default {
   'settings.events.photoPreference.label': 'Fotoinställning',
   'settings.events.photoPreference.option.snapshot': 'Ögonblicksbild',
   'settings.events.photoPreference.option.thumbnail': 'Miniatyrbild',
+  'settings.events.lockLandscapePlaybackOrientation.label':
+    'Lås uppspelningen i liggande riktning',
   'settings.toast.noServerData':
     'Du måste tillhandahålla Frigate NVR-serverdata.',
   'storage.topBar.title': 'Lagring',

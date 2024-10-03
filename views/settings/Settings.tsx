@@ -382,6 +382,20 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
                 onValueChange={handleChange('events.photoPreference')}
               />
             </Label>
+            <Label
+              text={intl.formatMessage(
+                messages['events.lockLandscapePlaybackOrientation.label'],
+              )}>
+              <Switch
+                value={values.events.lockLandscapePlaybackOrientation}
+                onValueChange={value =>
+                  setFieldValue(
+                    'events.lockLandscapePlaybackOrientation',
+                    value,
+                  )
+                }
+              />
+            </Label>
           </Section>
         </ScrollView>
       )}
