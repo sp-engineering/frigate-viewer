@@ -11,8 +11,8 @@ import {
 import {Navigation} from 'react-native-navigation';
 import {MenuId} from './menuHelpers';
 import {MessageKey, messages} from './messages';
-import { ICameraEventsProps } from '../camera-events/CameraEvents';
-import { ScrollView } from 'react-native-gesture-handler';
+import {ICameraEventsProps} from '../camera-events/CameraEvents';
+import {ScrollView} from 'react-native-gesture-handler';
 
 interface IMenuProps {
   current: string;
@@ -54,8 +54,8 @@ interface IMenuItem<P = {}> {
   icon: OutlineGlyphMapType;
   label?: string;
   view?: string;
-  stack?: boolean;
   passProps?: P;
+  modal?: boolean;
 }
 
 export const camerasListMenuItem: IMenuItem = {
@@ -101,6 +101,7 @@ export const settingsMenuItem: IMenuItem = {
   id: 'settings',
   icon: 'tool',
   view: 'Settings',
+  modal: true,
 };
 
 export const authorMenuItem: IMenuItem = {
@@ -110,22 +111,31 @@ export const authorMenuItem: IMenuItem = {
 };
 
 export const navigateToMenuItem =
-  ({view, stack, passProps}: IMenuItem) =>
+  ({view, modal, passProps}: IMenuItem) =>
   () => {
     if (view) {
-      Navigation[stack ? 'push' : 'setStackRoot']('MainMenu', {
-        component: {
-          name: view,
-          passProps,
-          options: {
-            sideMenu: {
-              left: {
-                visible: false,
+      if (modal) {
+        Navigation.showModal({
+          component: {
+            name: view,
+            passProps,
+          },
+        });
+      } else {
+        Navigation.push('MainMenu', {
+          component: {
+            name: view,
+            passProps,
+            options: {
+              sideMenu: {
+                left: {
+                  visible: false,
+                },
               },
             },
           },
-        },
-      });
+        });
+      }
     }
   };
 
