@@ -45,6 +45,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
   },
+  progressText: {
+    color: 'white',
+  },
 });
 
 interface IVideoPlayerProps {
@@ -59,6 +62,7 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
   const credentials = useAppSelector(selectServerCredentials);
   const [uri, setUri] = useState<string>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string>();
 
   const resumeIfStopped = useCallback(() => {
@@ -104,11 +108,12 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
           fileCache: true,
           path: filePath,
         });
-        await downloader.fetch(
-          'GET',
-          clipUrl,
-          authorizationHeader(credentials),
-        );
+        await downloader
+          .fetch('GET', clipUrl, authorizationHeader(credentials))
+          .progress((received, total) => {
+            const progress = Math.round((received / total) * 100);
+            setProgress(progress);
+          });
         setUri(filePath);
         setLoading(false);
       } catch (err) {
@@ -130,6 +135,7 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
     return (
       <View style={styles.overlayWrapper}>
         <ActivityIndicator size="large" color="white" />
+        <Text style={styles.progressText}>{progress}%</Text>
       </View>
     );
   }
