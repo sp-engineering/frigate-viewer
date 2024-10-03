@@ -96,7 +96,6 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
 
   const save = useCallback(
     (settings: ISettings) => {
-      console.log('save clicked');
       dispatch(saveSettings(settings));
       Keyboard.dismiss();
       Navigation.dismissAllModals();
