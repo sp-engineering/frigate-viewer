@@ -95,6 +95,11 @@ export default {
   'settings.locale.datesDisplay.label': 'Datum visas',
   'settings.locale.datesDisplay.option.descriptive': 'Beskrivande',
   'settings.locale.datesDisplay.option.numeric': 'Numeriskt',
+  'settings.app.header': 'Ansökan',
+  'settings.app.colorScheme.label': 'Färgschema',
+  'settings.app.colorScheme.option.auto': 'Bil',
+  'settings.app.colorScheme.option.light': 'Ljus',
+  'settings.app.colorScheme.option.dark': 'Mörk',
   'settings.cameras.header': 'Kameror',
   'settings.cameras.imageRefreshFrequency.label':
     'Uppdateringsfrekvens för bilder (sekunder)',
