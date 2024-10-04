@@ -26,6 +26,7 @@ const libs = [
   'react-redux',
   'redux',
   'redux-persist',
+  'rn-fetch-blob',
   'yup',
 ];
 
@@ -33,24 +34,24 @@ export const UsedLibs: FC = () => {
   const openLink = useOpenLink();
   const intl = useIntl();
 
-  const styles = useStyles(({colorScheme}) => ({
+  const styles = useStyles(({theme}) => ({
     wrapper: {
       margin: 20,
       marginTop: 0,
       paddingTop: 20,
-      borderColor: colorScheme.border,
+      borderColor: theme.border,
       borderTopWidth: 1,
       flexDirection: 'column',
       alignItems: 'flex-start',
     },
     header: {
       marginBottom: 10,
-      color: colorScheme.text,
+      color: theme.text,
       fontWeight: 'bold',
     },
     lib: {
       marginBottom: 5,
-      color: colorScheme.link,
+      color: theme.link,
     },
   }));
 

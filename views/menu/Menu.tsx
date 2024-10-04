@@ -1,13 +1,19 @@
 import {IconOutline, OutlineGlyphMapType} from '@ant-design/icons-react-native';
 import React, {FC, useCallback, useMemo} from 'react';
 import {useIntl} from 'react-intl';
-import {Image, Text, TouchableNativeFeedback, View} from 'react-native';
+import {
+  Image,
+  ImageStyle,
+  Text,
+  TouchableNativeFeedback,
+  View,
+} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import {MenuId} from './menuHelpers';
 import {MessageKey, messages} from './messages';
 import {ICameraEventsProps} from '../camera-events/CameraEvents';
 import {ScrollView} from 'react-native-gesture-handler';
-import {useAppColorScheme, usePalette, useStyles} from '../../helpers/colors';
+import {useAppColorScheme, useTheme, useStyles} from '../../helpers/colors';
 
 interface IMenuProps {
   current: string;
@@ -18,8 +24,8 @@ interface IMenuItem<P = {}> {
   icon: OutlineGlyphMapType;
   label?: string;
   view?: string;
-  stack?: boolean;
   passProps?: P;
+  modal?: boolean;
 }
 
 export const camerasListMenuItem: IMenuItem = {
@@ -65,6 +71,7 @@ export const settingsMenuItem: IMenuItem = {
   id: 'settings',
   icon: 'tool',
   view: 'Settings',
+  modal: true,
 };
 
 export const authorMenuItem: IMenuItem = {
@@ -74,34 +81,43 @@ export const authorMenuItem: IMenuItem = {
 };
 
 export const navigateToMenuItem =
-  ({view, stack, passProps}: IMenuItem) =>
+  ({view, modal, passProps}: IMenuItem) =>
   () => {
     if (view) {
-      Navigation[stack ? 'push' : 'setStackRoot']('MainMenu', {
-        component: {
-          name: view,
-          passProps,
-          options: {
-            sideMenu: {
-              left: {
-                visible: false,
+      if (modal) {
+        Navigation.showModal({
+          component: {
+            name: view,
+            passProps,
+          },
+        });
+      } else {
+        Navigation.push('MainMenu', {
+          component: {
+            name: view,
+            passProps,
+            options: {
+              sideMenu: {
+                left: {
+                  visible: false,
+                },
               },
             },
           },
-        },
-      });
+        });
+      }
     }
   };
 
 export const Menu: FC<IMenuProps> = ({current}) => {
   const intl = useIntl();
 
-  const palette = usePalette();
+  const theme = useTheme();
   const appColorScheme = useAppColorScheme();
 
-  const styles = useStyles(({colorScheme}) => ({
+  const styles = useStyles(({theme}) => ({
     menuWrapper: {
-      backgroundColor: colorScheme.background,
+      backgroundColor: theme.background,
       width: '100%',
       height: '100%',
     },
@@ -118,7 +134,7 @@ export const Menu: FC<IMenuProps> = ({current}) => {
       alignItems: 'center',
     },
     menuItemCurrent: {
-      backgroundColor: colorScheme.highlighted,
+      backgroundColor: theme.highlighted,
     },
     menuItemIcon: {
       fontSize: 20,
@@ -126,7 +142,7 @@ export const Menu: FC<IMenuProps> = ({current}) => {
     },
     menuItemText: {
       fontSize: 20,
-      color: colorScheme.text,
+      color: theme.text,
     },
   }));
 
@@ -162,7 +178,7 @@ export const Menu: FC<IMenuProps> = ({current}) => {
 
   return (
     <ScrollView style={[styles.menuWrapper]}>
-      <Image source={logo} style={styles.menuLogo} />
+      <Image source={logo} style={styles.menuLogo as ImageStyle} />
       {menuItems.map(item => (
         <TouchableNativeFeedback onPress={navigate(item)} key={item.id}>
           <View
@@ -172,7 +188,7 @@ export const Menu: FC<IMenuProps> = ({current}) => {
             ]}>
             <IconOutline
               name={item.icon}
-              color={palette.text}
+              color={theme.text}
               style={[styles.menuItemIcon]}
             />
             <Text style={[styles.menuItemText]}>{item.label}</Text>

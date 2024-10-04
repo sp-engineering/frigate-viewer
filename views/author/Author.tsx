@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useIntl} from 'react-intl';
-import {Image, Text, View} from 'react-native';
+import {Image, ImageStyle, Text, View} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {BuyMeACoffee} from './BuyMeACoffee';
@@ -15,11 +15,11 @@ export const Author: NavigationFunctionComponent = ({componentId}) => {
   const intl = useIntl();
   const openLink = useOpenLink();
 
-  const styles = useStyles(({colorScheme}) => ({
+  const styles = useStyles(({theme}) => ({
     wrapper: {
       width: '100%',
       height: '100%',
-      backgroundColor: colorScheme.background,
+      backgroundColor: theme.background,
     },
     authorInfo: {
       marginTop: 20,
@@ -37,7 +37,7 @@ export const Author: NavigationFunctionComponent = ({componentId}) => {
       resizeMode: 'contain',
     },
     link: {
-      color: colorScheme.link,
+      color: theme.link,
     },
     item: {
       marginVertical: 10,
@@ -45,10 +45,10 @@ export const Author: NavigationFunctionComponent = ({componentId}) => {
     },
     itemLabel: {
       fontWeight: '500',
-      color: colorScheme.text,
+      color: theme.text,
     },
     itemValue: {
-      color: colorScheme.text,
+      color: theme.text,
       textAlign: 'center',
     },
     repository: {
@@ -73,7 +73,7 @@ export const Author: NavigationFunctionComponent = ({componentId}) => {
         <View style={styles.logoWrapper}>
           <Image
             source={require('./sp-engineering-logo.png')}
-            style={styles.logo}
+            style={styles.logo as ImageStyle}
           />
         </View>
         <Text style={styles.item}>

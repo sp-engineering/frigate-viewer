@@ -10,6 +10,7 @@ import {
   selectFiltersZones,
 } from '../../store/events';
 import {
+  selectEventsLockLandscapePlaybackOrientation,
   selectEventsNumColumns,
   selectEventsSnapshotHeight,
   selectServerApiUrl,
@@ -54,10 +55,10 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   );
   useEventsFilters(componentId, cameraNames);
 
-  const styles = useStyles(({colorScheme}) => ({
+  const styles = useStyles(({theme}) => ({
     noEvents: {
       padding: 20,
-      color: colorScheme.text,
+      color: theme.text,
       textAlign: 'center',
     },
   }));
@@ -77,6 +78,9 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   const filtersLabels = useAppSelector(selectFiltersLabels);
   const filtersZones = useAppSelector(selectFiltersZones);
   const filtersRetained = useAppSelector(selectFiltersRetained);
+  const lockLandscapePlaybackOrientation = useAppSelector(
+    selectEventsLockLandscapePlaybackOrientation,
+  );
   const intl = useIntl();
   const {orientation, setComponentId} = useOrientation();
 
@@ -236,7 +240,9 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
           },
           options: {
             layout: {
-              orientation: ['landscape'],
+              orientation: [
+                lockLandscapePlaybackOrientation ? 'sensorLandscape' : 'sensor',
+              ],
             },
           },
         },

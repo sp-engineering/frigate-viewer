@@ -107,6 +107,8 @@ export default {
   'settings.events.photoPreference.label': 'Fotopräferenz',
   'settings.events.photoPreference.option.snapshot': 'Schnappschuss',
   'settings.events.photoPreference.option.thumbnail': 'Miniaturansicht',
+  'settings.events.lockLandscapePlaybackOrientation.label':
+    'Wiedergabe im Querformat sperren',
   'settings.toast.noServerData':
     'Sie müssen Frigate NVR-Serverdaten bereitstellen.',
   'storage.topBar.title': 'Speicher',

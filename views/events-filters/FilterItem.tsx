@@ -15,29 +15,29 @@ export const FilterItem: FC<IFilterItemProps> = ({
   disabled,
   onPress,
 }) => {
-  const styles = useStyles(({colorScheme}) => ({
+  const styles = useStyles(({theme}) => ({
     wrapper: {
       paddingVertical: 10,
       paddingHorizontal: 10,
-      backgroundColor: colorScheme.background,
+      backgroundColor: theme.background,
       borderBottomWidth: 1,
-      borderColor: colorScheme.border,
+      borderColor: theme.border,
       flexDirection: 'row',
       alignItems: 'center',
     },
     checkmark: {
       width: 18,
       fontSize: 10,
-      color: colorScheme.text,
+      color: theme.text,
     },
     text: {
-      color: colorScheme.text,
+      color: theme.text,
     },
     selectedText: {
       fontWeight: '600',
     },
     disabledText: {
-      color: colorScheme.disabled,
+      color: theme.disabled,
     },
   }));
 

@@ -26,9 +26,9 @@ interface IEventsFiltersProps {
 }
 
 export const EventsFilters: FC<IEventsFiltersProps> = ({viewedCameraNames}) => {
-  const styles = useStyles(({colorScheme}) => ({
+  const styles = useStyles(({theme}) => ({
     wrapper: {
-      backgroundColor: colorScheme.background,
+      backgroundColor: theme.background,
       width: '100%',
       height: '100%',
     },

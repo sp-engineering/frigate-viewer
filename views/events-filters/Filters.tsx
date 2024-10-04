@@ -7,14 +7,14 @@ import {FilterItem} from './FilterItem';
 import {useStyles} from '../../helpers/colors';
 
 export const SectionHeader: FC<{label: string}> = ({label}) => {
-  const styles = useStyles(({colorScheme}) => ({
+  const styles = useStyles(({theme}) => ({
     sectionHeader: {
       paddingHorizontal: 28,
     },
     sectionHeaderText: {
       fontSize: 18,
       fontWeight: '600',
-      color: colorScheme.text,
+      color: theme.text,
     },
   }));
 

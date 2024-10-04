@@ -8,7 +8,7 @@ import {
 } from 'react-native-reanimated-table';
 import {useIntl} from 'react-intl';
 import {messages} from './messages';
-import {tableStyles} from '../../helpers/table';
+import {useTableStyles} from '../../helpers/table';
 
 interface CameraProcessInfo {
   fps?: number;
@@ -29,6 +29,7 @@ interface ICameraTableProps {
 
 export const CameraTable: FC<ICameraTableProps> = ({cameraInfo}) => {
   const intl = useIntl();
+  const tableStyles = useTableStyles();
 
   const dataHeaders = useMemo(
     () => [

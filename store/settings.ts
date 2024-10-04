@@ -76,6 +76,7 @@ export interface ISettings {
     numColumns: number;
     snapshotHeight: number;
     photoPreference: 'snapshot' | 'thumbnail';
+    lockLandscapePlaybackOrientation: boolean;
   };
 }
 
@@ -107,6 +108,7 @@ export const initialSettings: ISettings = {
     numColumns: 1,
     snapshotHeight: 222,
     photoPreference: 'snapshot',
+    lockLandscapePlaybackOrientation: false,
   },
 };
 
@@ -212,7 +214,7 @@ export const selectLocaleDatesDisplay = (state: RootState) =>
 export const selectApp = (state: RootState) => selectSettings(state).app;
 
 export const selectAppColorScheme = (state: RootState) =>
-  selectApp(state).colorScheme;
+  selectApp(state)?.colorScheme || 'auto';
 
 /* cameras */
 
@@ -243,3 +245,7 @@ export const selectEventsSnapshotHeight = (state: RootState) =>
 
 export const selectEventsPhotoPreference = (state: RootState) =>
   selectEvents(state).photoPreference;
+
+export const selectEventsLockLandscapePlaybackOrientation = (
+  state: RootState,
+) => selectEvents(state).lockLandscapePlaybackOrientation;

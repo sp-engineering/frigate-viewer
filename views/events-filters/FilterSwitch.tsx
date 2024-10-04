@@ -14,7 +14,7 @@ export const FilterSwitch: FC<IFilterSwitchProps> = ({
   actionOnChange,
   ...switchProps
 }) => {
-  const styles = useStyles(({colorScheme}) => ({
+  const styles = useStyles(({theme}) => ({
     wrapper: {
       display: 'flex',
       flexDirection: 'row',
@@ -22,12 +22,12 @@ export const FilterSwitch: FC<IFilterSwitchProps> = ({
       alignItems: 'center',
       paddingHorizontal: 26,
       paddingVertical: 10,
-      backgroundColor: colorScheme.background,
+      backgroundColor: theme.background,
       borderBottomWidth: 1,
-      borderColor: colorScheme.border,
+      borderColor: theme.border,
     },
     label: {
-      color: colorScheme.text,
+      color: theme.text,
     },
   }));
 

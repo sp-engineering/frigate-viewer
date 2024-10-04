@@ -107,6 +107,8 @@ export default {
   'settings.events.photoPreference.label': 'Preferowane zdjęcie',
   'settings.events.photoPreference.option.snapshot': 'Migawka',
   'settings.events.photoPreference.option.thumbnail': 'Miniatura',
+  'settings.events.lockLandscapePlaybackOrientation.label':
+    'Zablokuj odtwarzanie w orientacji poziomej',
   'settings.toast.noServerData': 'Podaj dane serwera Frigate NVR.',
   'storage.topBar.title': 'Pamięć',
   'storage.location.header': 'Lokalizacja',

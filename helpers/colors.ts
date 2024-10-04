@@ -11,9 +11,15 @@ type ColorName =
   | 'link'
   | 'border'
   | 'highlighted'
-  | 'disabled';
+  | 'disabled'
+  | 'overlay'
+  | 'error'
+  | 'tableColumnHeaderBg'
+  | 'tableRowHeaderBg'
+  | 'tableCellBg'
+  | 'tableText';
 
-type ColorScheme = Record<ColorName, string>;
+type Theme = Record<ColorName, string>;
 
 export const palette = {
   white: 'white',
@@ -23,22 +29,34 @@ export const palette = {
   lightblue: 'lightblue',
 };
 
-const lightColorScheme: ColorScheme = {
+const lightTheme: Theme = {
   background: palette.white,
   text: palette.darkgray,
   link: palette.blue,
   border: '#00000088',
   highlighted: '#f5f5f5',
   disabled: '#888',
+  overlay: '#ffffff88',
+  error: 'red',
+  tableColumnHeaderBg: '#ddd',
+  tableRowHeaderBg: '#eee',
+  tableCellBg: palette.white,
+  tableText: palette.black,
 };
 
-const darkColorScheme: ColorScheme = {
+const darkTheme: Theme = {
   background: palette.darkgray,
   text: palette.white,
   link: palette.lightblue,
   border: '#ffffff88',
   highlighted: '#353535',
   disabled: '#888',
+  overlay: '#00000088',
+  error: 'red',
+  tableColumnHeaderBg: '#111',
+  tableRowHeaderBg: '#333',
+  tableCellBg: '#222',
+  tableText: palette.white,
 };
 
 export const useAppColorScheme = () => {
@@ -58,22 +76,22 @@ export const useAppColorScheme = () => {
   return appColorScheme;
 };
 
-export const usePalette = () => {
+export const useTheme = () => {
   const colorScheme = useAppColorScheme();
   const palette = useMemo(
-    () => (colorScheme === 'light' ? lightColorScheme : darkColorScheme),
+    () => (colorScheme === 'light' ? lightTheme : darkTheme),
     [colorScheme],
   );
   return palette;
 };
 
 export const useStyles = <T>(
-  styles: (helpers: {colorScheme: ColorScheme}) => StyleSheet.NamedStyles<T>,
+  styles: (helpers: {theme: Theme}) => StyleSheet.NamedStyles<T>,
 ) => {
-  const colorScheme = usePalette();
+  const theme = useTheme();
   const computedStyles = useMemo(
-    () => StyleSheet.create(styles({colorScheme})),
-    [colorScheme],
+    () => StyleSheet.create(styles({theme})),
+    [theme],
   );
   return computedStyles;
 };

@@ -15,23 +15,23 @@ export const BuyMeACoffee: FC<IButMeACoffeeProps> = ({
 }) => {
   const intl = useIntl();
 
-  const styles = useStyles(({colorScheme}) => ({
+  const styles = useStyles(({theme}) => ({
     wrapper: {
       margin: 20,
       paddingTop: 20,
-      borderColor: colorScheme.border,
+      borderColor: theme.border,
       borderTopWidth: 1,
       flexDirection: 'column',
       alignItems: 'center',
     },
     nonProfitText: {
       marginBottom: 10,
-      color: colorScheme.text,
+      color: theme.text,
       textAlign: 'center',
     },
     text: {
       fontWeight: '500',
-      color: colorScheme.text,
+      color: theme.text,
       textAlign: 'center',
     },
     buttonInline: {

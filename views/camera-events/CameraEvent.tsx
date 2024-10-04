@@ -47,11 +47,11 @@ interface ICameraEventProps extends ICameraEvent {
 }
 
 export const CameraEvent: FC<ICameraEventProps> = props => {
-  const styles = useStyles(({colorScheme}) => ({
+  const styles = useStyles(({theme}) => ({
     cameraEvent: {
       paddingVertical: 1,
       paddingHorizontal: 2,
-      backgroundColor: colorScheme.background,
+      backgroundColor: theme.background,
     },
   }));
 
