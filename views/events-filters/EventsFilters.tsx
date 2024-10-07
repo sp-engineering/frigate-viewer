@@ -1,6 +1,6 @@
 import React, {FC, useMemo} from 'react';
 import {useIntl} from 'react-intl';
-import {ScrollView, StyleSheet} from 'react-native';
+import {ScrollView} from 'react-native';
 import {
   selectAvailableCameras,
   selectAvailableLabels,
@@ -17,22 +17,23 @@ import {
 import {useAppSelector} from '../../store/store';
 import {Filters, IFilter, SectionHeader} from './Filters';
 import {messages} from './messages';
-import { Section } from '../../components/forms/Section';
-import { FilterSwitch } from './FilterSwitch';
+import {Section} from '../../components/forms/Section';
+import {FilterSwitch} from './FilterSwitch';
+import {useStyles} from '../../helpers/colors';
 
 interface IEventsFiltersProps {
   viewedCameraNames?: string[];
 }
 
-const styles = StyleSheet.create({
-  wrapper: {
-    backgroundColor: 'white',
-    width: '100%',
-    height: '100%',
-  },
-});
-
 export const EventsFilters: FC<IEventsFiltersProps> = ({viewedCameraNames}) => {
+  const styles = useStyles(({theme}) => ({
+    wrapper: {
+      backgroundColor: theme.background,
+      width: '100%',
+      height: '100%',
+    },
+  }));
+
   const availableCameras = useAppSelector(selectAvailableCameras);
   const filtersCameras = useAppSelector(selectFiltersCameras);
   const availableLabels = useAppSelector(selectAvailableLabels);
@@ -91,11 +92,11 @@ export const EventsFilters: FC<IEventsFiltersProps> = ({viewedCameraNames}) => {
         actionOnFilter={setFiltersZones}
       />
       <Section
-        header={(
+        header={
           <SectionHeader
-            label={intl.formatMessage(messages['miscellaneous.title'])} />
-        )}
-      >
+            label={intl.formatMessage(messages['miscellaneous.title'])}
+          />
+        }>
         <FilterSwitch
           label={intl.formatMessage(messages['miscellaneous.retained.label'])}
           value={filtersRetained}

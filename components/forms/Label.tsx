@@ -1,20 +1,6 @@
 import React, {FC} from 'react';
-import {StyleSheet, Text, TextInputProps, View} from 'react-native';
-
-const styles = StyleSheet.create({
-  wrapper: {
-    marginVertical: 10,
-  },
-  text: {
-    color: 'black',
-  },
-  error: {
-    color: 'red',
-  },
-  required: {
-    color: 'red',
-  },
-});
+import {Text, TextInputProps, View} from 'react-native';
+import {useStyles} from '../../helpers/colors';
 
 export interface ILabelProps extends TextInputProps {
   text: string;
@@ -29,13 +15,30 @@ export const Label: FC<ILabelProps> = ({
   error,
   required,
   children,
-}) => (
-  <View style={styles.wrapper}>
-    <Text style={styles.text}>
-      <Text>{text}</Text>
-      {required && <Text style={styles.required}>*</Text>}
-    </Text>
-    {children}
-    {touched && error && <Text style={styles.error}>{error}</Text>}
-  </View>
-);
+}) => {
+  const styles = useStyles(({theme}) => ({
+    wrapper: {
+      marginVertical: 10,
+    },
+    text: {
+      color: theme.text,
+    },
+    error: {
+      color: theme.error,
+    },
+    required: {
+      color: theme.error,
+    },
+  }));
+
+  return (
+    <View style={styles.wrapper}>
+      <Text style={styles.text}>
+        <Text>{text}</Text>
+        {required && <Text style={styles.required}>*</Text>}
+      </Text>
+      {children}
+      {touched && error && <Text style={styles.error}>{error}</Text>}
+    </View>
+  );
+};

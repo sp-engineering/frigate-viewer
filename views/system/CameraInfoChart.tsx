@@ -4,23 +4,9 @@ import {CameraInfo} from './CameraTable';
 import {BarChart, Grid, YAxis} from 'react-native-svg-charts';
 import {Text, View} from 'react-native-ui-lib';
 import * as scale from 'd3-scale';
-import {StyleSheet} from 'react-native';
 import {messages} from './messages';
 import {useIntl} from 'react-intl';
-
-const styles = StyleSheet.create({
-  wrapper: {
-    flexDirection: 'row',
-  },
-  chart: {
-    flex: 1,
-  },
-  chartTitle: {
-    fontSize: 10,
-    textAlign: 'center',
-    fontWeight: '600',
-  },
-});
+import {useStyles} from '../../helpers/colors';
 
 interface BarChartData {
   data: number[];
@@ -34,6 +20,21 @@ interface ICameraInfoChartProps {
 }
 
 export const CameraInfoChart: FC<ICameraInfoChartProps> = ({cameraInfos}) => {
+  const styles = useStyles(({theme}) => ({
+    wrapper: {
+      flexDirection: 'row',
+    },
+    chart: {
+      flex: 1,
+    },
+    chartTitle: {
+      color: theme.text,
+      fontSize: 10,
+      textAlign: 'center',
+      fontWeight: '600',
+    },
+  }));
+
   const intl = useIntl();
   const cameraNames = useMemo(() => Object.keys(cameraInfos), [cameraInfos]);
 

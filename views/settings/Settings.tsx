@@ -1,7 +1,7 @@
 import {Formik, FormikProps} from 'formik';
-import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import React, {useCallback, useMemo, useRef} from 'react';
 import {useIntl} from 'react-intl';
-import {Keyboard, Pressable, StyleSheet, Text} from 'react-native';
+import {Keyboard, Pressable, Text} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import * as yup from 'yup';
 import {Dropdown} from '../../components/forms/Dropdown';
@@ -15,35 +15,38 @@ import {
   selectSettings,
 } from '../../store/settings';
 import {useAppDispatch, useAppSelector} from '../../store/store';
-import {camerasListMenuItem, navigateToMenuItem} from '../menu/Menu';
-import {menuButton, useMenu} from '../menu/menuHelpers';
 import {MessageKey, messages} from './messages';
 import {ActionBar, Switch, View} from 'react-native-ui-lib';
 import {ScrollView} from 'react-native-gesture-handler';
+import {useTheme, useStyles} from '../../helpers/colors';
 
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-  scrollArea: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    width: '100%',
-    flexGrow: 1,
-    backgroundColor: 'white',
-  },
-  header: {
-    color: 'black',
-    fontSize: 22,
-    fontWeight: 'bold',
-  },
-  demoServerButton: {
-    color: 'blue',
-  },
-});
+export const Settings: NavigationFunctionComponent = () => {
+  const styles = useStyles(({theme}) => ({
+    wrapper: {
+      flex: 1,
+      justifyContent: 'space-between',
+    },
+    scrollArea: {
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      width: '100%',
+      flexGrow: 1,
+      backgroundColor: theme.background,
+    },
+    header: {
+      color: theme.text,
+      fontSize: 22,
+      fontWeight: 'bold',
+    },
+    demoServerButton: {
+      color: theme.link,
+    },
+    tip: {
+      color: theme.text,
+    },
+  }));
+  const theme = useTheme();
 
-export const Settings: NavigationFunctionComponent = ({componentId}) => {
   const formRef = useRef<FormikProps<ISettings>>(null);
   const currentSettings = useAppSelector(selectSettings);
   const apiUrl = useAppSelector(selectServerApiUrl);
@@ -116,16 +119,18 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
   const actions = useMemo(() => {
     const cancelButton = {
       label: intl.formatMessage(messages['action.cancel']),
+      color: theme.link,
       onPress: cancel,
     };
     const saveButton = {
       label: intl.formatMessage(messages['action.save']),
+      color: theme.link,
       onPress: () => {
         formRef.current?.handleSubmit();
       },
     };
     return apiUrl ? [cancelButton, saveButton] : [saveButton];
-  }, [apiUrl, formRef]);
+  }, [apiUrl, formRef, theme]);
 
   return (
     <Formik
@@ -296,6 +301,38 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
                 />
               </Label>
             </Section>
+            <Section header={intl.formatMessage(messages['app.header'])}>
+              <Label
+                text={intl.formatMessage(messages['app.colorScheme.label'])}
+                touched={touched.app?.colorScheme}
+                error={errors.app?.colorScheme}
+                required={true}>
+                <Dropdown
+                  value={values.app.colorScheme}
+                  options={[
+                    {
+                      value: 'auto',
+                      label: intl.formatMessage(
+                        messages['app.colorScheme.option.auto'],
+                      ),
+                    },
+                    {
+                      value: 'light',
+                      label: intl.formatMessage(
+                        messages['app.colorScheme.option.light'],
+                      ),
+                    },
+                    {
+                      value: 'dark',
+                      label: intl.formatMessage(
+                        messages['app.colorScheme.option.dark'],
+                      ),
+                    },
+                  ]}
+                  onValueChange={handleChange('app.colorScheme')}
+                />
+              </Label>
+            </Section>
             <Section header={intl.formatMessage(messages['cameras.header'])}>
               <Label
                 text={intl.formatMessage(
@@ -323,7 +360,7 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
                     setFieldValue('cameras.liveView', value)
                   }
                 />
-                <Text>
+                <Text style={styles.tip}>
                   {intl.formatMessage(messages['cameras.liveView.disclaimer'])}
                 </Text>
               </Label>
@@ -394,7 +431,11 @@ export const Settings: NavigationFunctionComponent = ({componentId}) => {
               </Label>
             </Section>
           </ScrollView>
-          <ActionBar keepRelative actions={actions} />
+          <ActionBar
+            backgroundColor={theme.background}
+            keepRelative
+            actions={actions}
+          />
         </View>
       )}
     </Formik>

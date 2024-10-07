@@ -1,25 +1,32 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useIntl } from 'react-intl';
-import { StyleSheet, Text } from 'react-native';
-import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
-import { LoaderScreen, TabController, TabControllerItemProps, View } from 'react-native-ui-lib';
-import { messages } from './messages';
-import { menuButton, useMenu } from '../menu/menuHelpers';
-import { useAppSelector } from '../../store/store';
-import { selectServerApiUrl } from '../../store/settings';
-import { Log, LogPreview } from './LogPreview';
-import { refreshButton } from '../../helpers/buttonts';
-const { TabBar, TabPage } = TabController;
-
-const styles = StyleSheet.create({
-  noLogs: {
-    padding: 20,
-    color: 'black',
-    textAlign: 'center',
-  },
-});
+import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useIntl} from 'react-intl';
+import {Text} from 'react-native';
+import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
+import {
+  LoaderScreen,
+  TabController,
+  TabControllerItemProps,
+  View,
+} from 'react-native-ui-lib';
+import {messages} from './messages';
+import {menuButton, useMenu} from '../menu/menuHelpers';
+import {useAppSelector} from '../../store/store';
+import {selectServerApiUrl} from '../../store/settings';
+import {Log, LogPreview} from './LogPreview';
+import {refreshButton} from '../../helpers/buttonts';
+import {useTheme, useStyles} from '../../helpers/colors';
+const {TabBar, TabPage} = TabController;
 
 export const Logs: NavigationFunctionComponent = ({componentId}) => {
+  const styles = useStyles(({theme}) => ({
+    noLogs: {
+      padding: 20,
+      color: theme.text,
+      textAlign: 'center',
+    },
+  }));
+  const theme = useTheme();
+
   useMenu(componentId, 'logs');
   const [logs, setLogs] = useState<Log[]>([]);
   const [loading, setLoading] = useState(true);
@@ -42,24 +49,25 @@ export const Logs: NavigationFunctionComponent = ({componentId}) => {
     setLoading(true);
     const logsTypes = ['frigate', 'go2rtc', 'nginx'];
     Promise.allSettled(
-      logsTypes.map(
-        logType => fetch(`${apiUrl}/logs/${logType}`)
-          .then(result => {
-            const statusGroup = Math.floor(result.status / 100);
-            if (statusGroup === 2) {
-              return result.text();
-            } else {
-              throw new Error(`Status: ${result.status}`);
-            }
-          })
+      logsTypes.map(logType =>
+        fetch(`${apiUrl}/logs/${logType}`).then(result => {
+          const statusGroup = Math.floor(result.status / 100);
+          if (statusGroup === 2) {
+            return result.text();
+          } else {
+            throw new Error(`Status: ${result.status}`);
+          }
+        }),
       ),
     ).then(logsData => {
       const updatedLogs: Log[] = logsTypes
-        .map((logType, i) => ({ logType, result: logsData[i] }))
+        .map((logType, i) => ({logType, result: logsData[i]}))
         .filter(log => log.result.status === 'fulfilled')
         .map(log => ({
           name: log.logType,
-          data: (log.result as PromiseFulfilledResult<string>).value.split('\n').reverse(),
+          data: (log.result as PromiseFulfilledResult<string>).value
+            .split('\n')
+            .reverse(),
         }));
       setLogs(updatedLogs);
       setLoading(false);
@@ -70,31 +78,34 @@ export const Logs: NavigationFunctionComponent = ({componentId}) => {
     refresh();
   }, []);
 
-  const tabBarItems: TabControllerItemProps[] = useMemo(() =>
-    logs.map(log => ({label: log.name})),
-    [logs],
+  const tabBarItems: TabControllerItemProps[] = useMemo(
+    () =>
+      logs.map(log => ({
+        label: log.name,
+        labelColor: theme.link,
+        selectedLabelColor: theme.text,
+        backgroundColor: theme.background,
+        activeBackgroundColor: theme.background,
+      })),
+    [logs, theme],
   );
 
-  return (
-    loading
-      ? (
-          <LoaderScreen />
-        )
-      : logs.length > 1
-        ? (
-            <TabController items={tabBarItems}>
-              <TabBar enableShadow />
-              <View flex>
-                {logs.map((log, index) => (
-                  <TabPage index={index} key={log.name}>
-                    <LogPreview log={log} />
-                  </TabPage>
-                ))}
-              </View>
-            </TabController>
-          )
-        : logs.length > 0
-          ? <LogPreview log={logs[0]} />
-          : <Text style={styles.noLogs}>{intl.formatMessage(messages['noLogs'])}</Text>
+  return loading ? (
+    <LoaderScreen />
+  ) : logs.length > 1 ? (
+    <TabController items={tabBarItems}>
+      <TabBar enableShadow />
+      <View flex>
+        {logs.map((log, index) => (
+          <TabPage index={index} key={log.name}>
+            <LogPreview log={log} />
+          </TabPage>
+        ))}
+      </View>
+    </TabController>
+  ) : logs.length > 0 ? (
+    <LogPreview log={logs[0]} />
+  ) : (
+    <Text style={styles.noLogs}>{intl.formatMessage(messages['noLogs'])}</Text>
   );
 };

@@ -98,6 +98,11 @@ export default {
   'settings.locale.datesDisplay.label': 'Datumsanzeige',
   'settings.locale.datesDisplay.option.descriptive': 'Beschreibenden',
   'settings.locale.datesDisplay.option.numeric': 'Numerisch',
+  'settings.app.header': 'Anwendung',
+  'settings.app.colorScheme.label': 'Farbschema',
+  'settings.app.colorScheme.option.auto': 'Auto',
+  'settings.app.colorScheme.option.light': 'Hell',
+  'settings.app.colorScheme.option.dark': 'Dunkel',
   'settings.cameras.header': 'Kameras',
   'settings.cameras.imageRefreshFrequency.label':
     'Grafik ausgetauscht (sekunden)',

@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Text, View} from 'react-native';
 import {NavigationFunctionComponent} from 'react-native-navigation';
 import VLCPlayer, {State} from '@lunarr/vlc-player';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -24,41 +24,11 @@ import {clipFilename} from '../camera-events/eventHelpers';
 import {ICameraEvent} from '../camera-events/CameraEvent';
 import {IconOutline} from '@ant-design/icons-react-native';
 import {TouchableHighlight} from 'react-native-gesture-handler';
+import {useTheme, useStyles} from '../../helpers/colors';
 
 interface ICameraEventClipProps {
   event: ICameraEvent;
 }
-
-const styles = StyleSheet.create({
-  player: {
-    width: '100%',
-    height: '100%',
-  },
-  overlayWrapper: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    width: '100%',
-    height: '100%',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'black',
-  },
-  errorText: {
-    color: 'white',
-    fontSize: 18,
-    textAlign: 'center',
-  },
-  progressText: {
-    color: 'white',
-  },
-  tools: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-  },
-});
 
 interface IVideoPlayerProps {
   clipUrl: string;
@@ -69,6 +39,41 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({
   clipUrl,
   fileName = 'clip.mp4',
 }) => {
+  const styles = useStyles(({theme}) => ({
+    wrapper: {
+      backgroundColor: theme.background,
+    },
+    player: {
+      width: '100%',
+      height: '100%',
+    },
+    overlayWrapper: {
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      width: '100%',
+      height: '100%',
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: theme.background,
+    },
+    errorText: {
+      color: theme.text,
+      fontSize: 18,
+      textAlign: 'center',
+    },
+    progressText: {
+      color: theme.text,
+    },
+    tools: {
+      position: 'absolute',
+      left: 0,
+      top: 0,
+    },
+  }));
+  const theme = useTheme();
+
   const [paused, setPaused] = useState(false);
   const [stopped, setStopped] = useState(false);
   const [progressInfo, setProgressInfo] = useState<State>();
@@ -156,14 +161,14 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({
   if (loading) {
     return (
       <View style={styles.overlayWrapper}>
-        <ActivityIndicator size="large" color="white" />
+        <ActivityIndicator size="large" color={theme.text} />
         <Text style={styles.progressText}>{progress}%</Text>
       </View>
     );
   }
 
   return (
-    <View>
+    <View style={styles.wrapper}>
       {uri && (
         <ZoomableView>
           <VideoHUD

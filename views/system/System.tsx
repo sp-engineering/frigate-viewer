@@ -19,7 +19,6 @@ import {get} from '../../helpers/rest';
 import {Stats} from '../../helpers/interfaces';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Background} from '../../components/Background';
-import {StyleSheet} from 'react-native';
 import {refreshButton} from '../../helpers/buttonts';
 import {selectAvailableCameras} from '../../store/events';
 import {DetectorRow, DetectorsTable} from './DetectorsTable';
@@ -29,28 +28,30 @@ import {SectionTitle} from './SectionTitle';
 import {CpuUsageChart} from './CpuUsageChart';
 import {CameraInfoChart} from './CameraInfoChart';
 import {SystemInfo} from './SystemInfo';
-
-const styles = StyleSheet.create({
-  wrapper: {
-    margin: 20,
-  },
-  cameraTableWrapper: {
-    marginBottom: 10,
-  },
-  cameraTableTitle: {
-    fontWeight: '600',
-    marginVertical: 6,
-  },
-  loader: {
-    position: 'absolute',
-    top: 10,
-    width: '100%',
-  },
-});
+import {useStyles} from '../../helpers/colors';
 
 const refreshFrequency = 30;
 
 export const System: NavigationFunctionComponent = ({componentId}) => {
+  const styles = useStyles(({theme}) => ({
+    wrapper: {
+      margin: 20,
+    },
+    cameraTableWrapper: {
+      marginBottom: 10,
+    },
+    cameraTableTitle: {
+      color: theme.text,
+      fontWeight: '600',
+      marginVertical: 6,
+    },
+    loader: {
+      position: 'absolute',
+      top: 10,
+      width: '100%',
+    },
+  }));
+
   useMenu(componentId, 'system');
   const [stats, setStats] = useState<Stats>();
   const [loading, setLoading] = useState(true);

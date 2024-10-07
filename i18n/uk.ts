@@ -98,6 +98,11 @@ export default {
   'settings.locale.datesDisplay.label': 'Відображення дат',
   'settings.locale.datesDisplay.option.descriptive': 'Описовий',
   'settings.locale.datesDisplay.option.numeric': 'Числівник',
+  'settings.app.header': 'застосування',
+  'settings.app.colorScheme.label': 'Колірна гамма',
+  'settings.app.colorScheme.option.auto': 'Авто',
+  'settings.app.colorScheme.option.light': 'світло',
+  'settings.app.colorScheme.option.dark': 'Темний',
   'settings.cameras.header': 'Камери',
   'settings.cameras.imageRefreshFrequency.label':
     'Частота оновлення зображення (секунди)',

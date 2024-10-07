@@ -1,39 +1,45 @@
 import {FC, useMemo} from 'react';
-import {StyleSheet} from 'react-native';
 import {Text, View} from 'react-native-ui-lib';
 import {messages} from './messages';
 import {useIntl} from 'react-intl';
 import {formatDistance, formatRelative} from 'date-fns';
 import {useDateLocale} from '../../helpers/locale';
 import {Service} from '../../helpers/interfaces';
-
-const styles = StyleSheet.create({
-  info: {
-    flexDirection: 'column',
-    borderTopWidth: 1,
-    marginTop: 20,
-  },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-  textLabel: {
-    fontWeight: '600',
-  },
-  updateAvailable: {
-    fontWeight: '600',
-    fontStyle: 'italic',
-  },
-  version: {
-    marginTop: 10,
-  },
-});
+import {useStyles} from '../../helpers/colors';
 
 interface ISystemInfoProps {
   service: Service;
 }
 
 export const SystemInfo: FC<ISystemInfoProps> = ({service}) => {
+  const styles = useStyles(({theme}) => ({
+    info: {
+      flexDirection: 'column',
+      borderTopWidth: 1,
+      borderColor: theme.border,
+      marginTop: 20,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+    },
+    text: {
+      color: theme.text,
+    },
+    textLabel: {
+      color: theme.text,
+      fontWeight: '600',
+    },
+    updateAvailable: {
+      color: theme.text,
+      fontWeight: '600',
+      fontStyle: 'italic',
+    },
+    version: {
+      marginTop: 10,
+    },
+  }));
+
   const dateLocale = useDateLocale();
   const intl = useIntl();
 
@@ -73,16 +79,16 @@ export const SystemInfo: FC<ISystemInfoProps> = ({service}) => {
         <Text style={styles.textLabel}>
           {intl.formatMessage(messages['info.data_updated'])}:{' '}
         </Text>
-        <Text>{dataUpdatedTime}</Text>
+        <Text style={styles.text}>{dataUpdatedTime}</Text>
       </View>
       <View style={styles.infoRow}>
         <Text style={styles.textLabel}>
           {intl.formatMessage(messages['info.uptime'])}:{' '}
         </Text>
-        <Text>{uptime}</Text>
+        <Text style={styles.text}>{uptime}</Text>
       </View>
       <View style={[styles.infoRow, styles.version]}>
-        <Text>
+        <Text style={styles.text}>
           {intl.formatMessage(messages['info.current_version'], {
             version: service.version,
           })}

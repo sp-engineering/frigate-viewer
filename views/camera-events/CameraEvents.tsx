@@ -1,12 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useIntl} from 'react-intl';
-import {
-  Dimensions,
-  FlatList,
-  StyleSheet,
-  Text,
-  ToastAndroid,
-} from 'react-native';
+import {Dimensions, FlatList, Text, ToastAndroid} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {get} from '../../helpers/rest';
 import {
@@ -35,14 +29,7 @@ import {useNoServer} from '../settings/useNoServer';
 import {Background} from '../../components/Background';
 import {useOrientation} from '../../helpers/screen';
 import {Share} from './Share';
-
-const styles = StyleSheet.create({
-  noEvents: {
-    padding: 20,
-    color: 'black',
-    textAlign: 'center',
-  },
-});
+import {useStyles} from '../../helpers/colors';
 
 export interface ICameraEventsProps {
   cameraNames?: string[];
@@ -68,6 +55,15 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
       : 'retained',
   );
   useEventsFilters(componentId, cameraNames);
+
+  const styles = useStyles(({theme}) => ({
+    noEvents: {
+      padding: 20,
+      color: theme.text,
+      textAlign: 'center',
+    },
+  }));
+
   const listRef = useRef<FlatList<ICameraEvent>>(null);
   const [refreshing, setRefreshing] = useState(true);
   const [events, setEvents] = useState<ICameraEvent[]>([]);

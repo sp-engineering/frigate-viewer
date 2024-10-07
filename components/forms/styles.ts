@@ -1,15 +1,16 @@
-import {StyleSheet} from 'react-native';
+import {useStyles} from '../../helpers/colors';
 
-export const formsStyles = StyleSheet.create({
-  input: {
-    borderBottomWidth: 2,
-    borderColor: '#00000077',
-    borderRadius: 5,
-    backgroundColor: 'white',
-    paddingHorizontal: 4,
-    paddingVertical: 8,
-  },
-  inputText: {
-    color: 'black',
-  },
-});
+export const useFormsStyles = () =>
+  useStyles(({theme}) => ({
+    input: {
+      borderBottomWidth: 2,
+      borderColor: theme.border,
+      borderRadius: 5,
+      backgroundColor: theme.background,
+      paddingHorizontal: 4,
+      paddingVertical: 8,
+    },
+    inputText: {
+      color: theme.text,
+    },
+  }));

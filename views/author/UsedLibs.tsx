@@ -1,8 +1,9 @@
 import {FC, useCallback} from 'react';
 import {useIntl} from 'react-intl';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, Text, View} from 'react-native';
 import {messages} from './messages';
 import {useOpenLink} from './useOpenLink';
+import {useStyles} from '../../helpers/colors';
 
 const libs = [
   '@ant-design/icons-react-native',
@@ -30,30 +31,30 @@ const libs = [
   'yup',
 ];
 
-const styles = StyleSheet.create({
-  wrapper: {
-    margin: 20,
-    marginTop: 0,
-    paddingTop: 20,
-    borderColor: '#00000088',
-    borderTopWidth: 1,
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-  },
-  header: {
-    marginBottom: 10,
-    color: 'black',
-    fontWeight: 'bold',
-  },
-  lib: {
-    marginBottom: 5,
-    color: 'blue',
-  },
-});
-
 export const UsedLibs: FC = () => {
   const openLink = useOpenLink();
   const intl = useIntl();
+
+  const styles = useStyles(({theme}) => ({
+    wrapper: {
+      margin: 20,
+      marginTop: 0,
+      paddingTop: 20,
+      borderColor: theme.border,
+      borderTopWidth: 1,
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+    },
+    header: {
+      marginBottom: 10,
+      color: theme.text,
+      fontWeight: 'bold',
+    },
+    lib: {
+      marginBottom: 5,
+      color: theme.link,
+    },
+  }));
 
   const openNpm = useCallback(
     (lib: string) => {

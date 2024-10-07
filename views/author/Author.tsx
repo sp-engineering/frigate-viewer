@@ -1,60 +1,60 @@
 import React, {useEffect} from 'react';
 import {useIntl} from 'react-intl';
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {Image, ImageStyle, Text, View} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {BuyMeACoffee} from './BuyMeACoffee';
 import {messages} from './messages';
-import { UsedLibs } from './UsedLibs';
-import { useOpenLink } from './useOpenLink';
-import { ScrollView } from 'react-native-gesture-handler';
-
-const styles = StyleSheet.create({
-  wrapper: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'white',
-  },
-  authorInfo: {
-    marginTop: 20,
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  logo: {
-    width: 100,
-    height: 100,
-    marginHorizontal: 12,
-    resizeMode: 'contain',
-  },
-  link: {
-    color: 'blue',
-  },
-  item: {
-    marginVertical: 10,
-    marginHorizontal: 20,
-  },
-  itemLabel: {
-    fontWeight: '500',
-    color: 'black',
-  },
-  itemValue: {
-    color: 'black',
-    textAlign: 'center',
-  },
-  repository: {
-    flexDirection: 'column',
-  },
-});
+import {UsedLibs} from './UsedLibs';
+import {useOpenLink} from './useOpenLink';
+import {ScrollView} from 'react-native-gesture-handler';
+import {palette, useStyles} from '../../helpers/colors';
 
 export const Author: NavigationFunctionComponent = ({componentId}) => {
   useMenu(componentId, 'author');
   const intl = useIntl();
   const openLink = useOpenLink();
+
+  const styles = useStyles(({theme}) => ({
+    wrapper: {
+      width: '100%',
+      height: '100%',
+      backgroundColor: theme.background,
+    },
+    authorInfo: {
+      marginTop: 20,
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+    logoWrapper: {
+      backgroundColor: palette.white,
+      borderRadius: 10,
+    },
+    logo: {
+      width: 100,
+      height: 100,
+      marginHorizontal: 12,
+      resizeMode: 'contain',
+    },
+    link: {
+      color: theme.link,
+    },
+    item: {
+      marginVertical: 10,
+      marginHorizontal: 20,
+    },
+    itemLabel: {
+      fontWeight: '500',
+      color: theme.text,
+    },
+    itemValue: {
+      color: theme.text,
+      textAlign: 'center',
+    },
+    repository: {
+      flexDirection: 'column',
+    },
+  }));
 
   useEffect(() => {
     Navigation.mergeOptions(componentId, {
@@ -70,10 +70,12 @@ export const Author: NavigationFunctionComponent = ({componentId}) => {
   return (
     <ScrollView style={styles.wrapper}>
       <View style={styles.authorInfo}>
-        <Image
-          source={require('./sp-engineering-logo.png')}
-          style={styles.logo}
-        />
+        <View style={styles.logoWrapper}>
+          <Image
+            source={require('./sp-engineering-logo.png')}
+            style={styles.logo as ImageStyle}
+          />
+        </View>
         <Text style={styles.item}>
           <Text style={styles.itemLabel}>
             {intl.formatMessage(messages['info.authorLabel'])}:{' '}

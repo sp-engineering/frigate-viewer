@@ -1,6 +1,7 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {FlatList, Modal, Pressable, StyleSheet, Text} from 'react-native';
-import {formsStyles} from './styles';
+import {useFormsStyles} from './styles';
+import {useStyles} from '../../helpers/colors';
 
 interface IDropdownOption {
   value: any;
@@ -13,38 +14,39 @@ interface IDropdownProps {
   onValueChange?: (value: any) => void;
 }
 
-const styles = StyleSheet.create({
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#00000077',
-  },
-  options: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    width: '100%',
-    borderTopWidth: 1,
-    borderColor: 'black',
-  },
-  item: {
-    paddingHorizontal: 4,
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderColor: 'black',
-    backgroundColor: 'white',
-  },
-  itemSelected: {
-    backgroundColor: '#ccd',
-  },
-  itemText: {
-    color: 'black',
-  },
-});
-
 export const Dropdown: FC<IDropdownProps> = ({
   value,
   options,
   onValueChange,
 }) => {
+  const formsStyles = useFormsStyles();
+  const styles = useStyles(({theme}) => ({
+    overlay: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: theme.overlay,
+    },
+    options: {
+      flexGrow: 1,
+      justifyContent: 'center',
+      width: '100%',
+      borderTopWidth: 1,
+      borderColor: theme.border,
+    },
+    item: {
+      paddingHorizontal: 4,
+      paddingVertical: 10,
+      borderBottomWidth: 1,
+      borderColor: theme.border,
+      backgroundColor: theme.background,
+    },
+    itemSelected: {
+      backgroundColor: theme.highlighted,
+    },
+    itemText: {
+      color: theme.text,
+    },
+  }));
+
   const [opened, setOpened] = useState<boolean>(false);
   const [selected, setSelected] = useState<IDropdownOption>();
 

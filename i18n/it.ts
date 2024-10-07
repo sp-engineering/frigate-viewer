@@ -98,6 +98,11 @@ export default {
   'settings.locale.datesDisplay.label': 'Visualizzazione delle date',
   'settings.locale.datesDisplay.option.descriptive': 'Descrittivo',
   'settings.locale.datesDisplay.option.numeric': 'Numerico',
+  'settings.app.header': 'Applicazione',
+  'settings.app.colorScheme.label': 'Schema colori',
+  'settings.app.colorScheme.option.auto': 'Auto',
+  'settings.app.colorScheme.option.light': 'Chiaro',
+  'settings.app.colorScheme.option.dark': 'Scuro',
   'settings.cameras.header': 'Telecamere',
   'settings.cameras.imageRefreshFrequency.label':
     "Frequenza di aggiornamento dell'immagine (secondi)",

@@ -1,26 +1,29 @@
 import {ActionCreatorWithPayload} from '@reduxjs/toolkit';
 import React, {FC, useCallback} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import {Section} from '../../components/forms/Section';
 import {useAppDispatch} from '../../store/store';
 import {FilterItem} from './FilterItem';
+import {useStyles} from '../../helpers/colors';
 
-const styles = StyleSheet.create({
-  sectionHeader: {
-    paddingHorizontal: 28,
-  },
-  sectionHeaderText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: 'black',
-  },
-});
+export const SectionHeader: FC<{label: string}> = ({label}) => {
+  const styles = useStyles(({theme}) => ({
+    sectionHeader: {
+      paddingHorizontal: 28,
+    },
+    sectionHeaderText: {
+      fontSize: 18,
+      fontWeight: '600',
+      color: theme.text,
+    },
+  }));
 
-export const SectionHeader: FC<{label: string}> = ({label}) => (
-  <View style={styles.sectionHeader}>
-    <Text style={styles.sectionHeaderText}>{label}</Text>
-  </View>
-);
+  return (
+    <View style={styles.sectionHeader}>
+      <Text style={styles.sectionHeaderText}>{label}</Text>
+    </View>
+  );
+};
 
 export interface IFilter {
   name: string;

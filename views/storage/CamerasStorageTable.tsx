@@ -9,7 +9,7 @@ import {
 } from 'react-native-reanimated-table';
 import {useIntl} from 'react-intl';
 import {messages} from './messages';
-import {formatBandwidth, formatSize, tableStyles} from '../../helpers/table';
+import {formatBandwidth, formatSize, useTableStyles} from '../../helpers/table';
 
 interface ICamerasStorageTableProps {
   camerasStorage: CamerasStorage;
@@ -19,6 +19,7 @@ export const CamerasStorageTable: FC<ICamerasStorageTableProps> = ({
   camerasStorage,
 }) => {
   const intl = useIntl();
+  const tableStyles = useTableStyles();
 
   const dataHeaders = useMemo(
     () => Object.keys(camerasStorage),

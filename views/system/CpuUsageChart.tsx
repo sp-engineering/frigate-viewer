@@ -1,5 +1,4 @@
 import {FC, useMemo} from 'react';
-import {StyleSheet} from 'react-native';
 import {Text, View} from 'react-native-ui-lib';
 import {GpuRow} from './GpusTable';
 import {DetectorRow} from './DetectorsTable';
@@ -10,17 +9,7 @@ import {
 } from '../../components/charts/ProgressChart';
 import {useIntl} from 'react-intl';
 import {messages} from './messages';
-
-const styles = StyleSheet.create({
-  wrapper: {
-    flexDirection: 'row',
-  },
-  chartTitle: {
-    fontSize: 10,
-    textAlign: 'center',
-    fontWeight: '600',
-  },
-});
+import {useStyles} from '../../helpers/colors';
 
 interface ICpuUsageChartProps {
   detectors: DetectorRow[];
@@ -28,6 +17,18 @@ interface ICpuUsageChartProps {
 }
 
 export const CpuUsageChart: FC<ICpuUsageChartProps> = ({detectors, gpus}) => {
+  const styles = useStyles(({theme}) => ({
+    wrapper: {
+      flexDirection: 'row',
+    },
+    chartTitle: {
+      color: theme.text,
+      fontSize: 10,
+      textAlign: 'center',
+      fontWeight: '600',
+    },
+  }));
+
   const intl = useIntl();
 
   const chartData: [ProgressChartData[], ProgressChartData[]] = useMemo(() => {
