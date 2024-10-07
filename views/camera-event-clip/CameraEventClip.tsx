@@ -19,9 +19,14 @@ import {useAppSelector} from '../../store/store';
 import {ProgressBar} from './ProgressBar';
 import {VideoHUD} from './VideoHUD';
 import {authorizationHeader} from '../../helpers/rest';
+import Share from 'react-native-share';
+import {clipFilename} from '../camera-events/eventHelpers';
+import {ICameraEvent} from '../camera-events/CameraEvent';
+import {IconOutline} from '@ant-design/icons-react-native';
+import {TouchableHighlight} from 'react-native-gesture-handler';
 
 interface ICameraEventClipProps {
-  eventId: string;
+  event: ICameraEvent;
 }
 
 const styles = StyleSheet.create({
@@ -48,13 +53,22 @@ const styles = StyleSheet.create({
   progressText: {
     color: 'white',
   },
+  tools: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+  },
 });
 
 interface IVideoPlayerProps {
   clipUrl: string;
+  fileName?: string;
 }
 
-const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
+const VideoPlayer: FC<IVideoPlayerProps> = ({
+  clipUrl,
+  fileName = 'clip.mp4',
+}) => {
   const [paused, setPaused] = useState(false);
   const [stopped, setStopped] = useState(false);
   const [progressInfo, setProgressInfo] = useState<State>();
@@ -103,9 +117,11 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
       try {
         setLoading(true);
         const dirs = RNFetchBlob.fs.dirs;
-        const filePath = `${dirs.CacheDir}/eventclip.mp4`;
+        const filePath = `${dirs.CacheDir}/${fileName}`;
+        RNFetchBlob.session('playback').dispose();
         const downloader = RNFetchBlob.config({
           fileCache: true,
+          session: 'playback',
           path: filePath,
         });
         await downloader
@@ -122,6 +138,12 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
       }
     })();
   }, [clipUrl, credentials]);
+
+  const share = () => {
+    Share.open({
+      url: `file://${uri}`,
+    });
+  };
 
   if (error) {
     return (
@@ -170,18 +192,26 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({clipUrl}) => {
           onSeek={seek}
         />
       )}
+      <View style={styles.tools}>
+        <TouchableHighlight onPress={share}>
+          <IconOutline name="share-alt" color="white" size={20} />
+        </TouchableHighlight>
+      </View>
     </View>
   );
 };
 
 export const CameraEventClip: NavigationFunctionComponent<
   ICameraEventClipProps
-> = ({eventId}) => {
+> = ({event}) => {
   const apiUrl = useAppSelector(selectServerApiUrl);
+
   const clipUrl = useMemo(
-    () => `${apiUrl}/events/${eventId}/clip.mp4`,
-    [eventId, apiUrl],
+    () => `${apiUrl}/events/${event.id}/clip.mp4`,
+    [event.id, apiUrl],
   );
 
-  return <VideoPlayer clipUrl={clipUrl} />;
+  const fileName = useMemo(() => clipFilename(event), [event]);
+
+  return <VideoPlayer clipUrl={clipUrl} fileName={fileName} />;
 };

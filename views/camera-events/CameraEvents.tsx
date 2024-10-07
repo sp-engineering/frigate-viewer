@@ -34,6 +34,7 @@ import {messages} from './messages';
 import {useNoServer} from '../settings/useNoServer';
 import {Background} from '../../components/Background';
 import {useOrientation} from '../../helpers/screen';
+import {Share} from './Share';
 
 const styles = StyleSheet.create({
   noEvents: {
@@ -73,6 +74,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   const [endReached, setEndReached] = useState<boolean>(false);
   const [snapshotDimensions, setSnapshotDimensions] =
     useState<[number, number]>();
+  const [sharedEvent, setSharedEvent] = useState<ICameraEvent>();
   const dispatch = useAppDispatch();
   const apiUrl = useAppSelector(selectServerApiUrl);
   const credentials = useAppSelector(selectServerCredentials);
@@ -240,7 +242,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
         component: {
           name: 'CameraEventClip',
           passProps: {
-            eventId: event.id,
+            event,
           },
           options: {
             layout: {
@@ -279,6 +281,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
             onDelete={onDelete}
             onSnapshotDimensions={onSnapshotDimensions}
             onEventPress={showEventClip}
+            onShare={setSharedEvent}
           />
         )}
         keyExtractor={data => data.id}
@@ -289,6 +292,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
         onEndReachedThreshold={0.5}
         numColumns={numColumns}
       />
+      <Share event={sharedEvent} onDismiss={() => setSharedEvent(undefined)} />
     </Background>
   );
 };

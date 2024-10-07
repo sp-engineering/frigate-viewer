@@ -19,6 +19,7 @@ const libs = [
   'react-native-navigation',
   'react-native-reanimated',
   'react-native-reanimated-table',
+  'react-native-share',
   'react-native-svg',
   'react-native-svg-charts',
   'react-native-ui-lib',

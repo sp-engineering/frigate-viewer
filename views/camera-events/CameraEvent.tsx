@@ -43,6 +43,7 @@ interface ICameraEventProps extends ICameraEvent {
   onDelete: (id: string[]) => void;
   onSnapshotDimensions: (width: number, height: number) => void;
   onEventPress: (event: ICameraEvent) => void;
+  onShare: (event: ICameraEvent) => void;
 }
 
 const styles = StyleSheet.create({
@@ -54,7 +55,8 @@ const styles = StyleSheet.create({
 });
 
 export const CameraEvent: FC<ICameraEventProps> = props => {
-  const {onDelete, onSnapshotDimensions, onEventPress, ...event} = props;
+  const {onDelete, onSnapshotDimensions, onEventPress, onShare, ...event} =
+    props;
   const {
     id,
     has_snapshot,
@@ -93,6 +95,7 @@ export const CameraEvent: FC<ICameraEventProps> = props => {
   const deleteDrawerItem: DrawerItemProps = useMemo(
     () => ({
       text: intl.formatMessage(messages['action.delete']),
+      icon: require('./icons/delete.png'),
       background: Colors.red30,
       onPress: () => {
         del(`${apiUrl}/events/${id}`, credentials, undefined, false).then(
@@ -110,6 +113,7 @@ export const CameraEvent: FC<ICameraEventProps> = props => {
       retained
         ? {
             text: intl.formatMessage(messages['action.unretain']),
+            icon: require('./icons/star.png'),
             background: Colors.red40,
             onPress: () => {
               del(
@@ -124,6 +128,7 @@ export const CameraEvent: FC<ICameraEventProps> = props => {
           }
         : {
             text: intl.formatMessage(messages['action.retain']),
+            icon: require('./icons/star.png'),
             background: Colors.green30,
             onPress: () => {
               post(
@@ -139,10 +144,22 @@ export const CameraEvent: FC<ICameraEventProps> = props => {
     [apiUrl, id, intl, retained],
   );
 
+  const shareDrawerItem: DrawerItemProps = useMemo(
+    () => ({
+      text: intl.formatMessage(messages['action.share']),
+      icon: require('./icons/share.png'),
+      background: Colors.blue10,
+      onPress: () => {
+        onShare(event);
+      },
+    }),
+    [apiUrl, id, intl, retained],
+  );
+
   return (
     <Drawer
       leftItem={deleteDrawerItem}
-      rightItems={[retainDrawerItem]}
+      rightItems={[shareDrawerItem, retainDrawerItem]}
       style={{
         width: `${100 / numColumns}%`,
         height: snapshotHeight,

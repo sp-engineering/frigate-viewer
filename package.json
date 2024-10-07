@@ -27,6 +27,7 @@
     "react-native-navigation": "^7.40.1",
     "react-native-reanimated": "^3.15.2",
     "react-native-reanimated-table": "^0.0.2",
+    "react-native-share": "^11.0.3",
     "react-native-svg-charts": "github:piwko28/react-native-svg-charts",
     "react-native-ui-lib": "^7.9.1",
     "react-redux": "^8.1.2",
