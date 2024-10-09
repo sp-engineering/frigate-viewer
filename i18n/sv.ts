@@ -110,6 +110,10 @@ export default {
   'cameras.liveView.disclaimer':
     'Tänk på att uppdateringsfrekvensen beror på nätverkets latens',
   'settings.cameras.numberOfColumns.label': 'Antal kolumner',
+  'settings.cameras.actionWhenPressed.label': 'Åtgärd när du trycker',
+  'settings.cameras.actionWhenPressed.option.events': 'Lista över händelser',
+  'settings.cameras.actionWhenPressed.option.preview':
+    'Förhandsvisning av kamera',
   'settings.events.header': 'Händelser',
   'settings.events.numberOfColumns.label': 'Antal kolumner',
   'settings.events.photoPreference.label': 'Fotoinställning',

@@ -71,6 +71,9 @@ export const messages = makeMessages('settings', {
   'cameras.liveView.disclaimer':
     'Keep in mind that refresh frequency depends on your network latency',
   'cameras.numberOfColumns.label': 'Number of columns',
+  'cameras.actionWhenPressed.label': 'Action on press',
+  'cameras.actionWhenPressed.option.events': 'List of events',
+  'cameras.actionWhenPressed.option.preview': 'Camera preview',
   'events.header': 'Events',
   'events.numberOfColumns.label': 'Number of columns',
   'events.photoPreference.label': 'Photo preference',

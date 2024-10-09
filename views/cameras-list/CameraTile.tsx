@@ -12,10 +12,12 @@ import {Navigation} from 'react-native-navigation';
 import {Carousel} from 'react-native-ui-lib';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
+  selectCamerasactionWhenPressed,
   selectCamerasLiveView,
   selectCamerasNumColumns,
   selectCamerasPreviewHeight,
   selectCamerasRefreshFrequency,
+  selectEventsLockLandscapePlaybackOrientation,
   selectServerApiUrl,
   selectServerCredentials,
   setCameraPreviewHeight,
@@ -61,6 +63,10 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   const [cameraHeight, setCameraHeight] = useState<number>();
   const liveView = useAppSelector(selectCamerasLiveView);
   const numColumns = useAppSelector(selectCamerasNumColumns);
+  const actionWhenPressed = useAppSelector(selectCamerasactionWhenPressed);
+  const lockLandscapePlaybackOrientation = useAppSelector(
+    selectEventsLockLandscapePlaybackOrientation,
+  );
   const interval = useRef<NodeJS.Timeout>();
 
   const getLastImageUrl = () =>
@@ -117,6 +123,24 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
     });
   };
 
+  const showCameraPreview = () => {
+    Navigation.showModal({
+      component: {
+        name: 'CameraPreview',
+        passProps: {
+          cameraName,
+        },
+        options: {
+          layout: {
+            orientation: [
+              lockLandscapePlaybackOrientation ? 'sensorLandscape' : 'sensor',
+            ],
+          },
+        },
+      },
+    });
+  };
+
   const showCameraEventsWithLabel = (label: string) => {
     dispatch(setFiltersLabels([label]));
     dispatch(setFiltersZones([]));
@@ -142,6 +166,15 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
     }
   };
 
+  const onImagePreviewPress = () => {
+    switch (actionWhenPressed) {
+      case 'events':
+        return showCameraEvents();
+      case 'preview':
+        return showCameraPreview();
+    }
+  };
+
   const styles = useMemo(() => stylesFn(numColumns), [numColumns]);
 
   return (
@@ -158,7 +191,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
         <ImagePreview
           height={cameraHeight}
           imageUrl={lastImageSrc}
-          onPress={showCameraEvents}
+          onPress={onImagePreviewPress}
           onPreviewLoad={onPreviewLoad}
         />
         <CameraLabels

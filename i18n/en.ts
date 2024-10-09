@@ -109,6 +109,9 @@ export default {
   'cameras.liveView.disclaimer':
     'Keep in mind that refresh frequency depends on your network latency',
   'settings.cameras.numberOfColumns.label': 'Number of columns',
+  'settings.cameras.actionWhenPressed.label': 'Action when pressed',
+  'settings.cameras.actionWhenPressed.option.events': 'List of events',
+  'settings.cameras.actionWhenPressed.option.preview': 'Camera preview',
   'settings.events.header': 'Events',
   'settings.events.numberOfColumns.label': 'Number of columns',
   'settings.events.photoPreference.label': 'Photo preference',

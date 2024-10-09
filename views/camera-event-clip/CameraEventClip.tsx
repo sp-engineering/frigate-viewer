@@ -103,6 +103,14 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({
     setProgressInfo(info);
   }, []);
 
+  const onEnd = () => {
+    setProgressInfo({
+      duration: 0,
+      ...progressInfo,
+      currentTime: progressInfo?.duration || 0,
+    });
+  };
+
   const onStopped = useCallback(() => {
     setStopped(true);
   }, []);
@@ -184,6 +192,7 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({
               style={[styles.player]}
               onProgress={onProgress}
               onStopped={onStopped}
+              onEnd={onEnd}
             />
           </VideoHUD>
         </ZoomableView>

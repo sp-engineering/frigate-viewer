@@ -71,6 +71,7 @@ export interface ISettings {
     liveView: boolean;
     numColumns: number;
     previewHeight: number;
+    actionWhenPressed: 'events' | 'preview';
   };
   events: {
     numColumns: number;
@@ -103,6 +104,7 @@ export const initialSettings: ISettings = {
     liveView: false,
     numColumns: 1,
     previewHeight: 222,
+    actionWhenPressed: 'events',
   },
   events: {
     numColumns: 1,
@@ -232,6 +234,9 @@ export const selectCamerasNumColumns = (state: RootState) =>
 
 export const selectCamerasPreviewHeight = (state: RootState) =>
   selectCameras(state).previewHeight;
+
+export const selectCamerasactionWhenPressed = (state: RootState) =>
+  selectCameras(state).actionWhenPressed;
 
 /* events */
 

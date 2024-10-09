@@ -376,6 +376,32 @@ export const Settings: NavigationFunctionComponent = () => {
                   onValueChange={v => setFieldValue('cameras.numColumns', v)}
                 />
               </Label>
+              <Label
+                text={intl.formatMessage(
+                  messages['cameras.actionWhenPressed.label'],
+                )}
+                touched={touched.cameras?.actionWhenPressed}
+                error={errors.cameras?.actionWhenPressed}
+                required={true}>
+                <Dropdown
+                  value={values.cameras.actionWhenPressed}
+                  options={[
+                    {
+                      value: 'events',
+                      label: intl.formatMessage(
+                        messages['cameras.actionWhenPressed.option.events'],
+                      ),
+                    },
+                    {
+                      value: 'preview',
+                      label: intl.formatMessage(
+                        messages['cameras.actionWhenPressed.option.preview'],
+                      ),
+                    },
+                  ]}
+                  onValueChange={handleChange('cameras.actionWhenPressed')}
+                />
+              </Label>
             </Section>
             <Section header={intl.formatMessage(messages['events.header'])}>
               <Label

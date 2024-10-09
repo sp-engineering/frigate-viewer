@@ -110,6 +110,10 @@ export default {
   'cameras.liveView.disclaimer':
     'Tenga en cuenta que la frecuencia de actualización depende de la latencia de su red',
   'settings.cameras.numberOfColumns.label': 'Número de columnas',
+  'settings.cameras.actionWhenPressed.label': 'Acción al presionar',
+  'settings.cameras.actionWhenPressed.option.events': 'Lista de eventos',
+  'settings.cameras.actionWhenPressed.option.preview':
+    'Vista previa de la cámara',
   'settings.events.header': 'Eventos',
   'settings.events.numberOfColumns.label': 'Número de columnas',
   'settings.events.photoPreference.label': 'Preferencias de las imagen',

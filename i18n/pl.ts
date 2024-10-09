@@ -110,6 +110,9 @@ export default {
   'cameras.liveView.disclaimer':
     'Weź pod uwagę, że częstotliwość odświeżania zależy od opóźnień w twojej sieci',
   'settings.cameras.numberOfColumns.label': 'Liczba kolumn',
+  'settings.cameras.actionWhenPressed.label': 'Akcja po naciśnięciu',
+  'settings.cameras.actionWhenPressed.option.events': 'Lista zdarzeń',
+  'settings.cameras.actionWhenPressed.option.preview': 'Podgląd kamery',
   'settings.events.header': 'Zdarzenia',
   'settings.events.numberOfColumns.label': 'Liczba kolumn',
   'settings.events.photoPreference.label': 'Preferowane zdjęcie',

@@ -11,20 +11,14 @@ import {
   selectServerApiUrl,
   selectServerCredentials,
 } from '../../store/settings';
-import {ActivityIndicator, StyleSheet, Text, ToastAndroid} from 'react-native';
+import {ActivityIndicator, Text, ToastAndroid} from 'react-native';
 import {clipFilename, snapshotFilename} from './eventHelpers';
+import {useStyles} from '../../helpers/colors';
 
 interface ShareProps {
   event?: ICameraEvent;
   onDismiss?: () => void;
 }
-
-const styles = StyleSheet.create({
-  loadingText: {
-    textAlign: 'center',
-    color: 'white',
-  },
-});
 
 const stall = (ms: number = 0) =>
   new Promise(resolve => setTimeout(resolve, ms));
@@ -36,6 +30,13 @@ export const Share: FC<ShareProps> = ({event, onDismiss}) => {
   const intl = useIntl();
   const apiUrl = useAppSelector(selectServerApiUrl);
   const credentials = useAppSelector(selectServerCredentials);
+
+  const styles = useStyles(({theme}) => ({
+    loadingText: {
+      textAlign: 'center',
+      color: 'white',
+    },
+  }));
 
   useEffect(() => {
     if (event) {
