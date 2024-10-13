@@ -41,6 +41,15 @@ export default {
   'menu.item.logs.label': 'Dzienniki',
   'menu.item.settings.label': 'Ustawienia',
   'menu.item.author.label': 'Autor',
+  'report.topBar.title': 'Zgłoś problem',
+  'report.introduction.info':
+    'Zgłoszenie będzie zawierało pewne logi dotyczące tego, jak korzystałeś z aplikacji. Nie będzie zawierał informacji uwierzytelniających.',
+  'report.issue.header': 'Problem',
+  'report.issue.description.label': 'Opisz problem',
+  'report.action.send': 'Wyślij',
+  'report.toast.success': 'Problem został zgłoszony pomyślnie',
+  'report.error.crash-report-disabled':
+    'Zgłaszanie awarii jest wyłączone. Przejdź do ustawień i włącz to, aby zgłosić problem. Pomoże mi to lepiej zrozumieć naturę problemu. Możesz również zgłosić to na GitHubie.',
   'settings.topBar.title': 'Ustawienia',
   'settings.error.required': 'To pole jest wymagane.',
   'settings.error.min': 'Minimalną wartością jest {min}.',
@@ -103,6 +112,7 @@ export default {
   'settings.app.colorScheme.option.auto': 'Automatyczny',
   'settings.app.colorScheme.option.light': 'Jasny',
   'settings.app.colorScheme.option.dark': 'Ciemny',
+  'settings.app.sendCrashReports.label': 'Wysyłaj raporty o awariach',
   'settings.cameras.header': 'Kamery',
   'settings.cameras.imageRefreshFrequency.label':
     'Częstotliwość odświeżania obrazu (sekundy)',

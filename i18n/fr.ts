@@ -41,6 +41,15 @@ export default {
   'menu.item.logs.label': 'Journaux',
   'menu.item.settings.label': 'Paramètres',
   'menu.item.author.label': 'Auteur',
+  'report.topBar.title': 'Signaler un problème',
+  'report.introduction.info':
+    "Le rapport contiendra certains journaux de la manière dont vous avez utilisé l'application. Il ne contiendra pas vos informations d'authentification.",
+  'report.issue.header': 'Problème',
+  'report.issue.description.label': 'Décrire le problème',
+  'report.action.send': 'Envoyer',
+  'report.toast.success': 'Le problème a été signalé avec succès',
+  'report.error.crash-report-disabled':
+    "Le rapport d’erreurs est désactivé. Allez dans les paramètres et activez-le pour signaler un problème. Cela m'aidera à mieux comprendre la nature du problème. Vous pouvez également le signaler sur GitHub.",
   'settings.topBar.title': 'Paramètres',
   'settings.error.required': 'Ce champ est obligatoire.',
   'settings.error.min': 'La valeur minimale est {min}.',
@@ -103,6 +112,7 @@ export default {
   'settings.app.colorScheme.option.auto': 'Auto',
   'settings.app.colorScheme.option.light': 'Clair',
   'settings.app.colorScheme.option.dark': 'Sombre',
+  'settings.app.sendCrashReports.label': 'Envoyer les rapports de plantage',
   'settings.cameras.header': 'Caméras',
   'settings.cameras.imageRefreshFrequency.label':
     'Fréquence d’actualisation des images (secondes)',

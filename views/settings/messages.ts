@@ -65,6 +65,7 @@ export const messages = makeMessages('settings', {
   'app.colorScheme.option.auto': 'Auto',
   'app.colorScheme.option.light': 'Light',
   'app.colorScheme.option.dark': 'Dark',
+  'app.sendCrashReports.label': 'Send crash reports',
   'cameras.header': 'Cameras',
   'cameras.imageRefreshFrequency.label': 'Image refresh frequency (seconds)',
   'cameras.liveView.label': 'Live view',

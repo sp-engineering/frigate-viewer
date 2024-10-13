@@ -2,6 +2,7 @@ import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {useIntl} from 'react-intl';
 import {Image, TouchableWithoutFeedback, View} from 'react-native';
 import {Colors, Drawer, DrawerItemProps} from 'react-native-ui-lib';
+import crashlytics from '@react-native-firebase/crashlytics';
 import {del, post} from '../../helpers/rest';
 import {
   selectServerApiUrl,
@@ -84,10 +85,13 @@ export const CameraEvent: FC<ICameraEventProps> = props => {
     async (snapshot: string) => {
       if (snapshot) {
         try {
+          crashlytics().log(`Get image size of ${snapshot}`);
           Image.getSize(snapshot, (width, height) => {
             onSnapshotDimensions(width, height);
           });
-        } catch (err) {}
+        } catch (err) {
+          crashlytics().recordError(err as Error);
+        }
       }
     },
     [numColumns, snapshotHeight, onSnapshotDimensions],

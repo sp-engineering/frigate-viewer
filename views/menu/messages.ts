@@ -10,6 +10,7 @@ export const messages = makeMessages('menu', {
   'item.logs.label': 'Logs',
   'item.settings.label': 'Settings',
   'item.author.label': 'Author',
+  'item.report.label': 'Report problem',
 });
 
 export type MessageKey = typeof messages extends Record<

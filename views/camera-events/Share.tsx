@@ -12,6 +12,7 @@ import {
   selectServerCredentials,
 } from '../../store/settings';
 import {ActivityIndicator, Text, ToastAndroid} from 'react-native';
+import crashlytics from '@react-native-firebase/crashlytics';
 import {clipFilename, snapshotFilename} from './eventHelpers';
 import {useStyles} from '../../helpers/colors';
 
@@ -67,6 +68,7 @@ export const Share: FC<ShareProps> = ({event, onDismiss}) => {
 
   const download = async (filename: string, url: string) => {
     try {
+      crashlytics().log(`Share ${filename} from ${url}`);
       setLoading(true);
       const dirs = RNFetchBlob.fs.dirs;
       const filePath = `${dirs.CacheDir}/${filename}`;
@@ -84,6 +86,7 @@ export const Share: FC<ShareProps> = ({event, onDismiss}) => {
       setLoading(false);
       return filePath;
     } catch (err) {
+      crashlytics().recordError(err as Error);
       setLoading(false);
       ToastAndroid.show(JSON.stringify(err), ToastAndroid.LONG);
     }

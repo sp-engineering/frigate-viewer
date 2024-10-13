@@ -41,6 +41,15 @@ export default {
   'menu.item.logs.label': 'Журнали',
   'menu.item.settings.label': 'Налаштування',
   'menu.item.author.label': 'Автор',
+  'report.topBar.title': 'Повідомити про проблему',
+  'report.introduction.info':
+    'Звіт міститиме деякі журнали про те, як ви використовували додаток. Він не міститиме інформації про вашу автентифікацію.',
+  'report.issue.header': 'Проблема',
+  'report.issue.description.label': 'Опишіть проблему',
+  'report.action.send': 'Відправити',
+  'report.toast.success': 'Проблему успішно повідомлено',
+  'report.error.crash-report-disabled':
+    'Повідомлення про збої вимкнено. Перейдіть до налаштувань і ввімкніть його, щоб повідомити про проблему. Це допоможе мені краще зрозуміти суть проблеми. Ви також можете повідомити про це на GitHub.',
   'settings.topBar.title': 'Налаштування',
   'settings.error.required': "Це поле обов'язкове.",
   'settings.error.min': 'Мінімальне значення до {min}.',
@@ -103,6 +112,7 @@ export default {
   'settings.app.colorScheme.option.auto': 'Авто',
   'settings.app.colorScheme.option.light': 'світло',
   'settings.app.colorScheme.option.dark': 'Темний',
+  'settings.app.sendCrashReports.label': 'Надсилати звіти про збої',
   'settings.cameras.header': 'Камери',
   'settings.cameras.imageRefreshFrequency.label':
     'Частота оновлення зображення (секунди)',

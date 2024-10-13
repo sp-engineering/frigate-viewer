@@ -80,6 +80,12 @@ export const authorMenuItem: IMenuItem = {
   view: 'Author',
 };
 
+export const reportProblemMenuItem: IMenuItem = {
+  id: 'report',
+  icon: 'send',
+  view: 'Report',
+};
+
 export const navigateToMenuItem =
   ({view, modal, passProps}: IMenuItem) =>
   () => {
@@ -156,6 +162,7 @@ export const Menu: FC<IMenuProps> = ({current}) => {
         systemMenuItem,
         logsMenuItem,
         settingsMenuItem,
+        reportProblemMenuItem,
         authorMenuItem,
       ].map(item => ({
         ...item,

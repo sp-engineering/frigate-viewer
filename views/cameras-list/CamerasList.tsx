@@ -19,16 +19,9 @@ import {useAppDispatch, useAppSelector} from '../../store/store';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {CameraTile} from './CameraTile';
 import {messages} from './messages';
-import { useNoServer } from '../settings/useNoServer';
-import { Background } from '../../components/Background';
-
-const styles = StyleSheet.create({
-  noCameras: {
-    padding: 20,
-    color: 'black',
-    textAlign: 'center',
-  },
-});
+import {useNoServer} from '../settings/useNoServer';
+import {Background} from '../../components/Background';
+import {useStyles} from '../../helpers/colors';
 
 interface IConfigResponse {
   cameras: Record<
@@ -43,6 +36,14 @@ interface IConfigResponse {
 }
 
 export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
+  const styles = useStyles(({theme}) => ({
+    noCameras: {
+      padding: 20,
+      color: theme.text,
+      textAlign: 'center',
+    },
+  }));
+
   useMenu(componentId, 'camerasList');
   useNoServer();
   const [loading, setLoading] = useState(true);

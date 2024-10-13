@@ -8,6 +8,8 @@ Follow the instructions of React Native docs to install Android Studio and the e
 
 Run `npm install` to install dependencies and `npm run android` to start the emulator, compile the app and install it on the emulator or a connected device.
 
+`google-services.json` file should be placed in `./android/app` folder - it should contain credentials to Firebase for Crashlytics service.
+
 ## iOS developing
 
 I've never run this application on iOS. It should work in theory, but probably needs some enhancements.
