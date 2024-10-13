@@ -30,6 +30,8 @@ import {Background} from '../../components/Background';
 import {useOrientation} from '../../helpers/screen';
 import {Share} from './Share';
 import {useStyles} from '../../helpers/colors';
+import {Refresh} from '../../components/Refresh';
+import {View} from 'react-native-ui-lib';
 
 export interface ICameraEventsProps {
   cameraNames?: string[];
@@ -200,7 +202,14 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
         setEvents([...events, ...data]);
       });
     }
-  }, [apiUrl, endReached, events, eventsQueryParams, watchEndReached]);
+  }, [
+    apiUrl,
+    credentials,
+    endReached,
+    events,
+    eventsQueryParams,
+    watchEndReached,
+  ]);
 
   useEffect(() => {
     refresh();
@@ -263,9 +272,12 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   return (
     <Background>
       {!refreshing && events.length === 0 && (
-        <Text style={styles.noEvents}>
-          {intl.formatMessage(messages['noEvents'])}
-        </Text>
+        <View>
+          <Refresh refreshing={refreshing} onRefresh={refresh} />
+          <Text style={styles.noEvents}>
+            {intl.formatMessage(messages['noEvents'])}
+          </Text>
+        </View>
       )}
       <FlatList
         ref={listRef}
@@ -282,11 +294,10 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
         )}
         keyExtractor={data => data.id}
         initialNumToRender={30}
-        refreshing={refreshing}
-        onRefresh={refresh}
         onEndReached={loadMore}
         onEndReachedThreshold={0.5}
         numColumns={numColumns}
+        refreshControl={<Refresh refreshing={refreshing} onRefresh={refresh} />}
       />
       <Share event={sharedEvent} onDismiss={() => setSharedEvent(undefined)} />
     </Background>

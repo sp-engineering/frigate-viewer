@@ -110,7 +110,7 @@ export const CameraEvent: FC<ICameraEventProps> = props => {
         );
       },
     }),
-    [apiUrl, id, intl, onDelete],
+    [apiUrl, credentials, id, intl, onDelete],
   );
 
   const retainDrawerItem: DrawerItemProps = useMemo(
@@ -146,7 +146,7 @@ export const CameraEvent: FC<ICameraEventProps> = props => {
               });
             },
           },
-    [apiUrl, id, intl, retained],
+    [apiUrl, credentials, id, intl, retained],
   );
 
   const shareDrawerItem: DrawerItemProps = useMemo(
@@ -158,7 +158,7 @@ export const CameraEvent: FC<ICameraEventProps> = props => {
         onShare(event);
       },
     }),
-    [apiUrl, id, intl, retained],
+    [apiUrl, credentials, id, intl, retained],
   );
 
   return (

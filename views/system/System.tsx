@@ -94,7 +94,7 @@ export const System: NavigationFunctionComponent = ({componentId}) => {
       setStats(stats);
       setLoading(false);
     });
-  }, [apiUrl]);
+  }, [apiUrl, credentials]);
 
   const detectors: DetectorRow[] = useMemo(
     () =>

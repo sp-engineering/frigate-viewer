@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useIntl} from 'react-intl';
-import {FlatList, StyleSheet, Text} from 'react-native';
+import {FlatList, Text} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {get} from '../../helpers/rest';
 import {
@@ -22,6 +22,8 @@ import {messages} from './messages';
 import {useNoServer} from '../settings/useNoServer';
 import {Background} from '../../components/Background';
 import {useStyles} from '../../helpers/colors';
+import {View} from 'react-native-ui-lib';
+import {Refresh} from '../../components/Refresh';
 
 interface IConfigResponse {
   cameras: Record<
@@ -95,7 +97,7 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
       .finally(() => {
         setLoading(false);
       });
-  }, [apiUrl, dispatch]);
+  }, [apiUrl, credentials, dispatch]);
 
   useEffect(() => {
     if (apiUrl !== undefined) {
@@ -106,9 +108,12 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
   return (
     <Background>
       {!loading && cameras.length === 0 && (
-        <Text style={styles.noCameras}>
-          {intl.formatMessage(messages['noCameras'])}
-        </Text>
+        <View>
+          <Refresh refreshing={loading} onRefresh={refresh} />
+          <Text style={styles.noCameras}>
+            {intl.formatMessage(messages['noCameras'])}
+          </Text>
+        </View>
       )}
       <FlatList
         data={cameras}
@@ -116,9 +121,8 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
           <CameraTile cameraName={item} componentId={componentId} />
         )}
         keyExtractor={cameraName => cameraName}
-        refreshing={loading}
-        onRefresh={refresh}
         numColumns={numColumns}
+        refreshControl={<Refresh refreshing={loading} onRefresh={refresh} />}
       />
     </Background>
   );
