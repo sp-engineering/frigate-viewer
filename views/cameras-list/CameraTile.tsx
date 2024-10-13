@@ -1,15 +1,9 @@
-import React, {
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, {FC, useEffect, useMemo, useRef, useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import {Carousel} from 'react-native-ui-lib';
+import crashlytics from '@react-native-firebase/crashlytics';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {
   selectCamerasactionWhenPressed,
@@ -153,6 +147,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
     }
     if (lastImageSrc) {
       try {
+        crashlytics().log(`Get camera preview size from ${lastImageSrc}`);
         Image.getSize(lastImageSrc, (width, height) => {
           const proportion = height / width;
           const windowWidth = Dimensions.get('window').width;
@@ -162,7 +157,9 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
             dispatch(setCameraPreviewHeight(newHeight));
           }
         });
-      } catch (err) {}
+      } catch (err) {
+        crashlytics().recordError(err as Error);
+      }
     }
   };
 

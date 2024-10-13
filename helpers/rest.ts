@@ -1,5 +1,6 @@
 import {Buffer} from 'buffer';
 import {ToastAndroid} from 'react-native';
+import crashlytics from '@react-native-firebase/crashlytics';
 import {Credentials} from '../store/settings';
 
 export const authorizationHeader: (credentials: Credentials | null) => {
@@ -20,15 +21,21 @@ export const get = async <T>(
   json?: boolean,
 ): Promise<T> => {
   try {
-    return await fetch(
+    crashlytics().log(`GET ${endpoint}`);
+    const response = await fetch(
       `${endpoint}${queryParams ? `?${new URLSearchParams(queryParams)}` : ''}`,
       {
         headers: {
           ...authorizationHeader(credentials),
         },
       },
-    ).then(res => (json === false ? res.text() : res.json()));
+    );
+    if (response.status === 401) {
+      throw new Error(`Wrong credentials when tried to reach ${endpoint}`);
+    }
+    return response[json === false ? 'text' : 'json']();
   } catch (error) {
+    crashlytics().recordError(error as Error);
     const e = error as {message: string};
     ToastAndroid.show(e.message, ToastAndroid.LONG);
     return Promise.reject();
@@ -42,7 +49,8 @@ export const post = async <T>(
   json?: boolean,
 ): Promise<T> => {
   try {
-    return await fetch(
+    crashlytics().log(`POST ${endpoint}`);
+    const response = await fetch(
       `${endpoint}${queryParams ? `?${new URLSearchParams(queryParams)}` : ''}`,
       {
         method: 'post',
@@ -50,8 +58,13 @@ export const post = async <T>(
           ...authorizationHeader(credentials),
         },
       },
-    ).then(res => (json === false ? res.text() : res.json()));
+    );
+    if (response.status === 401) {
+      throw new Error(`Wrong credentials when tried to reach ${endpoint}`);
+    }
+    return response[json === false ? 'text' : 'json']();
   } catch (error) {
+    crashlytics().recordError(error as Error);
     const e = error as {message: string};
     ToastAndroid.show(e.message, ToastAndroid.LONG);
     return Promise.reject();
@@ -65,7 +78,8 @@ export const del = async <T>(
   json?: boolean,
 ): Promise<T> => {
   try {
-    return await fetch(
+    crashlytics().log(`DELETE ${endpoint}`);
+    const response = await fetch(
       `${endpoint}${queryParams ? `?${new URLSearchParams(queryParams)}` : ''}`,
       {
         method: 'delete',
@@ -73,8 +87,13 @@ export const del = async <T>(
           ...authorizationHeader(credentials),
         },
       },
-    ).then(res => (json === false ? res.text() : res.json()));
+    );
+    if (response.status === 401) {
+      throw new Error(`Wrong credentials when tried to reach ${endpoint}`);
+    }
+    return response[json === false ? 'text' : 'json']();
   } catch (error) {
+    crashlytics().recordError(error as Error);
     const e = error as {message: string};
     ToastAndroid.show(e.message, ToastAndroid.LONG);
     return Promise.reject();

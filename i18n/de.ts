@@ -41,6 +41,15 @@ export default {
   'menu.item.logs.label': 'Protokolle',
   'menu.item.settings.label': 'Einstellungen',
   'menu.item.author.label': 'Autor',
+  'report.topBar.title': 'Problem melden',
+  'report.introduction.info':
+    'Der Bericht wird einige Protokolle darüber enthalten, wie Sie die Anwendung genutzt haben. Er wird keine Authentifizierungsinformationen enthalten.',
+  'report.issue.header': 'Problem',
+  'report.issue.description.label': 'Beschreiben Sie das Problem',
+  'report.action.send': 'Senden',
+  'report.toast.success': 'Das Problem wurde erfolgreich gemeldet',
+  'report.error.crash-report-disabled':
+    'Das Melden von Abstürzen ist deaktiviert. Gehen Sie zu den Einstellungen und aktivieren Sie es, um ein Problem zu melden. Es wird mir helfen, das Problem besser zu verstehen. Sie können es auch auf GitHub melden.',
   'settings.topBar.title': 'Einstellungen',
   'settings.error.required': 'Dieses Feld muss ausgefüllt sein.',
   'settings.error.min': 'Der Mindestwert ist {min}.',
@@ -51,7 +60,7 @@ export default {
   'settings.server.protocol.label': 'Protokoll',
   'settings.server.host.label': 'Host-Adresse',
   'settings.server.port.label': 'Port',
-  'settings.server.path.label': 'Pfed',
+  'settings.server.path.label': 'Pfad',
   'settings.server.username.label': 'Benutzername',
   'settings.server.password.label': 'Passwort',
   'settings.server.useDemoServerButton': 'Nutzen den Demo Server',
@@ -103,6 +112,7 @@ export default {
   'settings.app.colorScheme.option.auto': 'Auto',
   'settings.app.colorScheme.option.light': 'Hell',
   'settings.app.colorScheme.option.dark': 'Dunkel',
+  'settings.app.sendCrashReports.label': 'Absturzberichte senden',
   'settings.cameras.header': 'Kameras',
   'settings.cameras.imageRefreshFrequency.label':
     'Grafik ausgetauscht (sekunden)',

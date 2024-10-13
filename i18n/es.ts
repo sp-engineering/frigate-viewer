@@ -41,6 +41,15 @@ export default {
   'menu.item.logs.label': 'Registros',
   'menu.item.settings.label': 'Configuración',
   'menu.item.author.label': 'Autor',
+  'report.topBar.title': 'Reportar problema',
+  'report.introduction.info':
+    'El informe contendrá algunos registros de cómo utilizaste la aplicación. No contendrá tu información de autenticación.',
+  'report.issue.header': 'Problema',
+  'report.issue.description.label': 'Describe el problema',
+  'report.action.send': 'Enviar',
+  'report.toast.success': 'El problema fue reportado con éxito',
+  'report.error.crash-report-disabled':
+    'La notificación de fallos está deshabilitada. Ve a la configuración y habilítala para reportar un problema. Me ayudará a comprender mejor el problema. También puedes reportarlo en GitHub.',
   'settings.topBar.title': 'Configuración',
   'settings.error.required': 'Este campo es obligatorio.',
   'settings.error.min': 'El valor mínimo es {min}.',
@@ -103,6 +112,7 @@ export default {
   'settings.app.colorScheme.option.auto': 'Automático',
   'settings.app.colorScheme.option.light': 'Claro',
   'settings.app.colorScheme.option.dark': 'Oscuro',
+  'settings.app.sendCrashReports.label': 'Enviar informes de fallos',
   'settings.cameras.header': 'Cámaras',
   'settings.cameras.imageRefreshFrequency.label':
     'Frecuencia de actualización de la imagen (segundos)',

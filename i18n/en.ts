@@ -40,6 +40,16 @@ export default {
   'menu.item.logs.label': 'Logs',
   'menu.item.settings.label': 'Settings',
   'menu.item.author.label': 'Author',
+  'menu.item.problem.label': 'Report problem',
+  'report.topBar.title': 'Report problem',
+  'report.introduction.info':
+    'The report will contain some logs of how you used the application. It will not contain your authentication info.',
+  'report.issue.header': 'Issue',
+  'report.issue.description.label': 'Describe the problem',
+  'report.action.send': 'Send',
+  'report.toast.success': 'The issue was reported successfully',
+  'report.error.crash-report-disabled':
+    'Reporting crashes is disabled. Go to settings and enable it to report an issue. It will help me to better understand the matter of the issue. You can also report it on GitHub.',
   'settings.topBar.title': 'Settings',
   'settings.error.required': 'This field is required.',
   'settings.error.min': 'Minimum value is {min}.',
@@ -102,6 +112,7 @@ export default {
   'settings.app.colorScheme.option.auto': 'Auto',
   'settings.app.colorScheme.option.light': 'Light',
   'settings.app.colorScheme.option.dark': 'Dark',
+  'settings.app.sendCrashReports.label': 'Send crash reports',
   'settings.cameras.header': 'Cameras',
   'settings.cameras.imageRefreshFrequency.label':
     'Image refresh frequency (seconds)',

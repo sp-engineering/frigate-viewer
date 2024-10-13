@@ -10,6 +10,7 @@ import {ActivityIndicator, Text, View} from 'react-native';
 import {NavigationFunctionComponent} from 'react-native-navigation';
 import VLCPlayer, {State} from '@lunarr/vlc-player';
 import RNFetchBlob from 'rn-fetch-blob';
+import crashlytics from '@react-native-firebase/crashlytics';
 import {ZoomableView} from '../../components/ZoomableView';
 import {
   selectServerApiUrl,
@@ -146,6 +147,7 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({
         setUri(filePath);
         setLoading(false);
       } catch (err) {
+        crashlytics().recordError(err as Error);
         setLoading(false);
         setError(JSON.stringify(err));
       }

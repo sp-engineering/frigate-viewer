@@ -41,6 +41,15 @@ export default {
   'menu.item.logs.label': 'Registri',
   'menu.item.settings.label': 'Impostazioni',
   'menu.item.author.label': 'Autore',
+  'report.topBar.title': 'Segnala un problema',
+  'report.introduction.info':
+    "Il rapporto conterrà alcuni registri di come hai utilizzato l'applicazione. Non conterrà le tue informazioni di autenticazione.",
+  'report.issue.header': 'Problema',
+  'report.issue.description.label': 'Descrivi il problema',
+  'report.action.send': 'Invia',
+  'report.toast.success': 'Il problema è stato segnalato con successo',
+  'report.error.crash-report-disabled':
+    'La segnalazione degli arresti anomali è disabilitata. Vai alle impostazioni e abilitalo per segnalare un problema. Mi aiuterà a capire meglio la natura del problema. Puoi anche segnalarlo su GitHub.',
   'settings.topBar.title': 'Impostazioni',
   'settings.error.required': 'Questo campo è obbligatorio.',
   'settings.error.min': 'Il valore minimo è {min}.',
@@ -103,6 +112,7 @@ export default {
   'settings.app.colorScheme.option.auto': 'Auto',
   'settings.app.colorScheme.option.light': 'Chiaro',
   'settings.app.colorScheme.option.dark': 'Scuro',
+  'settings.app.sendCrashReports.label': 'Invia rapporti sugli arresti anomali',
   'settings.cameras.header': 'Telecamere',
   'settings.cameras.imageRefreshFrequency.label':
     "Frequenza di aggiornamento dell'immagine (secondi)",

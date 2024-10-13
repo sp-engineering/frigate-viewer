@@ -4,6 +4,7 @@ import {useIntl} from 'react-intl';
 import {Keyboard, Pressable, Text} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import * as yup from 'yup';
+import crashlytics from '@react-native-firebase/crashlytics';
 import {Dropdown} from '../../components/forms/Dropdown';
 import {Input} from '../../components/forms/Input';
 import {Label} from '../../components/forms/Label';
@@ -99,6 +100,9 @@ export const Settings: NavigationFunctionComponent = () => {
 
   const save = useCallback(
     (settings: ISettings) => {
+      crashlytics().setCrashlyticsCollectionEnabled(
+        settings.app.sendCrashReports,
+      );
       dispatch(saveSettings(settings));
       Keyboard.dismiss();
       Navigation.dismissAllModals();
@@ -330,6 +334,17 @@ export const Settings: NavigationFunctionComponent = () => {
                     },
                   ]}
                   onValueChange={handleChange('app.colorScheme')}
+                />
+              </Label>
+              <Label
+                text={intl.formatMessage(
+                  messages['app.sendCrashReports.label'],
+                )}>
+                <Switch
+                  value={values.app.sendCrashReports}
+                  onValueChange={value =>
+                    setFieldValue('app.sendCrashReports', value)
+                  }
                 />
               </Label>
             </Section>

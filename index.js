@@ -2,6 +2,7 @@ import {Navigation} from 'react-native-navigation';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import {TopBarButton} from './components/icons/TopBarButton';
 import {Author} from './views/author/Author';
+import {Report} from './views/report/Report';
 import {CameraEventClip} from './views/camera-event-clip/CameraEventClip';
 import {CameraPreview} from './views/camera-preview/CameraPreview';
 import {CameraEvents} from './views/camera-events/CameraEvents';
@@ -38,6 +39,7 @@ registerComponent('System', System, viewDecorators);
 registerComponent('Logs', Logs, viewDecorators);
 registerComponent('Settings', Settings, viewDecorators);
 registerComponent('Author', Author, viewDecorators);
+registerComponent('Report', Report, viewDecorators);
 
 registerComponent('Menu', Menu, [
   gestureHandlerRootHOC,

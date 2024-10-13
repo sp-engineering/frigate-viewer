@@ -41,6 +41,15 @@ export default {
   'menu.item.logs.label': 'Loggar',
   'menu.item.settings.label': 'Inställningar',
   'menu.item.author.label': 'Författare',
+  'report.topBar.title': 'Rapportera problem',
+  'report.introduction.info':
+    'Rapporten kommer att innehålla vissa loggar om hur du använde applikationen. Den kommer inte att innehålla din autentiseringsinformation.',
+  'report.issue.header': 'Problem',
+  'report.issue.description.label': 'Beskriv problemet',
+  'report.action.send': 'Skicka',
+  'report.toast.success': 'Problemet har rapporterats framgångsrikt',
+  'report.error.crash-report-disabled':
+    'Rapportering av krascher är inaktiverat. Gå till inställningarna och aktivera det för att rapportera ett problem. Det hjälper mig att bättre förstå problemet. Du kan också rapportera det på GitHub.',
   'settings.topBar.title': 'Inställningar',
   'settings.error.required': 'Det här fältet är obligatoriskt.',
   'settings.error.min': 'Minimivärdet är {min}.',
@@ -103,6 +112,7 @@ export default {
   'settings.app.colorScheme.option.auto': 'Bil',
   'settings.app.colorScheme.option.light': 'Ljus',
   'settings.app.colorScheme.option.dark': 'Mörk',
+  'settings.app.sendCrashReports.label': 'Skicka kraschanmälningar',
   'settings.cameras.header': 'Kameror',
   'settings.cameras.imageRefreshFrequency.label':
     'Uppdateringsfrekvens för bilder (sekunder)',

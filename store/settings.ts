@@ -65,6 +65,7 @@ export interface ISettings {
   };
   app: {
     colorScheme: 'auto' | 'light' | 'dark';
+    sendCrashReports: boolean;
   };
   cameras: {
     refreshFrequency: number;
@@ -94,6 +95,7 @@ export const initialSettings: ISettings = {
   },
   app: {
     colorScheme: 'auto',
+    sendCrashReports: true,
   },
   locale: {
     region: NativeModules.I18nManager.localeIdentifier,
@@ -213,10 +215,15 @@ export const selectLocaleRegion = (state: RootState) =>
 export const selectLocaleDatesDisplay = (state: RootState) =>
   selectLocale(state).datesDisplay;
 
+/* app */
+
 export const selectApp = (state: RootState) => selectSettings(state).app;
 
 export const selectAppColorScheme = (state: RootState) =>
   selectApp(state)?.colorScheme || 'auto';
+
+export const selectAppSendCrashReports = (state: RootState) =>
+  selectApp(state).sendCrashReports;
 
 /* cameras */
 
