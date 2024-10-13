@@ -42,19 +42,19 @@ export const CameraInfoChart: FC<ICameraInfoChartProps> = ({cameraInfos}) => {
     () => [
       {
         data: Object.values(cameraInfos)
-          .map(info => info.ffmpeg.cpu!)
+          .map(info => info.ffmpeg.cpu! || 0)
           .filter(v => v !== undefined),
         svg: {fill: getColor(0)},
       },
       {
         data: Object.values(cameraInfos)
-          .map(info => info.capture.cpu!)
+          .map(info => info.capture.cpu! || 0)
           .filter(v => v !== undefined),
         svg: {fill: getColor(1)},
       },
       {
         data: Object.values(cameraInfos)
-          .map(info => info.detect.cpu!)
+          .map(info => info.detect.cpu! || 0)
           .filter(v => v !== undefined),
         svg: {fill: getColor(2)},
       },

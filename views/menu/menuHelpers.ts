@@ -1,5 +1,6 @@
 import {useEffect} from 'react';
 import {Navigation, OptionsTopBarButton} from 'react-native-navigation';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 export type MenuId =
   | 'camerasList'
@@ -21,6 +22,7 @@ export const useSelectedMenuItem = (current?: MenuId) => {
 };
 
 export const useMenu = (componentId: string, current?: MenuId) => {
+  crashlytics().log(`View change: ${current}`);
   useSelectedMenuItem(current);
 
   useEffect(() => {

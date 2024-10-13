@@ -100,6 +100,7 @@ export const Settings: NavigationFunctionComponent = () => {
 
   const save = useCallback(
     (settings: ISettings) => {
+      crashlytics().log(`Save settings`);
       crashlytics().setCrashlyticsCollectionEnabled(
         settings.app.sendCrashReports,
       );

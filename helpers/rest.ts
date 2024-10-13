@@ -30,7 +30,11 @@ export const get = async <T>(
         },
       },
     );
+    if (!response.ok) {
+      crashlytics().log(`HTTP/${response.status}: GET ${endpoint}`);
+    }
     if (response.status === 401) {
+      crashlytics().log(`Unauthorized`);
       throw new Error(`Wrong credentials when tried to reach ${endpoint}`);
     }
     return response[json === false ? 'text' : 'json']();
