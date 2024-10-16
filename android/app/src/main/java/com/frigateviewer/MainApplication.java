@@ -12,6 +12,7 @@ import com.facebook.react.flipper.ReactNativeFlipper;
 import com.facebook.soloader.SoLoader;
 import java.util.List;
 import com.horcrux.svg.SvgPackage;
+import com.facebook.react.modules.network.OkHttpClientProvider;
 
 public class MainApplication extends NavigationApplication {
 
@@ -61,6 +62,7 @@ public class MainApplication extends NavigationApplication {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
       DefaultNewArchitectureEntryPoint.load();
     }
+    OkHttpClientProvider.setOkHttpClientFactory(new IgnoreSSLFactory());
     ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
 }
