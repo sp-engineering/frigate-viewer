@@ -120,6 +120,7 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
         renderItem={({item}) => (
           <CameraTile cameraName={item} componentId={componentId} />
         )}
+        key={numColumns}
         keyExtractor={cameraName => cameraName}
         numColumns={numColumns}
         refreshControl={<Refresh refreshing={loading} onRefresh={refresh} />}
