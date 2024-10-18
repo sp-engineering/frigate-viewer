@@ -91,7 +91,6 @@ export const Report: NavigationFunctionComponent = ({componentId}) => {
     await crashlytics().setAttributes(settings);
     crashlytics().recordError(new Error('Reported by user'), 'reported');
     formRef.current?.resetForm();
-    crashlytics().crash();
     ToastAndroid.show(
       intl.formatMessage(messages['toast.success']),
       ToastAndroid.LONG,
