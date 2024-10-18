@@ -8,10 +8,11 @@
             <domain includeSubdomains="true">localhost</domain>
         </domain-config>
 
-        <domain includeSubdomains="true">my.domain.com</domain>
-        <trust-anchors>
-            <certificates src="user"/>
-            <certificates src="system"/>
-        </trust-anchors>
+        <base-config cleartextTrafficPermitted="true">
+            <trust-anchors>
+                <certificates src="user" />
+                <certificates src="system" />
+            </trust-anchors>
+        </base-config>
     </domain-config>
 </network-security-config>
