@@ -120,7 +120,7 @@ export default {
   'settings.locale.datesDisplay.option.descriptive': 'Opisowo',
   'settings.locale.datesDisplay.option.numeric': 'Numerycznie',
   'settings.app.header': 'Aplikacja',
-  'settings.app.colorScheme.label': 'Schemat koloróœ',
+  'settings.app.colorScheme.label': 'Schemat kolorów',
   'settings.app.colorScheme.option.auto': 'Automatyczny',
   'settings.app.colorScheme.option.light': 'Jasny',
   'settings.app.colorScheme.option.dark': 'Ciemny',

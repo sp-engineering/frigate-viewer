@@ -165,10 +165,8 @@ const v1Migrations = (settings?: ISettings): ISettings | undefined => {
   };
 };
 
-export const settingsMigrations = (state: State): State => {
-  return {
-    v1: fillGaps(initialSettings, v1Migrations(state.v1)),
-  };
+export const settingsMigrations = (settings: ISettings): ISettings => {
+  return fillGaps(initialSettings, v1Migrations(settings));
 };
 
 /**
@@ -215,8 +213,12 @@ export const selectServers = (state: RootState) =>
 
 const temporaryEmptyServer = emptyServer();
 
-export const selectServer = (state: RootState) =>
-  selectSettings(state).servers[0] ?? temporaryEmptyServer;
+export const selectServer = (state: RootState) => {
+  const settings = selectSettings(state);
+  return 'servers' in settings && settings.servers.length > 0
+    ? settings.servers[0]
+    : temporaryEmptyServer;
+};
 
 /* locale */
 
