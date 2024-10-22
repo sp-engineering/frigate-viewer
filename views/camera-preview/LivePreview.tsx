@@ -4,10 +4,9 @@ import {Image, ImageStyle, View} from 'react-native';
 import {useAppSelector} from '../../store/store';
 import {
   selectCamerasRefreshFrequency,
-  selectServerApiUrl,
-  selectServerCredentials,
+  selectServer,
 } from '../../store/settings';
-import {authorizationHeader} from '../../helpers/rest';
+import {authorizationHeader, buildServerApiUrl} from '../../helpers/rest';
 import {ZoomableImage} from '../../components/ZoomableImage';
 import {useStyles} from '../../helpers/colors';
 
@@ -26,23 +25,20 @@ export const LivePreview: FC<LivePreviewProps> = ({cameraName}) => {
   const [lastImageSrc, setLastImageSrc] = useState<string | undefined>(
     undefined,
   );
-  const apiUrl = useAppSelector(selectServerApiUrl);
-  const credentials = useAppSelector(selectServerCredentials);
+  const server = useAppSelector(selectServer);
   const refreshFrequency = useAppSelector(selectCamerasRefreshFrequency);
   const interval = useRef<NodeJS.Timeout>();
 
   const getLastImageUrl = () =>
-    `${apiUrl}/${cameraName}/latest.jpg?bbox=1&ts=${new Date().toISOString()}`;
+    `${buildServerApiUrl(
+      server,
+    )}/${cameraName}/latest.jpg?bbox=1&ts=${new Date().toISOString()}`;
 
   const updateLastImageUrl = async () => {
     const lastImageUrl = getLastImageUrl();
-    Image.getSizeWithHeaders(
-      lastImageUrl,
-      authorizationHeader(credentials),
-      () => {
-        setLastImageSrc(lastImageUrl);
-      },
-    );
+    Image.getSizeWithHeaders(lastImageUrl, authorizationHeader(server), () => {
+      setLastImageSrc(lastImageUrl);
+    });
   };
 
   useEffect(() => {
@@ -57,7 +53,7 @@ export const LivePreview: FC<LivePreviewProps> = ({cameraName}) => {
       updateLastImageUrl();
     }, refreshFrequency * 1000);
     return removeRefreshing;
-  }, [cameraName, setLastImageSrc, apiUrl, refreshFrequency]);
+  }, [cameraName, setLastImageSrc, server, refreshFrequency]);
 
   return (
     <View>
@@ -65,7 +61,7 @@ export const LivePreview: FC<LivePreviewProps> = ({cameraName}) => {
         <ZoomableImage
           source={{
             uri: lastImageSrc,
-            headers: authorizationHeader(credentials),
+            headers: authorizationHeader(server),
           }}
           style={styles.image as ImageStyle}
           fadeDuration={0}

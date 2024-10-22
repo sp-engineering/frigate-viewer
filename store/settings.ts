@@ -51,14 +51,17 @@ export interface Credentials {
   password: string;
 }
 
+export interface Server {
+  protocol: 'http' | 'https';
+  host: string;
+  port: number;
+  path: string;
+  auth: 'basic' | 'frigate' | 'none';
+  credentials: Credentials;
+}
+
 export interface ISettings {
-  server: {
-    protocol: 'http' | 'https';
-    host: string;
-    port: number;
-    path: string;
-    credentials: Credentials;
-  };
+  servers: Server[];
   locale: {
     region: Region;
     datesDisplay: 'descriptive' | 'numeric';
@@ -82,17 +85,20 @@ export interface ISettings {
   };
 }
 
-export const initialSettings: ISettings = {
-  server: {
-    protocol: 'https',
-    host: '',
-    port: 5000,
-    path: '',
-    credentials: {
-      username: '',
-      password: '',
-    },
+export const emptyServer = (): Server => ({
+  protocol: 'https',
+  host: '',
+  port: 5000,
+  path: '',
+  auth: 'none',
+  credentials: {
+    username: '',
+    password: '',
   },
+});
+
+export const initialSettings: ISettings = {
+  servers: [],
   app: {
     colorScheme: 'auto',
     sendCrashReports: true,
@@ -117,6 +123,55 @@ export const initialSettings: ISettings = {
 };
 
 /**
+ * MIGRATIONS
+ **/
+
+export interface State {
+  v1: ISettings;
+}
+
+const fillGaps: <T extends object>(initial: T, current?: Partial<T>) => T = <
+  T extends object,
+>(
+  initial: T,
+  current?: Partial<T>,
+) =>
+  Object.keys(initial).reduce<T>((settings: T, k: string) => {
+    const key: keyof T = k as keyof T;
+    return {
+      ...settings,
+      [key]:
+        typeof initial[key] === 'object' && !Array.isArray(initial[key])
+          ? fillGaps(
+              initial[key] as object,
+              current ? (current[key] as object) : {},
+            )
+          : current !== undefined && current[key] !== undefined
+          ? current[key]
+          : initial[key],
+    } as T;
+  }, {} as T);
+
+const v1Migrations = (settings?: ISettings): ISettings | undefined => {
+  if (!settings) {
+    return settings;
+  }
+  type DeprecatedV1Settings = {server?: Server};
+  const {server, servers, ...restSettings} = settings as ISettings &
+    DeprecatedV1Settings;
+  return {
+    ...restSettings,
+    servers: server ? [server] : servers,
+  };
+};
+
+export const settingsMigrations = (state: State): State => {
+  return {
+    v1: fillGaps(initialSettings, v1Migrations(state.v1)),
+  };
+};
+
+/**
  * REDUCERS
  **/
 
@@ -126,28 +181,6 @@ export const settingsStore = createSlice({
     v1: initialSettings,
   },
   reducers: {
-    fillGapsWithInitialData: state => {
-      const fillGaps: <T extends object>(
-        initial: T,
-        current?: Partial<T>,
-      ) => T = <T extends object>(initial: T, current?: Partial<T>) =>
-        Object.keys(initial).reduce<T>((settings: T, k: string) => {
-          const key: keyof T = k as keyof T;
-          return {
-            ...settings,
-            [key]:
-              typeof initial[key] === 'object' && !Array.isArray(initial[key])
-                ? fillGaps(
-                    initial[key] as object,
-                    current ? (current[key] as object) : {},
-                  )
-                : current !== undefined && current[key] !== undefined
-                ? current[key]
-                : initial[key],
-          } as T;
-        }, {} as T);
-      state.v1 = fillGaps(initialSettings, state.v1);
-    },
     saveSettings: (state, action: PayloadAction<ISettings>) => {
       state.v1 = action.payload;
     },
@@ -164,12 +197,8 @@ export const settingsStore = createSlice({
  * ACTIONS
  **/
 
-export const {
-  fillGapsWithInitialData,
-  saveSettings,
-  setCameraPreviewHeight,
-  setEventSnapshotHeight,
-} = settingsStore.actions;
+export const {saveSettings, setCameraPreviewHeight, setEventSnapshotHeight} =
+  settingsStore.actions;
 
 /**
  * SELECTORS
@@ -181,29 +210,13 @@ export const selectSettings = (state: RootState) => settingsState(state).v1;
 
 /* server */
 
-export const selectServer = (state: RootState) => selectSettings(state).server;
+export const selectServers = (state: RootState) =>
+  selectSettings(state).servers;
 
-export const selectServerApiUrl = (state: RootState) => {
-  const {protocol, host, port, path} = selectServer(state);
-  const pathPart = path
-    ? `${path
-        .split('/')
-        .filter(p => p !== '')
-        .join('/')}/`
-    : '';
-  return protocol && host && port
-    ? `${protocol}://${host}:${port}/${pathPart}api`
-    : undefined;
-};
+const temporaryEmptyServer = emptyServer();
 
-export const selectServerCredentials = (state: RootState) => {
-  const {credentials} = selectServer(state);
-  return credentials !== undefined &&
-    credentials.username !== '' &&
-    credentials.password !== ''
-    ? credentials
-    : null;
-};
+export const selectServer = (state: RootState) =>
+  selectSettings(state).servers[0] ?? temporaryEmptyServer;
 
 /* locale */
 

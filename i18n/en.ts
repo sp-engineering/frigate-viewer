@@ -1,4 +1,7 @@
 export default {
+  'api.frigateAuth.wrongCredentials':
+    'Authorization error, check your credentials.',
+  'api.error.unauthorized': 'Wrong credentials when tried to reach {url}',
   'author.topBar.title': 'Author',
   'author.info.authorLabel': 'Author',
   'author.info.contactLabel': 'Contact',
@@ -40,7 +43,7 @@ export default {
   'menu.item.logs.label': 'Logs',
   'menu.item.settings.label': 'Settings',
   'menu.item.author.label': 'Author',
-  'menu.item.problem.label': 'Report problem',
+  'menu.item.report.label': 'Report problem',
   'report.topBar.title': 'Report problem',
   'report.introduction.info':
     'The report will contain some logs of how you used the application. It will not contain your authentication info.',
@@ -56,11 +59,18 @@ export default {
   'settings.error.max': 'Maximum value is {max}',
   'settings.action.save': 'Save',
   'settings.action.cancel': 'Cancel',
+  'settings.action.add': 'Add',
+  'settings.action.edit': 'Edit',
   'settings.server.header': 'Server',
+  'settings.server.address.header': 'Address',
+  'settings.server.auth.header': 'Authorization',
+  'settings.servers.error.noServer': 'No server added',
   'settings.server.protocol.label': 'Protocol',
   'settings.server.host.label': 'Host',
   'settings.server.port.label': 'Port',
   'settings.server.path.label': 'Path',
+  'settings.server.auth.label': 'Type of authorization',
+  'settings.server.auth.option.none': 'None',
   'settings.server.username.label': 'Username',
   'settings.server.password.label': 'Password',
   'settings.server.useDemoServerButton': 'Use demo server',
@@ -117,7 +127,7 @@ export default {
   'settings.cameras.imageRefreshFrequency.label':
     'Image refresh frequency (seconds)',
   'settings.cameras.liveView.label': 'Live view',
-  'cameras.liveView.disclaimer':
+  'settings.cameras.liveView.disclaimer':
     'Keep in mind that refresh frequency depends on your network latency',
   'settings.cameras.numberOfColumns.label': 'Number of columns',
   'settings.cameras.actionWhenPressed.label': 'Action when pressed',

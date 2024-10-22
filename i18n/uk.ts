@@ -1,4 +1,8 @@
 export default {
+  'api.frigateAuth.wrongCredentials':
+    'Помилка авторизації, перевірте свої облікові дані.',
+  'api.error.unauthorized':
+    'Неправильні облікові дані при спробі доступу до {url}.',
   'author.topBar.title': 'Автор',
   'author.info.authorLabel': 'Автор',
   'author.info.contactLabel': 'Контакти',
@@ -41,6 +45,7 @@ export default {
   'menu.item.logs.label': 'Журнали',
   'menu.item.settings.label': 'Налаштування',
   'menu.item.author.label': 'Автор',
+  'menu.item.report.label': 'Повідомити про проблему',
   'report.topBar.title': 'Повідомити про проблему',
   'report.introduction.info':
     'Звіт міститиме деякі журнали про те, як ви використовували додаток. Він не міститиме інформації про вашу автентифікацію.',
@@ -56,11 +61,18 @@ export default {
   'settings.error.max': 'Максимальне значення до {max}',
   'settings.action.save': 'Зберігати',
   'settings.action.cancel': 'Скасувати',
+  'settings.action.add': 'Додати',
+  'settings.action.edit': 'Редагувати',
   'settings.server.header': 'Сервер',
+  'settings.server.address.header': 'Адреса',
+  'settings.server.auth.header': 'Авторизація',
+  'settings.servers.error.noServer': 'Сервер не додано',
   'settings.server.protocol.label': 'Протокол',
   'settings.server.host.label': 'Хост',
   'settings.server.port.label': 'Порт',
   'settings.server.path.label': 'шлях',
+  'settings.server.auth.label': 'Тип авторизації',
+  'settings.server.auth.option.none': 'Немає',
   'settings.server.username.label': "Ім'я користувача",
   'settings.server.password.label': 'Пароль',
   'settings.server.useDemoServerButton': 'Використовувати демо-сервер',
@@ -117,7 +129,7 @@ export default {
   'settings.cameras.imageRefreshFrequency.label':
     'Частота оновлення зображення (секунди)',
   'settings.cameras.liveView.label': 'Живий перегляд',
-  'cameras.liveView.disclaimer':
+  'settings.cameras.liveView.disclaimer':
     'Майте на увазі, що частота оновлення залежить від затримки мережі',
   'settings.cameras.numberOfColumns.label': 'Кількість стовпців',
   'settings.cameras.actionWhenPressed.label': 'Дія при натисканні',

@@ -2,14 +2,11 @@ import {useIntl} from 'react-intl';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {Carousel, LoaderScreen, PageControlPosition} from 'react-native-ui-lib';
 import {useAppSelector} from '../../store/store';
-import {
-  selectServerApiUrl,
-  selectServerCredentials,
-} from '../../store/settings';
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {selectServer} from '../../store/settings';
+import {useEffect, useState} from 'react';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {messages} from './messages';
-import {get} from '../../helpers/rest';
+import {useRest} from '../../helpers/rest';
 import {
   CamerasStorage,
   Stats,
@@ -38,9 +35,9 @@ export const Storage: NavigationFunctionComponent = ({componentId}) => {
   const [camerasStorage, setCamerasStorage] = useState<CamerasStorage>();
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
-  const apiUrl = useAppSelector(selectServerApiUrl);
-  const credentials = useAppSelector(selectServerCredentials);
+  const server = useAppSelector(selectServer);
   const intl = useIntl();
+  const {get} = useRest();
 
   useEffect(() => {
     Navigation.mergeOptions(componentId, {
@@ -58,11 +55,11 @@ export const Storage: NavigationFunctionComponent = ({componentId}) => {
     refresh();
   }, []);
 
-  const refresh = useCallback(() => {
+  const refresh = () => {
     setLoading(true);
     Promise.allSettled([
-      get<Stats>(`${apiUrl}/stats`, credentials),
-      get<CamerasStorage>(`${apiUrl}/recordings/storage`, credentials),
+      get<Stats>(server, `stats`),
+      get<CamerasStorage>(server, `recordings/storage`),
     ]).then(([stats, cameras]) => {
       if (stats.status === 'fulfilled') {
         const {service} = stats.value;
@@ -78,7 +75,7 @@ export const Storage: NavigationFunctionComponent = ({componentId}) => {
       }
       setLoading(false);
     });
-  }, [apiUrl, credentials]);
+  };
 
   return loading || storage === undefined ? (
     <LoaderScreen />

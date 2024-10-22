@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {useIntl} from 'react-intl';
 import {Text} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
@@ -11,14 +11,11 @@ import {
 import {messages} from './messages';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {useAppSelector} from '../../store/store';
-import {
-  selectServerApiUrl,
-  selectServerCredentials,
-} from '../../store/settings';
+import {selectServer} from '../../store/settings';
 import {Log, LogPreview} from './LogPreview';
 import {refreshButton} from '../../helpers/buttonts';
 import {useTheme, useStyles} from '../../helpers/colors';
-import {get} from '../../helpers/rest';
+import {useRest} from '../../helpers/rest';
 const {TabBar, TabPage} = TabController;
 
 export const Logs: NavigationFunctionComponent = ({componentId}) => {
@@ -34,9 +31,9 @@ export const Logs: NavigationFunctionComponent = ({componentId}) => {
   useMenu(componentId, 'logs');
   const [logs, setLogs] = useState<Log[]>([]);
   const [loading, setLoading] = useState(true);
-  const apiUrl = useAppSelector(selectServerApiUrl);
-  const credentials = useAppSelector(selectServerCredentials);
+  const server = useAppSelector(selectServer);
   const intl = useIntl();
+  const {get} = useRest();
 
   useEffect(() => {
     Navigation.mergeOptions(componentId, {
@@ -50,12 +47,12 @@ export const Logs: NavigationFunctionComponent = ({componentId}) => {
     });
   }, [componentId, intl]);
 
-  const refresh = useCallback(() => {
+  const refresh = () => {
     setLoading(true);
     const logsTypes = ['frigate', 'go2rtc', 'nginx'];
     Promise.allSettled(
       logsTypes.map(logType =>
-        get(`${apiUrl}/logs/${logType}`, credentials, undefined, false),
+        get<string>(server, `logs/${logType}`, {json: false}),
       ),
     ).then(logsData => {
       const updatedLogs: Log[] = logsTypes
@@ -70,7 +67,7 @@ export const Logs: NavigationFunctionComponent = ({componentId}) => {
       setLogs(updatedLogs);
       setLoading(false);
     });
-  }, [apiUrl]);
+  };
 
   useEffect(() => {
     refresh();

@@ -1,4 +1,8 @@
 export default {
+  'api.frigateAuth.wrongCredentials':
+    'Errore di autorizzazione, controlla le tue credenziali.',
+  'api.error.unauthorized':
+    'Credenziali errate quando si è tentato di raggiungere {url}.',
   'author.topBar.title': 'Autore',
   'author.info.authorLabel': 'Autore',
   'author.info.contactLabel': 'Contatto',
@@ -41,6 +45,7 @@ export default {
   'menu.item.logs.label': 'Registri',
   'menu.item.settings.label': 'Impostazioni',
   'menu.item.author.label': 'Autore',
+  'menu.item.report.label': 'Segnala un problema',
   'report.topBar.title': 'Segnala un problema',
   'report.introduction.info':
     "Il rapporto conterrà alcuni registri di come hai utilizzato l'applicazione. Non conterrà le tue informazioni di autenticazione.",
@@ -56,11 +61,18 @@ export default {
   'settings.error.max': 'Il valore massimo è {max}',
   'settings.action.save': 'Salvare',
   'settings.action.cancel': 'Annulare',
+  'settings.action.add': 'Aggiungi',
+  'settings.action.edit': 'Modifica',
   'settings.server.header': 'Server',
+  'settings.server.address.header': 'Indirizzo',
+  'settings.server.auth.header': 'Autorizzazione',
+  'settings.servers.error.noServer': 'Nessun server aggiunto',
   'settings.server.protocol.label': 'Protocollo',
   'settings.server.host.label': 'Host',
   'settings.server.port.label': 'Porto',
   'settings.server.path.label': 'Percorso',
+  'settings.server.auth.label': 'Tipo di autorizzazione',
+  'settings.server.auth.option.none': 'Nessuna',
   'settings.server.username.label': 'Nome utente',
   'settings.server.password.label': 'Password',
   'settings.server.useDemoServerButton': 'Utilizzare server demo',
@@ -117,7 +129,7 @@ export default {
   'settings.cameras.imageRefreshFrequency.label':
     "Frequenza di aggiornamento dell'immagine (secondi)",
   'settings.cameras.liveView.label': 'Vista dal vivo',
-  'cameras.liveView.disclaimer':
+  'settings.cameras.liveView.disclaimer':
     'Tieni presente che la frequenza di aggiornamento dipende dalla latenza della tua rete',
   'settings.cameras.numberOfColumns.label': 'Numero di colonne',
   'settings.cameras.actionWhenPressed.label': 'Azione quando premuto',

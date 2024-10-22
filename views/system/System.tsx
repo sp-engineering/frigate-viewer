@@ -8,14 +8,11 @@ import {
   View,
 } from 'react-native-ui-lib';
 import {useAppSelector} from '../../store/store';
-import {
-  selectServerApiUrl,
-  selectServerCredentials,
-} from '../../store/settings';
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {selectServer} from '../../store/settings';
+import {useEffect, useMemo, useRef, useState} from 'react';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {messages} from './messages';
-import {get} from '../../helpers/rest';
+import {useRest} from '../../helpers/rest';
 import {Stats} from '../../helpers/interfaces';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Background} from '../../components/Background';
@@ -56,11 +53,11 @@ export const System: NavigationFunctionComponent = ({componentId}) => {
   const [stats, setStats] = useState<Stats>();
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
-  const apiUrl = useAppSelector(selectServerApiUrl);
-  const credentials = useAppSelector(selectServerCredentials);
+  const server = useAppSelector(selectServer);
   const cameras = useAppSelector(selectAvailableCameras);
   const intl = useIntl();
   const interval = useRef<NodeJS.Timeout>();
+  const {get} = useRest();
 
   useEffect(() => {
     Navigation.mergeOptions(componentId, {
@@ -88,13 +85,13 @@ export const System: NavigationFunctionComponent = ({componentId}) => {
     return removeRefreshing;
   }, []);
 
-  const refresh = useCallback(() => {
+  const refresh = () => {
     setLoading(true);
-    return get<Stats>(`${apiUrl}/stats`, credentials).then(stats => {
+    return get<Stats>(server, `stats`).then(stats => {
       setStats(stats);
       setLoading(false);
     });
-  }, [apiUrl, credentials]);
+  };
 
   const detectors: DetectorRow[] = useMemo(
     () =>

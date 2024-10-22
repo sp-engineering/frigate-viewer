@@ -12,14 +12,17 @@ import {
   selectCamerasPreviewHeight,
   selectCamerasRefreshFrequency,
   selectEventsLockLandscapePlaybackOrientation,
-  selectServerApiUrl,
-  selectServerCredentials,
+  selectServer,
   setCameraPreviewHeight,
 } from '../../store/settings';
 import {CameraLabels} from './CameraLabels';
 import {setFiltersLabels, setFiltersZones} from '../../store/events';
 import {ImagePreview} from './ImagePreview';
-import {authorizationHeader, get} from '../../helpers/rest';
+import {
+  authorizationHeader,
+  buildServerApiUrl,
+  useRest,
+} from '../../helpers/rest';
 import {ICameraEvent} from '../camera-events/CameraEvent';
 import {LastEvent} from './LastEvent';
 
@@ -50,8 +53,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   );
   const [lastEvent, setLastEvent] = useState<ICameraEvent>();
   const dispatch = useAppDispatch();
-  const apiUrl = useAppSelector(selectServerApiUrl);
-  const credentials = useAppSelector(selectServerCredentials);
+  const server = useAppSelector(selectServer);
   const refreshFrequency = useAppSelector(selectCamerasRefreshFrequency);
   const previewHeight = useAppSelector(selectCamerasPreviewHeight);
   const [cameraHeight, setCameraHeight] = useState<number>();
@@ -62,26 +64,27 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
     selectEventsLockLandscapePlaybackOrientation,
   );
   const interval = useRef<NodeJS.Timeout>();
+  const {get} = useRest();
 
   const getLastImageUrl = () =>
-    `${apiUrl}/${cameraName}/latest.jpg?bbox=1&ts=${new Date().toISOString()}`;
+    `${buildServerApiUrl(
+      server,
+    )}/${cameraName}/latest.jpg?bbox=1&ts=${new Date().toISOString()}`;
 
   const updateLastImageUrl = async () => {
     const lastImageUrl = getLastImageUrl();
-    Image.getSizeWithHeaders(
-      lastImageUrl,
-      authorizationHeader(credentials),
-      () => {
-        setLastImageSrc(lastImageUrl);
-      },
-    );
+    Image.getSizeWithHeaders(lastImageUrl, authorizationHeader(server), () => {
+      setLastImageSrc(lastImageUrl);
+    });
   };
 
   const getLastEvent = () => {
-    get<ICameraEvent[]>(`${apiUrl}/events`, credentials, {
-      cameras: cameraName,
-      limit: '1',
-      include_thumbnails: '0',
+    get<ICameraEvent[]>(server, `events`, {
+      queryParams: {
+        cameras: cameraName,
+        limit: '1',
+        include_thumbnails: '0',
+      },
     }).then(data => {
       if (data.length > 0) {
         const event = data[0];
@@ -104,7 +107,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
       getLastEvent();
     }, refreshFrequency * 1000);
     return removeRefreshing;
-  }, [cameraName, setLastImageSrc, apiUrl, refreshFrequency]);
+  }, [cameraName, setLastImageSrc, server, refreshFrequency]);
 
   const showCameraEvents = () => {
     Navigation.push(componentId, {

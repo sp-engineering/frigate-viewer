@@ -3,12 +3,11 @@ import {useIntl} from 'react-intl';
 import {Image, TouchableWithoutFeedback, View} from 'react-native';
 import {Colors, Drawer, DrawerItemProps} from 'react-native-ui-lib';
 import crashlytics from '@react-native-firebase/crashlytics';
-import {del, post} from '../../helpers/rest';
+import {useRest} from '../../helpers/rest';
 import {
-  selectServerApiUrl,
   selectEventsSnapshotHeight,
   selectEventsNumColumns,
-  selectServerCredentials,
+  selectServer,
 } from '../../store/settings';
 import {useAppSelector} from '../../store/store';
 import {EventLabels} from './EventLabels';
@@ -70,11 +69,11 @@ export const CameraEvent: FC<ICameraEventProps> = props => {
     retain_indefinitely,
   } = event;
   const [retained, setRetained] = useState(false);
-  const apiUrl = useAppSelector(selectServerApiUrl);
-  const credentials = useAppSelector(selectServerCredentials);
+  const server = useAppSelector(selectServer);
   const snapshotHeight = useAppSelector(selectEventsSnapshotHeight);
   const numColumns = useAppSelector(selectEventsNumColumns);
   const intl = useIntl();
+  const {del, post} = useRest();
 
   useEffect(() => {
     setRetained(retain_indefinitely);
@@ -103,14 +102,12 @@ export const CameraEvent: FC<ICameraEventProps> = props => {
       icon: require('./icons/delete.png'),
       background: Colors.red30,
       onPress: () => {
-        del(`${apiUrl}/events/${id}`, credentials, undefined, false).then(
-          () => {
-            onDelete([id]);
-          },
-        );
+        del(server, `events/${id}`, {json: false}).then(() => {
+          onDelete([id]);
+        });
       },
     }),
-    [apiUrl, credentials, id, intl, onDelete],
+    [server, id, intl, onDelete],
   );
 
   const retainDrawerItem: DrawerItemProps = useMemo(
@@ -121,12 +118,7 @@ export const CameraEvent: FC<ICameraEventProps> = props => {
             icon: require('./icons/star.png'),
             background: Colors.red40,
             onPress: () => {
-              del(
-                `${apiUrl}/events/${id}/retain`,
-                credentials,
-                undefined,
-                false,
-              ).then(() => {
+              del(server, `events/${id}/retain`, {json: false}).then(() => {
                 setRetained(false);
               });
             },
@@ -136,17 +128,12 @@ export const CameraEvent: FC<ICameraEventProps> = props => {
             icon: require('./icons/star.png'),
             background: Colors.green30,
             onPress: () => {
-              post(
-                `${apiUrl}/events/${id}/retain`,
-                credentials,
-                undefined,
-                false,
-              ).then(() => {
+              post(server, `events/${id}/retain`, {json: false}).then(() => {
                 setRetained(true);
               });
             },
           },
-    [apiUrl, credentials, id, intl, retained],
+    [server, id, intl, retained],
   );
 
   const shareDrawerItem: DrawerItemProps = useMemo(
@@ -158,7 +145,7 @@ export const CameraEvent: FC<ICameraEventProps> = props => {
         onShare(event);
       },
     }),
-    [apiUrl, credentials, id, intl, retained],
+    [intl],
   );
 
   return (

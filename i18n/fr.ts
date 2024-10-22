@@ -1,4 +1,8 @@
 export default {
+  'api.frigateAuth.wrongCredentials':
+    "Erreur d'autorisation, vérifiez vos identifiants.",
+  'api.error.unauthorized':
+    "Identifiants incorrects lors de la tentative d'atteindre {url}.",
   'author.topBar.title': 'Auteur',
   'author.info.authorLabel': 'Auteur',
   'author.info.contactLabel': 'Contact',
@@ -41,6 +45,7 @@ export default {
   'menu.item.logs.label': 'Journaux',
   'menu.item.settings.label': 'Paramètres',
   'menu.item.author.label': 'Auteur',
+  'menu.item.report.label': 'Signaler un problème',
   'report.topBar.title': 'Signaler un problème',
   'report.introduction.info':
     "Le rapport contiendra certains journaux de la manière dont vous avez utilisé l'application. Il ne contiendra pas vos informations d'authentification.",
@@ -56,11 +61,18 @@ export default {
   'settings.error.max': 'La valeur maximale est {max}',
   'settings.action.save': 'Sauver',
   'settings.action.cancel': 'Annuler',
+  'settings.action.add': 'Ajouter',
+  'settings.action.edit': 'Modifier',
   'settings.server.header': 'Serveur',
+  'settings.server.address.header': 'Adresse',
+  'settings.server.auth.header': 'Autorisation',
+  'settings.servers.error.noServer': 'Aucun serveur ajouté',
   'settings.server.protocol.label': 'Protocole',
   'settings.server.host.label': 'Hôte',
   'settings.server.port.label': 'Port',
   'settings.server.path.label': 'Chemin',
+  'settings.server.auth.label': "Type d'autorisation",
+  'settings.server.auth.option.none': 'Aucune',
   'settings.server.username.label': 'Nom d’utilisateur',
   'settings.server.password.label': 'Mot de passe',
   'settings.server.useDemoServerButton': 'Utilisez le serveur démo',
@@ -117,7 +129,7 @@ export default {
   'settings.cameras.imageRefreshFrequency.label':
     'Fréquence d’actualisation des images (secondes)',
   'settings.cameras.liveView.label': 'Vue en direct',
-  'cameras.liveView.disclaimer':
+  'settings.cameras.liveView.disclaimer':
     'Gardez à l’esprit que la fréquence de rafraîchissement dépend de la latence de votre réseau',
   'settings.cameras.numberOfColumns.label': 'Nombre de colonnes',
   'settings.cameras.actionWhenPressed.label': 'Action lorsque pressé',

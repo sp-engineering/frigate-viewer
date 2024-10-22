@@ -1,4 +1,8 @@
 export default {
+  'api.frigateAuth.wrongCredentials':
+    'Autorisierungsfehler, überprüfen Sie Ihre Anmeldedaten.',
+  'api.error.unauthorized':
+    'Falsche Anmeldedaten beim Versuch, {url} zu erreichen.',
   'author.topBar.title': 'Autor',
   'author.info.authorLabel': 'Autor',
   'author.info.contactLabel': 'Kontakt',
@@ -41,6 +45,7 @@ export default {
   'menu.item.logs.label': 'Protokolle',
   'menu.item.settings.label': 'Einstellungen',
   'menu.item.author.label': 'Autor',
+  'menu.item.report.label': 'Problem melden',
   'report.topBar.title': 'Problem melden',
   'report.introduction.info':
     'Der Bericht wird einige Protokolle darüber enthalten, wie Sie die Anwendung genutzt haben. Er wird keine Authentifizierungsinformationen enthalten.',
@@ -56,11 +61,18 @@ export default {
   'settings.error.max': 'Der Höchstwert ist {max}',
   'settings.action.save': 'Speichern',
   'settings.action.cancel': 'Abbrechen',
+  'settings.action.add': 'Hinzufügen',
+  'settings.action.edit': 'Bearbeiten',
   'settings.server.header': 'Server',
+  'settings.server.address.header': 'Adresse',
+  'settings.server.auth.header': 'Autorisierung',
+  'settings.servers.error.noServer': 'Kein Server hinzugefügt',
   'settings.server.protocol.label': 'Protokoll',
   'settings.server.host.label': 'Host-Adresse',
   'settings.server.port.label': 'Port',
   'settings.server.path.label': 'Pfad',
+  'settings.server.auth.label': 'Art der Autorisierung',
+  'settings.server.auth.option.none': 'Keine',
   'settings.server.username.label': 'Benutzername',
   'settings.server.password.label': 'Passwort',
   'settings.server.useDemoServerButton': 'Nutzen den Demo Server',
@@ -117,7 +129,7 @@ export default {
   'settings.cameras.imageRefreshFrequency.label':
     'Grafik ausgetauscht (sekunden)',
   'settings.cameras.liveView.label': 'Live-Ansicht',
-  'cameras.liveView.disclaimer':
+  'settings.cameras.liveView.disclaimer':
     'Beachten Sie, dass die Aktualisierungsfrequenz von Ihrer Netzwerklatenz abhängt',
   'settings.cameras.numberOfColumns.label': 'Anzahl der Spalten',
   'settings.cameras.actionWhenPressed.label': 'Aktion beim Drücken',

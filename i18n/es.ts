@@ -1,4 +1,8 @@
 export default {
+  'api.frigateAuth.wrongCredentials':
+    'Error de autorización, verifique sus credenciales.',
+  'api.error.unauthorized':
+    'Credenciales incorrectas al intentar acceder a {url}.',
   'author.topBar.title': 'Autor',
   'author.info.authorLabel': 'Autor',
   'author.info.contactLabel': 'Contacto',
@@ -41,6 +45,7 @@ export default {
   'menu.item.logs.label': 'Registros',
   'menu.item.settings.label': 'Configuración',
   'menu.item.author.label': 'Autor',
+  'menu.item.report.label': 'Reportar problema',
   'report.topBar.title': 'Reportar problema',
   'report.introduction.info':
     'El informe contendrá algunos registros de cómo utilizaste la aplicación. No contendrá tu información de autenticación.',
@@ -56,11 +61,18 @@ export default {
   'settings.error.max': 'El valor máximo es {max}',
   'settings.action.save': 'Salvar',
   'settings.action.cancel': 'Cancelar',
+  'settings.action.add': 'Agregar',
+  'settings.action.edit': 'Editar',
   'settings.server.header': 'Servidor',
+  'settings.server.address.header': 'Dirección',
+  'settings.server.auth.header': 'Autorización',
+  'settings.servers.error.noServer': 'No se agregó ningún servidor',
   'settings.server.protocol.label': 'Protocolo',
   'settings.server.host.label': 'Host',
   'settings.server.port.label': 'Puerto',
   'settings.server.path.label': 'Ruta',
+  'settings.server.auth.label': 'Tipo de autorización',
+  'settings.server.auth.option.none': 'Ninguna',
   'settings.server.username.label': 'Nombre de usuario',
   'settings.server.password.label': 'Contraseña',
   'settings.server.useDemoServerButton': 'Usar el servidor de demostración',
@@ -117,7 +129,7 @@ export default {
   'settings.cameras.imageRefreshFrequency.label':
     'Frecuencia de actualización de la imagen (segundos)',
   'settings.cameras.liveView.label': 'Vista en vivo',
-  'cameras.liveView.disclaimer':
+  'settings.cameras.liveView.disclaimer':
     'Tenga en cuenta que la frecuencia de actualización depende de la latencia de su red',
   'settings.cameras.numberOfColumns.label': 'Número de columnas',
   'settings.cameras.actionWhenPressed.label': 'Acción al presionar',
