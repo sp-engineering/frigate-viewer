@@ -7,17 +7,28 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
+  createTransform,
 } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {configureStore} from '@reduxjs/toolkit';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
-import {settingsStore} from './settings';
+import {
+  settingsMigrations,
+  settingsStore,
+  State as SettingsState,
+} from './settings';
 import {eventsStore} from './events';
 
-const settingsReducer = persistReducer(
+const settingsReducer = persistReducer<SettingsState>(
   {
     key: 'settings',
     storage: AsyncStorage,
+    transforms: [
+      createTransform(
+        state => state,
+        state => ({...state, ...settingsMigrations(state)}),
+      ),
+    ],
   },
   settingsStore.reducer,
 );

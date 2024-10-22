@@ -12,14 +12,11 @@ import VLCPlayer, {State} from '@lunarr/vlc-player';
 import RNFetchBlob from 'rn-fetch-blob';
 import crashlytics from '@react-native-firebase/crashlytics';
 import {ZoomableView} from '../../components/ZoomableView';
-import {
-  selectServerApiUrl,
-  selectServerCredentials,
-} from '../../store/settings';
+import {selectServer} from '../../store/settings';
 import {useAppSelector} from '../../store/store';
 import {ProgressBar} from './ProgressBar';
 import {VideoHUD} from './VideoHUD';
-import {authorizationHeader} from '../../helpers/rest';
+import {authorizationHeader, buildServerApiUrl} from '../../helpers/rest';
 import Share from 'react-native-share';
 import {clipFilename} from '../camera-events/eventHelpers';
 import {ICameraEvent} from '../camera-events/CameraEvent';
@@ -79,7 +76,7 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({
   const [stopped, setStopped] = useState(false);
   const [progressInfo, setProgressInfo] = useState<State>();
   const player = useRef<VLCPlayer>(null);
-  const credentials = useAppSelector(selectServerCredentials);
+  const server = useAppSelector(selectServer);
   const [uri, setUri] = useState<string>();
   const [loading, setLoading] = useState<boolean>(true);
   const [progress, setProgress] = useState(0);
@@ -139,7 +136,7 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({
           path: filePath,
         });
         await downloader
-          .fetch('GET', clipUrl, authorizationHeader(credentials))
+          .fetch('GET', clipUrl, authorizationHeader(server))
           .progress((received, total) => {
             const progress = Math.round((received / total) * 100);
             setProgress(progress);
@@ -152,7 +149,7 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({
         setError(JSON.stringify(err));
       }
     })();
-  }, [clipUrl, credentials]);
+  }, [clipUrl, server]);
 
   const share = () => {
     Share.open({
@@ -220,11 +217,11 @@ const VideoPlayer: FC<IVideoPlayerProps> = ({
 export const CameraEventClip: NavigationFunctionComponent<
   ICameraEventClipProps
 > = ({event}) => {
-  const apiUrl = useAppSelector(selectServerApiUrl);
+  const server = useAppSelector(selectServer);
 
   const clipUrl = useMemo(
-    () => `${apiUrl}/events/${event.id}/clip.mp4`,
-    [event.id, apiUrl],
+    () => `${buildServerApiUrl(server)}/events/${event.id}/clip.mp4`,
+    [event.id, server],
   );
 
   const fileName = useMemo(() => clipFilename(event), [event]);

@@ -1,4 +1,8 @@
 export default {
+  'api.frigateAuth.wrongCredentials':
+    'Błąd autoryzacji, sprawdź swoje dane logowania.',
+  'api.error.unauthorized':
+    'Nieprawidłowe dane logowania podczas próby dotarcia do {url}.',
   'author.topBar.title': 'Autor',
   'author.info.authorLabel': 'Autor',
   'author.info.contactLabel': 'Kontakt',
@@ -41,6 +45,7 @@ export default {
   'menu.item.logs.label': 'Dzienniki',
   'menu.item.settings.label': 'Ustawienia',
   'menu.item.author.label': 'Autor',
+  'menu.item.report.label': 'Zgłoś problem',
   'report.topBar.title': 'Zgłoś problem',
   'report.introduction.info':
     'Zgłoszenie będzie zawierało pewne logi dotyczące tego, jak korzystałeś z aplikacji. Nie będzie zawierał informacji uwierzytelniających.',
@@ -56,11 +61,18 @@ export default {
   'settings.error.max': 'Maksymalną wartością jest {max}',
   'settings.action.save': 'Zapisz',
   'settings.action.cancel': 'Anuluj',
+  'settings.action.add': 'Dodaj',
+  'settings.action.edit': 'Edytuj',
   'settings.server.header': 'Serwer',
+  'settings.server.address.header': 'Adres',
+  'settings.server.auth.header': 'Autoryzacja',
+  'settings.servers.error.noServer': 'Nie dodano serwera',
   'settings.server.protocol.label': 'Protokół',
   'settings.server.host.label': 'Host',
   'settings.server.port.label': 'Port',
   'settings.server.path.label': 'Ścieżka',
+  'settings.server.auth.label': 'Typ autoryzacji',
+  'settings.server.auth.option.none': 'Brak',
   'settings.server.username.label': 'Nazwa użytkownika',
   'settings.server.password.label': 'Hasło',
   'settings.server.useDemoServerButton': 'Użyj serwera demonstracyjnego',
@@ -108,7 +120,7 @@ export default {
   'settings.locale.datesDisplay.option.descriptive': 'Opisowo',
   'settings.locale.datesDisplay.option.numeric': 'Numerycznie',
   'settings.app.header': 'Aplikacja',
-  'settings.app.colorScheme.label': 'Schemat koloróœ',
+  'settings.app.colorScheme.label': 'Schemat kolorów',
   'settings.app.colorScheme.option.auto': 'Automatyczny',
   'settings.app.colorScheme.option.light': 'Jasny',
   'settings.app.colorScheme.option.dark': 'Ciemny',
@@ -117,7 +129,7 @@ export default {
   'settings.cameras.imageRefreshFrequency.label':
     'Częstotliwość odświeżania obrazu (sekundy)',
   'settings.cameras.liveView.label': 'Podgląd na żywo',
-  'cameras.liveView.disclaimer':
+  'settings.cameras.liveView.disclaimer':
     'Weź pod uwagę, że częstotliwość odświeżania zależy od opóźnień w twojej sieci',
   'settings.cameras.numberOfColumns.label': 'Liczba kolumn',
   'settings.cameras.actionWhenPressed.label': 'Akcja po naciśnięciu',

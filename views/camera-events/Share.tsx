@@ -5,12 +5,9 @@ import {useIntl} from 'react-intl';
 import RNFetchBlob from 'rn-fetch-blob';
 import RNShare from 'react-native-share';
 import {messages} from './messages';
-import {authorizationHeader} from '../../helpers/rest';
+import {authorizationHeader, buildServerApiUrl} from '../../helpers/rest';
 import {useAppSelector} from '../../store/store';
-import {
-  selectServerApiUrl,
-  selectServerCredentials,
-} from '../../store/settings';
+import {selectServer} from '../../store/settings';
 import {ActivityIndicator, Text, ToastAndroid} from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import {clipFilename, snapshotFilename} from './eventHelpers';
@@ -29,8 +26,7 @@ export const Share: FC<ShareProps> = ({event, onDismiss}) => {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const intl = useIntl();
-  const apiUrl = useAppSelector(selectServerApiUrl);
-  const credentials = useAppSelector(selectServerCredentials);
+  const server = useAppSelector(selectServer);
 
   const styles = useStyles(({theme}) => ({
     loadingText: {
@@ -78,7 +74,7 @@ export const Share: FC<ShareProps> = ({event, onDismiss}) => {
         path: filePath,
       });
       await downloader
-        .fetch('GET', url, authorizationHeader(credentials))
+        .fetch('GET', url, authorizationHeader(server))
         .progress((received, total) => {
           const progress = Math.round((received / total) * 100);
           setProgress(progress);
@@ -93,6 +89,7 @@ export const Share: FC<ShareProps> = ({event, onDismiss}) => {
   };
 
   const shareSnapshot = async () => {
+    const apiUrl = buildServerApiUrl(server);
     const filename = snapshotFilename(event!);
     const path = await download(
       filename,
@@ -107,6 +104,7 @@ export const Share: FC<ShareProps> = ({event, onDismiss}) => {
   };
 
   const shareClip = async () => {
+    const apiUrl = buildServerApiUrl(server);
     const filename = clipFilename(event!);
     const path = await download(
       filename,

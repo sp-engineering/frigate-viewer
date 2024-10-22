@@ -1,20 +1,15 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useIntl} from 'react-intl';
 import {FlatList, Text} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
-import {get} from '../../helpers/rest';
+import {useRest} from '../../helpers/rest';
 import {
   selectAvailableCameras,
   setAvailableCameras,
   setAvailableLabels,
   setAvailableZones,
 } from '../../store/events';
-import {
-  fillGapsWithInitialData,
-  selectCamerasNumColumns,
-  selectServerApiUrl,
-  selectServerCredentials,
-} from '../../store/settings';
+import {selectCamerasNumColumns, selectServer} from '../../store/settings';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {menuButton, useMenu} from '../menu/menuHelpers';
 import {CameraTile} from './CameraTile';
@@ -49,12 +44,12 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
   useMenu(componentId, 'camerasList');
   useNoServer();
   const [loading, setLoading] = useState(true);
-  const apiUrl = useAppSelector(selectServerApiUrl);
-  const credentials = useAppSelector(selectServerCredentials);
+  const server = useAppSelector(selectServer);
   const cameras = useAppSelector(selectAvailableCameras);
   const numColumns = useAppSelector(selectCamerasNumColumns);
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const {get} = useRest();
 
   useEffect(() => {
     Navigation.mergeOptions(componentId, {
@@ -67,13 +62,9 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
     });
   }, [componentId, intl]);
 
-  useEffect(() => {
-    dispatch(fillGapsWithInitialData());
-  }, [dispatch]);
-
-  const refresh = useCallback(() => {
+  const refresh = () => {
     setLoading(true);
-    get<IConfigResponse>(`${apiUrl}/config`, credentials)
+    get<IConfigResponse>(server, `config`)
       .then(config => {
         const availableCameras = Object.keys(config.cameras);
         const availableLabels = config.objects.track;
@@ -97,13 +88,13 @@ export const CamerasList: NavigationFunctionComponent = ({componentId}) => {
       .finally(() => {
         setLoading(false);
       });
-  }, [apiUrl, credentials, dispatch]);
+  };
 
   useEffect(() => {
-    if (apiUrl !== undefined) {
+    if (server.host) {
       refresh();
     }
-  }, [refresh, apiUrl]);
+  }, [server]);
 
   return (
     <Background>

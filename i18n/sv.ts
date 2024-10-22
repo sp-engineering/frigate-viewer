@@ -1,4 +1,7 @@
 export default {
+  'api.frigateAuth.wrongCredentials':
+    'Auktoriseringsfel, kontrollera dina uppgifter.',
+  'api.error.unauthorized': 'Felaktiga uppgifter vid försök att nå {url}.',
   'author.topBar.title': 'Författare',
   'author.info.authorLabel': 'Författare',
   'author.info.contactLabel': 'Kontakt',
@@ -41,6 +44,7 @@ export default {
   'menu.item.logs.label': 'Loggar',
   'menu.item.settings.label': 'Inställningar',
   'menu.item.author.label': 'Författare',
+  'menu.item.report.label': 'Rapportera problem',
   'report.topBar.title': 'Rapportera problem',
   'report.introduction.info':
     'Rapporten kommer att innehålla vissa loggar om hur du använde applikationen. Den kommer inte att innehålla din autentiseringsinformation.',
@@ -56,11 +60,18 @@ export default {
   'settings.error.max': 'Maxvärdet är {max}',
   'settings.action.save': 'Spara',
   'settings.action.cancel': 'Avbryt',
+  'settings.action.add': 'Lägg till',
+  'settings.action.edit': 'Redigera',
   'settings.server.header': 'Server',
+  'settings.server.address.header': 'Adress',
+  'settings.server.auth.header': 'Auktorisering',
+  'settings.servers.error.noServer': 'Ingen server tillagd',
   'settings.server.protocol.label': 'Protokoll',
   'settings.server.host.label': 'Värd',
   'settings.server.port.label': 'Port',
   'settings.server.path.label': 'Väg',
+  'settings.server.auth.label': 'Typ av auktorisering',
+  'settings.server.auth.option.none': 'Ingen',
   'settings.server.username.label': 'Användarnamn',
   'settings.server.password.label': 'Lösenord',
   'settings.server.useDemoServerButton': 'Använd demoserver',
@@ -117,7 +128,7 @@ export default {
   'settings.cameras.imageRefreshFrequency.label':
     'Uppdateringsfrekvens för bilder (sekunder)',
   'settings.cameras.liveView.label': 'Livevisning',
-  'cameras.liveView.disclaimer':
+  'settings.cameras.liveView.disclaimer':
     'Tänk på att uppdateringsfrekvensen beror på nätverkets latens',
   'settings.cameras.numberOfColumns.label': 'Antal kolumner',
   'settings.cameras.actionWhenPressed.label': 'Åtgärd när du trycker',

@@ -1,8 +1,8 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useIntl} from 'react-intl';
 import {Dimensions, FlatList, Text, ToastAndroid} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
-import {get} from '../../helpers/rest';
+import {useRest} from '../../helpers/rest';
 import {
   selectFiltersCameras,
   selectFiltersLabels,
@@ -13,8 +13,7 @@ import {
   selectEventsLockLandscapePlaybackOrientation,
   selectEventsNumColumns,
   selectEventsSnapshotHeight,
-  selectServerApiUrl,
-  selectServerCredentials,
+  selectServer,
   setEventSnapshotHeight,
 } from '../../store/settings';
 import {useAppDispatch, useAppSelector} from '../../store/store';
@@ -74,8 +73,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
     useState<[number, number]>();
   const [sharedEvent, setSharedEvent] = useState<ICameraEvent>();
   const dispatch = useAppDispatch();
-  const apiUrl = useAppSelector(selectServerApiUrl);
-  const credentials = useAppSelector(selectServerCredentials);
+  const server = useAppSelector(selectServer);
   const numColumns = useAppSelector(selectEventsNumColumns);
   const snapshotHeight = useAppSelector(selectEventsSnapshotHeight);
   const filtersCameras = useAppSelector(selectFiltersCameras);
@@ -87,6 +85,7 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
   );
   const intl = useIntl();
   const {orientation, setComponentId} = useOrientation();
+  const {get} = useRest();
 
   const filterCount = useMemo(
     () =>
@@ -160,21 +159,21 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
     ],
   );
 
-  const watchEndReached = useCallback((data: ICameraEvent[]) => {
+  const watchEndReached = (data: ICameraEvent[]) => {
     if (data.length === 0) {
       setEndReached(true);
     }
-  }, []);
+  };
 
-  const refresh = useCallback(() => {
+  const refresh = () => {
     setEndReached(false);
     setRefreshing(true);
-  }, []);
+  };
 
   useEffect(() => {
-    if (apiUrl !== undefined) {
+    if (server.host) {
       if (refreshing) {
-        get<ICameraEvent[]>(`${apiUrl}/events`, credentials, eventsQueryParams)
+        get<ICameraEvent[]>(server, `events`, {queryParams: eventsQueryParams})
           .then(data => {
             watchEndReached(data);
             setEvents(data);
@@ -191,37 +190,25 @@ export const CameraEvents: NavigationFunctionComponent<ICameraEventsProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshing]);
 
-  const loadMore = useCallback(() => {
+  const loadMore = () => {
     if (!endReached) {
-      get<ICameraEvent[]>(
-        `${apiUrl}/events`,
-        credentials,
-        eventsQueryParams,
-      ).then(data => {
+      get<ICameraEvent[]>(server, `events`, {
+        queryParams: eventsQueryParams,
+      }).then(data => {
         watchEndReached(data);
         setEvents([...events, ...data]);
       });
     }
-  }, [
-    apiUrl,
-    credentials,
-    endReached,
-    events,
-    eventsQueryParams,
-    watchEndReached,
-  ]);
+  };
 
   useEffect(() => {
     refresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filtersCameras, filtersLabels, filtersZones, filtersRetained]);
 
-  const onDelete = useCallback(
-    (deletedIds: string[]) => {
-      setEvents(events.filter(event => !deletedIds.includes(event.id)));
-    },
-    [events],
-  );
+  const onDelete = (deletedIds: string[]) => {
+    setEvents(events.filter(event => !deletedIds.includes(event.id)));
+  };
 
   const onSnapshotDimensions = (width: number, height: number) => {
     if (!snapshotDimensions) {

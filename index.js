@@ -15,6 +15,7 @@ import {withTranslations} from './helpers/locale';
 import {Logs} from './views/logs/Logs';
 import {Storage} from './views/storage/Storage';
 import {System} from './views/system/System';
+import {ServerForm} from './views/settings/ServerForm';
 
 const registerComponent = (name, component, decorators = []) => {
   Navigation.registerComponent(
@@ -38,6 +39,7 @@ registerComponent('Storage', Storage, viewDecorators);
 registerComponent('System', System, viewDecorators);
 registerComponent('Logs', Logs, viewDecorators);
 registerComponent('Settings', Settings, viewDecorators);
+registerComponent('ServerForm', ServerForm, viewDecorators);
 registerComponent('Author', Author, viewDecorators);
 registerComponent('Report', Report, viewDecorators);
 

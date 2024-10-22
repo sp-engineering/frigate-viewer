@@ -3,10 +3,7 @@ import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {StyleSheet, View} from 'react-native';
 import {ZoomableImage} from '../../components/ZoomableImage';
 import {useAppSelector} from '../../store/store';
-import {
-  selectCamerasPreviewHeight,
-  selectServerCredentials,
-} from '../../store/settings';
+import {selectCamerasPreviewHeight, selectServer} from '../../store/settings';
 import {authorizationHeader} from '../../helpers/rest';
 
 const styles = StyleSheet.create({
@@ -33,7 +30,7 @@ export const ImagePreview: FC<IImagePreviewProps> = ({
   onPreviewLoad,
 }) => {
   const previewHeight = useAppSelector(selectCamerasPreviewHeight);
-  const credentials = useAppSelector(selectServerCredentials);
+  const server = useAppSelector(selectServer);
 
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -44,7 +41,10 @@ export const ImagePreview: FC<IImagePreviewProps> = ({
         ]}>
         {imageUrl && (
           <ZoomableImage
-            source={{uri: imageUrl, headers: authorizationHeader(credentials)}}
+            source={{
+              uri: imageUrl,
+              headers: authorizationHeader(server),
+            }}
             style={styles.image}
             fadeDuration={0}
             resizeMode="contain"

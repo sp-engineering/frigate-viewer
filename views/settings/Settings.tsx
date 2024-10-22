@@ -1,7 +1,7 @@
 import {Formik, FormikProps} from 'formik';
 import React, {useCallback, useMemo, useRef} from 'react';
 import {useIntl} from 'react-intl';
-import {Keyboard, Pressable, Text} from 'react-native';
+import {Keyboard, Text} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import * as yup from 'yup';
 import crashlytics from '@react-native-firebase/crashlytics';
@@ -12,14 +12,17 @@ import {Section} from '../../components/forms/Section';
 import {
   ISettings,
   saveSettings,
-  selectServerApiUrl,
+  selectServer,
+  selectServers,
   selectSettings,
+  Server,
 } from '../../store/settings';
 import {useAppDispatch, useAppSelector} from '../../store/store';
 import {MessageKey, messages} from './messages';
-import {ActionBar, Switch, View} from 'react-native-ui-lib';
+import {ActionBar, Button, Switch, View} from 'react-native-ui-lib';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useTheme, useStyles} from '../../helpers/colors';
+import {ServerItem} from './ServerItem';
 
 export const Settings: NavigationFunctionComponent = () => {
   const styles = useStyles(({theme}) => ({
@@ -39,38 +42,39 @@ export const Settings: NavigationFunctionComponent = () => {
       fontSize: 22,
       fontWeight: 'bold',
     },
-    demoServerButton: {
-      color: theme.link,
-    },
     tip: {
+      fontSize: 10,
       color: theme.text,
+    },
+    error: {
+      color: theme.error,
+    },
+    addServerButton: {
+      marginVertical: 8,
+      alignSelf: 'flex-start',
     },
   }));
   const theme = useTheme();
 
   const formRef = useRef<FormikProps<ISettings>>(null);
   const currentSettings = useAppSelector(selectSettings);
-  const apiUrl = useAppSelector(selectServerApiUrl);
+  const servers = useAppSelector(selectServers);
+  const server = useAppSelector(selectServer);
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const settingsValidationSchema = useMemo(() => {
     const requiredError = intl.formatMessage(messages['error.required']);
+    const noServersError = intl.formatMessage(
+      messages['servers.error.noServer'],
+    );
     const minError = ({min}: {min: number}) =>
       intl.formatMessage(messages['error.min'], {min});
     const maxError = ({max}: {max: number}) =>
       intl.formatMessage(messages['error.max'], {max});
 
     return yup.object().shape({
-      server: yup.object().shape({
-        protocol: yup.string().required(requiredError),
-        host: yup.string().required(requiredError),
-        port: yup.number().required(requiredError),
-        credentials: yup.object().shape({
-          username: yup.string(),
-          password: yup.string(),
-        }),
-      }),
+      servers: yup.array().min(1, noServersError),
       locale: yup.object().shape({
         region: yup.string().required(requiredError),
         datesDisplay: yup.string().required(requiredError),
@@ -111,16 +115,6 @@ export const Settings: NavigationFunctionComponent = () => {
     [dispatch],
   );
 
-  const fillDemoServer = useCallback(() => {
-    if (formRef.current) {
-      formRef.current.setFieldValue('server.protocol', 'https');
-      formRef.current.setFieldValue('server.host', 'demo.frigate.video');
-      formRef.current.setFieldValue('server.port', 443);
-      formRef.current.setFieldValue('server.credentials.username', '');
-      formRef.current.setFieldValue('server.credentials.password', '');
-    }
-  }, []);
-
   const actions = useMemo(() => {
     const cancelButton = {
       label: intl.formatMessage(messages['action.cancel']),
@@ -134,8 +128,53 @@ export const Settings: NavigationFunctionComponent = () => {
         formRef.current?.handleSubmit();
       },
     };
-    return apiUrl ? [cancelButton, saveButton] : [saveButton];
-  }, [apiUrl, formRef, theme]);
+    return server.host ? [cancelButton, saveButton] : [saveButton];
+  }, [intl, server, formRef, theme]);
+
+  const addServer = () => {
+    Navigation.showModal({
+      component: {
+        name: 'ServerForm',
+        passProps: {
+          onSubmit: (addedServer: Server) => {
+            if (formRef.current) {
+              const updatedServers = [
+                ...formRef.current.values.servers,
+                addedServer,
+              ];
+              formRef.current.setFieldValue('servers', updatedServers);
+            }
+          },
+        },
+      },
+    });
+  };
+
+  const editServer = (server: Server, index: number) => {
+    Navigation.showModal({
+      component: {
+        name: 'ServerForm',
+        passProps: {
+          server,
+          onSubmit: (modifiedServer: Server) => {
+            if (formRef.current) {
+              const updatedServers = [...formRef.current.values.servers];
+              updatedServers[index] = modifiedServer;
+              formRef.current.setFieldValue('servers', updatedServers);
+            }
+          },
+        },
+      },
+    });
+  };
+
+  const removeServer = (index: number) => {
+    if (formRef.current) {
+      const updatedServers = [...formRef.current.values.servers];
+      updatedServers.splice(index, 1);
+      formRef.current.setFieldValue('servers', updatedServers);
+    }
+  };
 
   return (
     <Formik
@@ -150,82 +189,28 @@ export const Settings: NavigationFunctionComponent = () => {
               {intl.formatMessage(messages['topBar.title'])}
             </Text>
             <Section header={intl.formatMessage(messages['server.header'])}>
-              <Label
-                text={intl.formatMessage(messages['server.protocol.label'])}
-                touched={touched.server?.protocol}
-                error={errors.server?.protocol}
-                required={true}>
-                <Dropdown
-                  value={values.server.protocol}
-                  options={[{value: 'http'}, {value: 'https'}]}
-                  onValueChange={handleChange('server.protocol')}
+              {values.servers.map((server, i) => (
+                <ServerItem
+                  key={i}
+                  server={server}
+                  onPress={() => editServer(server, i)}
+                  onRemovePress={() => removeServer(i)}
                 />
-              </Label>
-              <Label
-                text={intl.formatMessage(messages['server.host.label'])}
-                touched={touched.server?.host}
-                error={errors.server?.host}
-                required={true}>
-                <Input
-                  value={values.server.host}
-                  onBlur={handleBlur('host')}
-                  onChangeText={handleChange('server.host')}
-                  keyboardType="default"
+              ))}
+              {touched.servers && errors.servers && (
+                <Text style={styles.error}>{errors.servers.toString()}</Text>
+              )}
+              {values.servers.length === 0 && (
+                <Button
+                  label={intl.formatMessage(messages['action.add'])}
+                  size={Button.sizes.xSmall}
+                  color={theme.link}
+                  outlineColor={theme.link}
+                  outline
+                  style={styles.addServerButton}
+                  onPress={addServer}
                 />
-              </Label>
-              <Label
-                text={intl.formatMessage(messages['server.port.label'])}
-                touched={touched.server?.port}
-                error={errors.server?.port}
-                required={true}>
-                <Input
-                  value={`${values.server.port || ''}`}
-                  onBlur={handleBlur('port')}
-                  onChangeText={value =>
-                    setFieldValue('server.port', parseFloat(value) || null)
-                  }
-                  keyboardType="numeric"
-                />
-              </Label>
-              <Label
-                text={intl.formatMessage(messages['server.path.label'])}
-                touched={touched.server?.path}
-                error={errors.server?.path}>
-                <Input
-                  value={values.server.path}
-                  onBlur={handleBlur('path')}
-                  onChangeText={handleChange('server.path')}
-                  keyboardType="default"
-                />
-              </Label>
-              <Label
-                text={intl.formatMessage(messages['server.username.label'])}
-                touched={touched.server?.credentials?.username}
-                error={errors.server?.credentials?.username}>
-                <Input
-                  value={values.server.credentials?.username}
-                  onBlur={handleBlur('username')}
-                  onChangeText={handleChange('server.credentials.username')}
-                  keyboardType="default"
-                />
-              </Label>
-              <Label
-                text={intl.formatMessage(messages['server.password.label'])}
-                touched={touched.server?.credentials?.password}
-                error={errors.server?.credentials?.password}>
-                <Input
-                  value={values.server.credentials?.password}
-                  onBlur={handleBlur('password')}
-                  onChangeText={handleChange('server.credentials.password')}
-                  keyboardType="default"
-                  secureTextEntry={true}
-                />
-              </Label>
-              <Pressable onPress={fillDemoServer}>
-                <Text style={styles.demoServerButton}>
-                  {intl.formatMessage(messages['server.useDemoServerButton'])}
-                </Text>
-              </Pressable>
+              )}
             </Section>
             <Section header={intl.formatMessage(messages['locale.header'])}>
               <Label

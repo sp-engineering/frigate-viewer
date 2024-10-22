@@ -6,12 +6,8 @@ import {
   StyleSheet,
 } from 'react-native';
 import {useAppSelector} from '../../store/store';
-import {
-  selectEventsPhotoPreference,
-  selectServerApiUrl,
-  selectServerCredentials,
-} from '../../store/settings';
-import {authorizationHeader} from '../../helpers/rest';
+import {selectEventsPhotoPreference, selectServer} from '../../store/settings';
+import {authorizationHeader, buildServerApiUrl} from '../../helpers/rest';
 
 const styles = StyleSheet.create({
   image: {
@@ -32,16 +28,16 @@ export const EventSnapshot: FC<IEventSnapshotProps> = ({
 }) => {
   const [snapshot, setSnapshot] = useState<string>();
   const photoPreference = useAppSelector(selectEventsPhotoPreference);
-  const apiUrl = useAppSelector(selectServerApiUrl);
-  const credentials = useAppSelector(selectServerCredentials);
+  const server = useAppSelector(selectServer);
 
   useEffect(() => {
+    const apiUrl = buildServerApiUrl(server);
     const url =
       hasSnapshot && photoPreference === 'snapshot'
         ? `${apiUrl}/events/${id}/snapshot.jpg?bbox=1`
         : `${apiUrl}/events/${id}/thumbnail.jpg`;
     setSnapshot(url);
-  }, [id, hasSnapshot, apiUrl]);
+  }, [id, hasSnapshot, server]);
 
   const onLoad = (event: NativeSyntheticEvent<ImageLoadEventData>) => {
     if (onSnapshotLoad && snapshot) {
@@ -51,7 +47,7 @@ export const EventSnapshot: FC<IEventSnapshotProps> = ({
 
   return snapshot ? (
     <ZoomableImage
-      source={{uri: snapshot, headers: authorizationHeader(credentials)}}
+      source={{uri: snapshot, headers: authorizationHeader(server)}}
       style={styles.image}
       fadeDuration={0}
       resizeMode="cover"
