@@ -1,9 +1,3 @@
-# Privacy Policy & Terms of Use
-
-Quick links:
-* [Privacy Policy](#privacy-policy-details)
-* [Terms of Use (EULA)](#terms-of-use-eula)
-
 # Privacy Policy
 
 ## Introduction
@@ -30,10 +24,6 @@ The App offers paid features. All transactions are processed securely by the res
 * I do not collect or store any credit card numbers or personal billing information.
 * I only receive an anonymous confirmation from Google or Apple that a purchase was successful to unlock the features.
 * You can restore your previous purchases at any time using the "Restore Purchases" button within the App.
-
-# Terms of Use (EULA)
-
-By using this Application, you agree to the Apple Standard Licensed Application End User License Agreement (EULA). You can find the full terms here: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 
 ## Service Providers
 
