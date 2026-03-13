@@ -1,4 +1,4 @@
-# Frigate Viewer
+# Viewer for Frigate
 
 This is mobile application which has been written using React Native to easily browse camera events of Frigate NVR. This is not official app.
 
