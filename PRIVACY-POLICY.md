@@ -16,6 +16,13 @@ The App requires your Frigate NVR server connection data. This data is stored in
 
 The App can store snapshots and clips from your Frigate NVR server in the device's internal memory. These files are never transferred outside your device.
 
+## Diagnostics and Technical Logs
+
+To improve the stability and performance of the App, we use the following services:
+
+* **Crash Reporting (Crashlytics):** If the App crashes, a technical report is sent to Firebase (a Google service). This includes information about your device type, OS version, and the code stack trace at the time of the crash. It contains no personal data or Frigate connection details. You can opt-out of this in the App settings.
+* **Technical Support Logs:** When you manually use the "Report a Problem" feature, a technical log including your app configuration (excluding passwords/secrets) and a sequence of navigation events (screen transitions) is sent to the developer. This is used solely to diagnose specific issues you encounter. These logs are anonymous and are not linked to your identity.
+
 ## In-App Purchases (Payments)
 
 The App offers paid features. All transactions are processed securely by the respective app store platform (Apple App Store or Google Play Store).
