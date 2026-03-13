@@ -1,16 +1,32 @@
+# Privacy Policy & Terms of Use
+
+Quick links:
+* [Privacy Policy](#privacy-policy-details)
+* [Terms of Use (EULA)](#terms-of-use-eula)
+
 # Privacy Policy
 
 ## Introduction
 
-SP engineering built the Frigate Viewer application as a Open Source Application. This App is provided at no cost and is intended for use as is.
-
-This page is used to inform visibors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my App.
+SP engineering built the Viewer for Frigate application as a Open Source Application. This App is provided at no cost and is intended for use as is. This page informs visitors regarding policies with the collection, use, and disclosure of Personal Information for anyone using the App.
 
 ## Information Collection and Use
 
-The App requires to provide your Frigate NVR server connection data. The data are stored in device internal memory and are not collected by me or any other third-party companies.
+The App requires your Frigate NVR server connection data. This data is stored in the device's internal memory and is not collected by the developer or any third-party companies.
 
-The App can store snapshots and clip from your Frigate NVR server in device internal memory. The files are never transferred outside your device.
+The App can store snapshots and clips from your Frigate NVR server in the device's internal memory. These files are never transferred outside your device.
+
+## In-App Purchases (Payments)
+
+The App offers paid features. All transactions are processed securely by the respective app store platform (Apple App Store or Google Play Store).
+
+* I do not collect or store any credit card numbers or personal billing information.
+* I only receive an anonymous confirmation from Google or Apple that a purchase was successful to unlock the features.
+* You can restore your previous purchases at any time using the "Restore Purchases" button within the App.
+
+# Terms of Use (EULA)
+
+By using this Application, you agree to the Apple Standard Licensed Application End User License Agreement (EULA). You can find the full terms here: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 
 ## Service Providers
 
@@ -18,7 +34,7 @@ The App uses Frigate NVR server API to show the content. According to my best kn
 
 ## Security
 
-This App is intended to connect to Frigate NVR server of your choice. Remember that security of your data depends on security of your device (data is stored internally) and your server (the app uses server through network connection). Make sure that your device is secure and make sure that you use safe connection to connect to reliable Frigate NVR server. I cannot guarantee its absolute security, because it depends mostly on you.
+This App is intended to connect to Frigate NVR server of your choice. Remember that security of your data depends on security of your device (data is stored internally) and your server (the app uses server through network connection). Make sure that your device is secure and ensure you use safe connection to connect to reliable Frigate NVR server (HTTPS/VPN). I cannot guarantee its absolute security, because it depends on your infrastructure.
 
 ## Links to Other Sites
 
