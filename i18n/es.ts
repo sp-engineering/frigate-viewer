@@ -131,6 +131,7 @@ export default {
   'settings.cameras.liveView.label': 'Vista en vivo',
   'settings.cameras.liveView.disclaimer':
     'Tenga en cuenta que la frecuencia de actualización depende de la latencia de su red',
+  'settings.cameras.showBoundingBoxes.label': 'Mostrar cuadros delimitadores',
   'settings.cameras.numberOfColumns.label': 'Número de columnas',
   'settings.cameras.actionWhenPressed.label': 'Acción al presionar',
   'settings.cameras.actionWhenPressed.option.events': 'Lista de eventos',

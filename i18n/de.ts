@@ -131,6 +131,7 @@ export default {
   'settings.cameras.liveView.label': 'Live-Ansicht',
   'settings.cameras.liveView.disclaimer':
     'Beachten Sie, dass die Aktualisierungsfrequenz von Ihrer Netzwerklatenz abhängt',
+  'settings.cameras.showBoundingBoxes.label': 'Begrenzungsrahmen anzeigen',
   'settings.cameras.numberOfColumns.label': 'Anzahl der Spalten',
   'settings.cameras.actionWhenPressed.label': 'Aktion beim Drücken',
   'settings.cameras.actionWhenPressed.option.events': 'Ereignisliste',

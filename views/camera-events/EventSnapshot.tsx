@@ -6,7 +6,11 @@ import {
   StyleSheet,
 } from 'react-native';
 import {useAppSelector} from '../../store/store';
-import {selectEventsPhotoPreference, selectServer} from '../../store/settings';
+import {
+  selectCamerasShowBoundingBoxes,
+  selectEventsPhotoPreference,
+  selectServer,
+} from '../../store/settings';
 import {authorizationHeader, buildServerApiUrl} from '../../helpers/rest';
 
 const styles = StyleSheet.create({
@@ -28,16 +32,18 @@ export const EventSnapshot: FC<IEventSnapshotProps> = ({
 }) => {
   const [snapshot, setSnapshot] = useState<string>();
   const photoPreference = useAppSelector(selectEventsPhotoPreference);
+  const showBoundingBoxes = useAppSelector(selectCamerasShowBoundingBoxes);
   const server = useAppSelector(selectServer);
 
   useEffect(() => {
-    const apiUrl = buildServerApiUrl(server);
     const url =
       hasSnapshot && photoPreference === 'snapshot'
-        ? `${apiUrl}/events/${id}/snapshot.jpg?bbox=1`
-        : `${apiUrl}/events/${id}/thumbnail.jpg`;
+        ? buildServerApiUrl(server, ['events', id, 'snapshot.jpg'], {
+            bbox: showBoundingBoxes,
+          })
+        : buildServerApiUrl(server, ['events', id, 'thumbnail.jpg']);
     setSnapshot(url);
-  }, [id, hasSnapshot, server]);
+  }, [id, hasSnapshot, photoPreference, server, showBoundingBoxes]);
 
   const onLoad = (event: NativeSyntheticEvent<ImageLoadEventData>) => {
     if (onSnapshotLoad && snapshot) {

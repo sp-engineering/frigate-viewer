@@ -367,6 +367,17 @@ export const Settings: NavigationFunctionComponent = () => {
               </Label>
               <Label
                 text={intl.formatMessage(
+                  messages['cameras.showBoundingBoxes.label'],
+                )}>
+                <Switch
+                  value={values.cameras.showBoundingBoxes}
+                  onValueChange={value =>
+                    setFieldValue('cameras.showBoundingBoxes', value)
+                  }
+                />
+              </Label>
+              <Label
+                text={intl.formatMessage(
                   messages['cameras.numberOfColumns.label'],
                 )}
                 touched={touched.cameras?.numColumns}

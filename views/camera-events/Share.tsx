@@ -7,7 +7,10 @@ import RNShare from 'react-native-share';
 import {messages} from './messages';
 import {authorizationHeader, buildServerApiUrl} from '../../helpers/rest';
 import {useAppSelector} from '../../store/store';
-import {selectServer} from '../../store/settings';
+import {
+  selectCamerasShowBoundingBoxes,
+  selectServer,
+} from '../../store/settings';
 import {ActivityIndicator, Text, ToastAndroid} from 'react-native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import {clipFilename, snapshotFilename} from './eventHelpers';
@@ -27,6 +30,7 @@ export const Share: FC<ShareProps> = ({event, onDismiss}) => {
   const [progress, setProgress] = useState(0);
   const intl = useIntl();
   const server = useAppSelector(selectServer);
+  const showBoundingBoxes = useAppSelector(selectCamerasShowBoundingBoxes);
 
   const styles = useStyles(({theme}) => ({
     loadingText: {
@@ -60,7 +64,7 @@ export const Share: FC<ShareProps> = ({event, onDismiss}) => {
           ]
         : []),
     ];
-  }, [event]);
+  }, [event, showBoundingBoxes]);
 
   const download = async (filename: string, url: string) => {
     try {
@@ -89,11 +93,12 @@ export const Share: FC<ShareProps> = ({event, onDismiss}) => {
   };
 
   const shareSnapshot = async () => {
-    const apiUrl = buildServerApiUrl(server);
     const filename = snapshotFilename(event!);
     const path = await download(
       filename,
-      `${apiUrl}/events/${event!.id}/snapshot.jpg?bbox=1`,
+      buildServerApiUrl(server, ['events', event!.id, 'snapshot.jpg'], {
+        bbox: showBoundingBoxes,
+      }),
     );
     await stall(200);
     RNShare.open({
@@ -104,11 +109,10 @@ export const Share: FC<ShareProps> = ({event, onDismiss}) => {
   };
 
   const shareClip = async () => {
-    const apiUrl = buildServerApiUrl(server);
     const filename = clipFilename(event!);
     const path = await download(
       filename,
-      `${apiUrl}/events/${event!.id}/clip.mp4`,
+      buildServerApiUrl(server, ['events', event!.id, 'clip.mp4']),
     );
     await stall(200);
     RNShare.open({

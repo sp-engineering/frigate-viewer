@@ -130,6 +130,7 @@ export default {
   'settings.cameras.liveView.label': 'Livevisning',
   'settings.cameras.liveView.disclaimer':
     'Tänk på att uppdateringsfrekvensen beror på nätverkets latens',
+  'settings.cameras.showBoundingBoxes.label': 'Visa avgränsningsrutor',
   'settings.cameras.numberOfColumns.label': 'Antal kolumner',
   'settings.cameras.actionWhenPressed.label': 'Åtgärd när du trycker',
   'settings.cameras.actionWhenPressed.option.events': 'Lista över händelser',

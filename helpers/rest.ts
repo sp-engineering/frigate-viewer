@@ -18,9 +18,40 @@ export const buildServerUrl = (server: Server) => {
     : undefined;
 };
 
-export const buildServerApiUrl = (server: Server) => {
+export const buildQueryString = (
+  queryParams: Record<string, string | number | boolean>,
+) =>
+  Object.entries(queryParams)
+    .map(([key, value]) => {
+      const normalizedValue =
+        typeof value === 'boolean' ? Number(value) : value;
+      return `${encodeURIComponent(key)}=${encodeURIComponent(
+        normalizedValue.toString(),
+      )}`;
+    })
+    .join('&');
+
+export const buildServerApiUrl = (
+  server: Server,
+  endpoint?: string | string[],
+  queryParams?: Record<string, string | number | boolean>,
+) => {
   const serverUrl = buildServerUrl(server);
-  return serverUrl ? `${serverUrl}api` : undefined;
+  if (!serverUrl) {
+    throw new Error('Cannot build an API URL without a configured server.');
+  }
+
+  const endpointSegments =
+    typeof endpoint === 'string' ? endpoint.split('/') : endpoint ?? [];
+  const endpointPath = endpointSegments.length
+    ? `/${endpointSegments
+        .filter(segment => segment !== '')
+        .map(encodeURIComponent)
+        .join('/')}`
+    : '';
+  const queryString = queryParams ? `?${buildQueryString(queryParams)}` : '';
+
+  return `${serverUrl}api${endpointPath}${queryString}`;
 };
 
 export const authorizationHeader: (server: Server) => {
@@ -39,7 +70,7 @@ export const useRest = () => {
 
   const login = async (server: Server) => {
     try {
-      const url = `${buildServerApiUrl(server)}/login`;
+      const url = buildServerApiUrl(server, 'login');
       crashlytics().log(`POST ${url}`);
       const response = await fetch(url, {
         method: 'POST',
@@ -78,17 +109,14 @@ export const useRest = () => {
   ): Promise<T> => {
     try {
       const {queryParams, json} = options;
-      const url = `${buildServerApiUrl(server)}/${endpoint}`;
+      const url = buildServerApiUrl(server, endpoint, queryParams);
       const executeFetch = () =>
-        fetch(
-          `${url}${queryParams ? `?${new URLSearchParams(queryParams)}` : ''}`,
-          {
-            method,
-            headers: {
-              ...authorizationHeader(server),
-            },
+        fetch(url, {
+          method,
+          headers: {
+            ...authorizationHeader(server),
           },
-        );
+        });
       crashlytics().log(`${method} ${url}`);
       const response = await executeFetch();
       if (!response.ok) {

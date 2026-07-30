@@ -73,6 +73,7 @@ export interface ISettings {
   cameras: {
     refreshFrequency: number;
     liveView: boolean;
+    showBoundingBoxes: boolean;
     numColumns: number;
     previewHeight: number;
     actionWhenPressed: 'events' | 'preview';
@@ -110,6 +111,7 @@ export const initialSettings: ISettings = {
   cameras: {
     refreshFrequency: 10,
     liveView: false,
+    showBoundingBoxes: true,
     numColumns: 1,
     previewHeight: 222,
     actionWhenPressed: 'events',
@@ -250,6 +252,9 @@ export const selectCamerasRefreshFrequency = (state: RootState) =>
 
 export const selectCamerasLiveView = (state: RootState) =>
   selectCameras(state).liveView;
+
+export const selectCamerasShowBoundingBoxes = (state: RootState) =>
+  selectCameras(state).showBoundingBoxes;
 
 export const selectCamerasNumColumns = (state: RootState) =>
   selectCameras(state).numColumns;

@@ -131,6 +131,7 @@ export default {
   'settings.cameras.liveView.label': 'Живий перегляд',
   'settings.cameras.liveView.disclaimer':
     'Майте на увазі, що частота оновлення залежить від затримки мережі',
+  'settings.cameras.showBoundingBoxes.label': 'Показувати рамки об’єктів',
   'settings.cameras.numberOfColumns.label': 'Кількість стовпців',
   'settings.cameras.actionWhenPressed.label': 'Дія при натисканні',
   'settings.cameras.actionWhenPressed.option.events': 'Список подій',

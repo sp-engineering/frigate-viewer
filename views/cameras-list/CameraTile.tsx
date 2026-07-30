@@ -11,6 +11,7 @@ import {
   selectCamerasNumColumns,
   selectCamerasPreviewHeight,
   selectCamerasRefreshFrequency,
+  selectCamerasShowBoundingBoxes,
   selectEventsLockLandscapePlaybackOrientation,
   selectServer,
   setCameraPreviewHeight,
@@ -55,6 +56,7 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   const dispatch = useAppDispatch();
   const server = useAppSelector(selectServer);
   const refreshFrequency = useAppSelector(selectCamerasRefreshFrequency);
+  const showBoundingBoxes = useAppSelector(selectCamerasShowBoundingBoxes);
   const previewHeight = useAppSelector(selectCamerasPreviewHeight);
   const [cameraHeight, setCameraHeight] = useState<number>();
   const liveView = useAppSelector(selectCamerasLiveView);
@@ -67,9 +69,10 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
   const {get} = useRest();
 
   const getLastImageUrl = () =>
-    `${buildServerApiUrl(
-      server,
-    )}/${cameraName}/latest.jpg?bbox=1&ts=${new Date().toISOString()}`;
+    buildServerApiUrl(server, [cameraName, 'latest.jpg'], {
+      bbox: showBoundingBoxes,
+      ts: new Date().toISOString(),
+    });
 
   const updateLastImageUrl = async () => {
     const lastImageUrl = getLastImageUrl();
@@ -107,7 +110,13 @@ export const CameraTile: FC<CameraTileProps> = ({cameraName, componentId}) => {
       getLastEvent();
     }, refreshFrequency * 1000);
     return removeRefreshing;
-  }, [cameraName, setLastImageSrc, server, refreshFrequency]);
+  }, [
+    cameraName,
+    setLastImageSrc,
+    server,
+    refreshFrequency,
+    showBoundingBoxes,
+  ]);
 
   const showCameraEvents = () => {
     Navigation.push(componentId, {
