@@ -131,6 +131,8 @@ export default {
   'settings.cameras.liveView.label': 'Vue en direct',
   'settings.cameras.liveView.disclaimer':
     'Gardez à l’esprit que la fréquence de rafraîchissement dépend de la latence de votre réseau',
+  'settings.cameras.showBoundingBoxes.label':
+    'Afficher les cadres de délimitation',
   'settings.cameras.numberOfColumns.label': 'Nombre de colonnes',
   'settings.cameras.actionWhenPressed.label': 'Action lorsque pressé',
   'settings.cameras.actionWhenPressed.option.events': 'Liste des événements',

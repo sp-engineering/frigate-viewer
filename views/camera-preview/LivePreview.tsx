@@ -4,6 +4,7 @@ import {Image, ImageStyle, View} from 'react-native';
 import {useAppSelector} from '../../store/store';
 import {
   selectCamerasRefreshFrequency,
+  selectCamerasShowBoundingBoxes,
   selectServer,
 } from '../../store/settings';
 import {authorizationHeader, buildServerApiUrl} from '../../helpers/rest';
@@ -27,12 +28,14 @@ export const LivePreview: FC<LivePreviewProps> = ({cameraName}) => {
   );
   const server = useAppSelector(selectServer);
   const refreshFrequency = useAppSelector(selectCamerasRefreshFrequency);
+  const showBoundingBoxes = useAppSelector(selectCamerasShowBoundingBoxes);
   const interval = useRef<NodeJS.Timeout>();
 
   const getLastImageUrl = () =>
-    `${buildServerApiUrl(
-      server,
-    )}/${cameraName}/latest.jpg?bbox=1&ts=${new Date().toISOString()}`;
+    buildServerApiUrl(server, [cameraName, 'latest.jpg'], {
+      bbox: showBoundingBoxes,
+      ts: new Date().toISOString(),
+    });
 
   const updateLastImageUrl = async () => {
     const lastImageUrl = getLastImageUrl();
@@ -53,7 +56,13 @@ export const LivePreview: FC<LivePreviewProps> = ({cameraName}) => {
       updateLastImageUrl();
     }, refreshFrequency * 1000);
     return removeRefreshing;
-  }, [cameraName, setLastImageSrc, server, refreshFrequency]);
+  }, [
+    cameraName,
+    setLastImageSrc,
+    server,
+    refreshFrequency,
+    showBoundingBoxes,
+  ]);
 
   return (
     <View>

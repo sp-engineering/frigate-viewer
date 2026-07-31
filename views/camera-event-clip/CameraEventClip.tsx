@@ -220,7 +220,7 @@ export const CameraEventClip: NavigationFunctionComponent<
   const server = useAppSelector(selectServer);
 
   const clipUrl = useMemo(
-    () => `${buildServerApiUrl(server)}/events/${event.id}/clip.mp4`,
+    () => buildServerApiUrl(server, ['events', event.id, 'clip.mp4']),
     [event.id, server],
   );
 

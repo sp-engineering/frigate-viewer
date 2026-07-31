@@ -131,6 +131,7 @@ export default {
   'settings.cameras.liveView.label': 'Podgląd na żywo',
   'settings.cameras.liveView.disclaimer':
     'Weź pod uwagę, że częstotliwość odświeżania zależy od opóźnień w twojej sieci',
+  'settings.cameras.showBoundingBoxes.label': 'Pokaż ramki ograniczające',
   'settings.cameras.numberOfColumns.label': 'Liczba kolumn',
   'settings.cameras.actionWhenPressed.label': 'Akcja po naciśnięciu',
   'settings.cameras.actionWhenPressed.option.events': 'Lista zdarzeń',

@@ -130,6 +130,7 @@ export default {
   'settings.cameras.liveView.label': 'Visualização ao vivo',
   'settings.cameras.liveView.disclaimer':
     'Lembre-se que a frequência de atualização depende da latência da sua rede',
+  'settings.cameras.showBoundingBoxes.label': 'Mostrar caixas delimitadoras',
   'settings.cameras.numberOfColumns.label': 'Número de colunas',
   'settings.cameras.actionWhenPressed.label': 'Ação quando pressionado',
   'settings.cameras.actionWhenPressed.option.events': 'Lista de eventos',

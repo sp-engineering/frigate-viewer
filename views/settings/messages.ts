@@ -78,6 +78,7 @@ export const messages = makeMessages('settings', {
   'cameras.liveView.label': 'Live view',
   'cameras.liveView.disclaimer':
     'Keep in mind that refresh frequency depends on your network latency',
+  'cameras.showBoundingBoxes.label': 'Show bounding boxes',
   'cameras.numberOfColumns.label': 'Number of columns',
   'cameras.actionWhenPressed.label': 'Action on press',
   'cameras.actionWhenPressed.option.events': 'List of events',
