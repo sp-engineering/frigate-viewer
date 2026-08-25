@@ -120,6 +120,9 @@ dependencies {
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
     implementation project(':react-native-svg')
+    
+    // OkHttp for client certificate HTTP requests
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
