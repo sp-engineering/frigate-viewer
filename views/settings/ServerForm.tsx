@@ -1,5 +1,5 @@
 import {Formik, FormikProps} from 'formik';
-import React, {useCallback, useMemo, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useIntl} from 'react-intl';
 import {Keyboard, Pressable, Text} from 'react-native';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
@@ -14,6 +14,7 @@ import {messages} from './messages';
 import {ActionBar, View} from 'react-native-ui-lib';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useTheme, useStyles} from '../../helpers/colors';
+import {clientCertManager, CertificateInfo} from '../../helpers/clientCertificates';
 
 interface ServerProps {
   server?: Server;
@@ -25,6 +26,9 @@ export const ServerForm: NavigationFunctionComponent<ServerProps> = ({
   server,
   onSubmit,
 }) => {
+  const [certificates, setCertificates] = useState<CertificateInfo[]>([]);
+  const [certificatesLoading, setCertificatesLoading] = useState(false);
+
   const styles = useStyles(({theme}) => ({
     wrapper: {
       flex: 1,
@@ -55,6 +59,24 @@ export const ServerForm: NavigationFunctionComponent<ServerProps> = ({
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
+  // Load available certificates on mount
+  useEffect(() => {
+    loadCertificates();
+  }, []);
+
+  const loadCertificates = async () => {
+    try {
+      setCertificatesLoading(true);
+      const certs = await clientCertManager.listCertificates();
+      setCertificates(certs);
+    } catch (error) {
+      console.error('Error loading client certificates:', error);
+      setCertificates([]);
+    } finally {
+      setCertificatesLoading(false);
+    }
+  };
+
   const settingsValidationSchema = useMemo(() => {
     const requiredError = intl.formatMessage(messages['error.required']);
 
@@ -71,6 +93,10 @@ export const ServerForm: NavigationFunctionComponent<ServerProps> = ({
             username: yup.string().required(requiredError),
             password: yup.string().required(requiredError),
           }),
+      }),
+      clientCertConfig: yup.object().nullable().shape({
+        alias: yup.string(),
+        password: yup.string().nullable(),
       }),
     });
   }, [intl]);
@@ -235,7 +261,58 @@ export const ServerForm: NavigationFunctionComponent<ServerProps> = ({
                 </>
               )}
             </Section>
-          </ScrollView>
+            <Section header="Client Certificate (mTLS)">
+              <Label
+              text="Certificate"
+              touched={touched.clientCertConfig?.alias}
+              error={errors.clientCertConfig?.alias as any}>
+              <Dropdown
+                value={values.clientCertConfig?.alias || ''}
+                options={[
+                  {
+                    value: '',
+                    label: certificatesLoading
+                      ? 'Loading certificates...'
+                      : certificates.length === 0
+                      ? 'No certificates available'
+                      : '-- Select a Certificate --',
+                  },
+                  ...certificates.map(cert => ({
+                    value: cert.alias || cert.identity || '',
+                    label: cert.alias || cert.identity || cert.commonName || 'Unknown',
+                  })),
+                ]}
+                onValueChange={value => {
+                  if (value) {
+                    setFieldValue('clientCertConfig', {
+                      alias: value,
+                      password: values.clientCertConfig?.password || '',
+                    });
+                  } else {
+                    setFieldValue('clientCertConfig', undefined);
+                  }
+                }}
+              />
+              </Label>
+              {values.clientCertConfig?.alias && (
+              <Label
+                text="Certificate Password (optional)"
+                touched={touched.clientCertConfig?.password}
+                error={errors.clientCertConfig?.password as any}>
+                <Input
+                  value={values.clientCertConfig?.password || ''}
+                  onBlur={handleBlur('clientCertConfig.password')}
+                  onChangeText={handleChange('clientCertConfig.password')}
+                  secureTextEntry={true}
+                  placeholder="Leave blank if certificate is not password-protected"
+                />
+              </Label>
+              )}
+              <Text style={styles.tip}>
+              💡 Use this if your Frigate server requires mutual TLS (mTLS) authentication.
+              The certificate must be installed on your device.
+              </Text>
+            </Section>
           <ActionBar
             backgroundColor={theme.background}
             keepRelative

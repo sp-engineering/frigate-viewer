@@ -202,6 +202,18 @@ export const settingsStore = createSlice({
     setEventSnapshotHeight: (state, action: PayloadAction<number>) => {
       state.v1.events.snapshotHeight = action.payload;
     },
+    setServerClientCertConfig: (
+      state,
+      action: PayloadAction<{
+        serverIndex: number;
+        clientCertConfig?: {alias: string; password?: string};
+      }>,
+    ) => {
+      const {serverIndex, clientCertConfig} = action.payload;
+      if (state.v1.servers[serverIndex]) {
+        state.v1.servers[serverIndex].clientCertConfig = clientCertConfig;
+      }
+    },
   },
 });
 
@@ -209,7 +221,7 @@ export const settingsStore = createSlice({
  * ACTIONS
  **/
 
-export const {saveSettings, setCameraPreviewHeight, setEventSnapshotHeight} =
+export const {saveSettings, setCameraPreviewHeight, setEventSnapshotHeight, setServerClientCertConfig} =
   settingsStore.actions;
 
 /**
