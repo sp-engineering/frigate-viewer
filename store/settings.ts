@@ -51,6 +51,17 @@ export interface Credentials {
   password: string;
 }
 
+/**
+ * Client certificate configuration for mTLS authentication.
+ * The certificate must be installed in the device's keystore/keychain.
+ */
+export interface ClientCertConfig {
+  /** Alias/name of the certificate in the device's keystore/keychain */
+  alias: string;
+  /** Optional password to unlock the certificate (if encrypted) */
+  password?: string;
+}
+
 export interface Server {
   protocol: 'http' | 'https';
   host: string;
@@ -58,6 +69,8 @@ export interface Server {
   path: string;
   auth: 'basic' | 'frigate' | 'none';
   credentials: Credentials;
+  /** Client certificate configuration for mTLS authentication (optional) */
+  clientCertConfig?: ClientCertConfig;
 }
 
 export interface ISettings {
@@ -95,6 +108,7 @@ export const emptyServer = (): Server => ({
     username: '',
     password: '',
   },
+  clientCertConfig: undefined,
 });
 
 export const initialSettings: ISettings = {
