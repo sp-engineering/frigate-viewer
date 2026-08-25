@@ -10,6 +10,9 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableMapKeySetIterator;
 
 import java.io.IOException;
 import java.security.KeyStore;
@@ -17,6 +20,17 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.Enumeration;
+import java.security.KeyStore.PrivateKeyEntry;
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.Headers;
 
 /**
  * React Native module for accessing client certificates from Android Keystore.
@@ -26,6 +40,7 @@ public class ClientCertModule extends ReactContextBaseJavaModule {
 
   private static final String MODULE_NAME = "ClientCertModule";
   private KeyStore keyStore;
+  private OkHttpClient httpClient;
 
   public ClientCertModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -190,4 +205,118 @@ public class ClientCertModule extends ReactContextBaseJavaModule {
       promise.reject("KEYSTORE_ERROR", "Error checking certificate availability", e);
     }
   }
+
+  /**
+   * Perform an HTTP request using a client certificate from the KeyStore.
+   * The certificate is used for mutual TLS authentication (mTLS).
+   * 
+   * @param url The URL to request
+   * @param certAlias The certificate alias from the KeyStore
+   * @param method HTTP method (GET, POST, etc.)
+   * @param headers Array of header objects {key, value}
+   * @param body Request body (optional)
+   * @param promise Promise to resolve with the response
+   */
+  @ReactMethod
+  public void performHttpRequestWithClientCert(
+    String url,
+    String certAlias,
+    String method,
+    ReadableArray headers,
+    String body,
+    Promise promise) {
+    
+    try {
+      if (keyStore == null) {
+        promise.reject("KEYSTORE_NOT_INITIALIZED", "KeyStore not initialized");
+        return;
+      }
+
+      // Create an SSLContext with the client certificate
+      SSLContext sslContext = createSSLContextWithClientCert(certAlias);
+      if (sslContext == null) {
+        promise.reject("CERT_ERROR", "Could not create SSL context with certificate: " + certAlias);
+        return;
+      }
+
+      // Create an OkHttpClient with the SSL context
+      OkHttpClient client = new OkHttpClient.Builder()
+        .sslSocketFactory(sslContext.getSocketFactory(), new javax.net.ssl.X509TrustManager() {
+          @Override
+          public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+          }
+
+          @Override
+          public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+          }
+
+          @Override
+          public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+            return new java.security.cert.X509Certificate[0];
+          }
+        })
+        .build();
+
+      // Build the request
+      Request.Builder requestBuilder = new Request.Builder()
+        .url(url)
+        .method(method, method.equals("POST") || method.equals("PUT") ? okhttp3.RequestBody.create(body, null) : null);
+
+      // Add headers
+      if (headers != null) {
+        for (int i = 0; i < headers.size(); i++) {
+          ReadableMap header = headers.getMap(i);
+          String key = header.getString("key");
+          String value = header.getString("value");
+          if (key != null && value != null) {
+            requestBuilder.addHeader(key, value);
+          }
+        }
+      }
+
+      Request request = requestBuilder.build();
+
+      // Perform the request
+      Response response = client.newCall(request).execute();
+
+      // Build the response
+      WritableMap result = Arguments.createMap();
+      result.putInt("statusCode", response.code());
+      result.putString("body", response.body() != null ? response.body().string() : "");
+
+      WritableMap responseHeaders = Arguments.createMap();
+      Headers respHeaders = response.headers();
+      for (String name : respHeaders.names()) {
+        responseHeaders.putString(name, respHeaders.get(name));
+      }
+      result.putMap("headers", responseHeaders);
+
+      promise.resolve(result);
+
+    } catch (Exception e) {
+      android.util.Log.e(MODULE_NAME, "Error performing HTTP request with client cert", e);
+      promise.reject("HTTP_ERROR", "Error performing HTTP request: " + e.getMessage(), e);
+    }
+  }
+
+  /**
+   * Create an SSLContext configured with a client certificate from the KeyStore.
+   */
+  private SSLContext createSSLContextWithClientCert(String certAlias) {
+    try {
+      // Create a KeyManagerFactory and initialize it with the KeyStore
+      KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+      kmf.init(keyStore, null);
+
+      // Create an SSLContext and initialize it with the KeyManager
+      SSLContext context = SSLContext.getInstance("TLSv1.2");
+      context.init(kmf.getKeyManagers(), null, null);
+
+      return context;
+    } catch (Exception e) {
+      android.util.Log.e(MODULE_NAME, "Error creating SSL context with client cert", e);
+      return null;
+    }
+  }
 }
+

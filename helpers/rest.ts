@@ -4,6 +4,7 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import {Server} from '../store/settings';
 import {useIntl} from 'react-intl';
 import {messages} from './rest.messages';
+import {httpClientWithCert} from './httpWithClientCert';
 
 export const buildServerUrl = (server: Server) => {
   const {protocol, host, port, path} = server;
@@ -79,26 +80,59 @@ export const useRest = () => {
     try {
       const {queryParams, json} = options;
       const url = `${buildServerApiUrl(server)}/${endpoint}`;
-      const executeFetch = () =>
-        fetch(
-          `${url}${queryParams ? `?${new URLSearchParams(queryParams)}` : ''}`,
-          {
-            method,
-            headers: {
-              ...authorizationHeader(server),
+      const headers = {
+        ...authorizationHeader(server),
+      };
+
+      const executeFetch = () => {
+        // Use client certificate if configured, otherwise use standard fetch
+        if (server.clientCertConfig?.alias) {
+          return httpClientWithCert.request(
+            `${url}${queryParams ? `?${new URLSearchParams(queryParams)}` : ''}`,
+            {
+              method,
+              headers,
+              clientCertAlias: server.clientCertConfig.alias,
             },
-          },
-        );
+          );
+        } else {
+          return fetch(
+            `${url}${queryParams ? `?${new URLSearchParams(queryParams)}` : ''}`,
+            {
+              method,
+              headers,
+            },
+          ).then(response => ({
+            status: response.status,
+            headers: Object.fromEntries(response.headers.entries()),
+            body: null,
+            json: async () => response.json(),
+            text: async () => response.text(),
+          }));
+        }
+      };
+
       crashlytics().log(`${method} ${url}`);
       const response = await executeFetch();
-      if (!response.ok) {
-        crashlytics().log(`HTTP/${response.status}: ${method} ${url}`);
+
+      if (!response) {
+        crashlytics().log(`HTTP request failed: ${method} ${url}`);
+        throw new Error(
+          intl.formatMessage(messages['error.unauthorized'], {url}),
+        );
       }
+
       if (response.status === 401) {
         if (server.auth === 'frigate') {
           await login(server);
           const retriedResponse = await executeFetch();
-          return retriedResponse[json === false ? 'text' : 'json']();
+          return retriedResponse
+            ? retriedResponse[json === false ? 'text' : 'json']()
+            : Promise.reject(
+                new Error(
+                  intl.formatMessage(messages['error.unauthorized'], {url}),
+                ),
+              );
         } else {
           crashlytics().log(`Unauthorized`);
           throw new Error(
@@ -106,7 +140,9 @@ export const useRest = () => {
           );
         }
       }
-      return response[json === false ? 'text' : 'json']();
+
+      const result = await response[json === false ? 'text' : 'json']();
+      return result;
     } catch (error) {
       crashlytics().recordError(error as Error);
       const e = error as {message: string};
@@ -145,3 +181,4 @@ export const useRest = () => {
     del,
   };
 };
+
