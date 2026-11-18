@@ -79,7 +79,7 @@ android {
 
     namespace "com.frigateviewer"
     defaultConfig {
-        applicationId "com.frigateviewer"
+        applicationId "com.frigateviewer.mtls"  // instaluje się obok wersji ze Sklepu Play
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 20
@@ -108,7 +108,8 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.release
+            // bez własnego keystore podpisujemy kluczem debug (do użytku prywatnego wystarczy)
+            signingConfig project.hasProperty('MYAPP_UPLOAD_STORE_FILE') ? signingConfigs.release : signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }

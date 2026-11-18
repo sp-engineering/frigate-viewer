@@ -62,7 +62,7 @@ public class MainApplication extends NavigationApplication {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
       DefaultNewArchitectureEntryPoint.load();
     }
-    OkHttpClientProvider.setOkHttpClientFactory(new IgnoreSSLFactory());
+    OkHttpClientProvider.setOkHttpClientFactory(new MtlsOkHttpFactory(this));
     ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
 }
