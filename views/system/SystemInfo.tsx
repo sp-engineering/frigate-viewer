@@ -11,6 +11,28 @@ interface ISystemInfoProps {
   service: Service;
 }
 
+// Frigate reports e.g. "0.18.3-a19e23a" (version + commit hash) while
+// latest_version is plain "0.18.3"; it may also be "disabled"/"unknown".
+const parseVersion = (v?: string): number[] | undefined => {
+  const m = v?.trim().match(/^v?(\d+(?:\.\d+)*)/);
+  return m ? m[1].split('.').map(Number) : undefined;
+};
+
+const isNewerVersion = (latest?: string, current?: string): boolean => {
+  const l = parseVersion(latest);
+  const c = parseVersion(current);
+  if (!l || !c) {
+    return false;
+  }
+  for (let i = 0; i < Math.max(l.length, c.length); i++) {
+    const diff = (l[i] ?? 0) - (c[i] ?? 0);
+    if (diff !== 0) {
+      return diff > 0;
+    }
+  }
+  return false;
+};
+
 export const SystemInfo: FC<ISystemInfoProps> = ({service}) => {
   const styles = useStyles(({theme}) => ({
     info: {
@@ -44,9 +66,7 @@ export const SystemInfo: FC<ISystemInfoProps> = ({service}) => {
   const intl = useIntl();
 
   const isUpdateAvailable = useMemo(
-    () =>
-      service.latest_version !== undefined &&
-      service.version !== service.latest_version,
+    () => isNewerVersion(service.latest_version, service.version),
     [service],
   );
 
